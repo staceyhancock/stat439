@@ -1,2 +1,2 @@
-# stat439
-Syllabus for STAT 439: Introduction to Categorical Data Analysis at Montana State
+# STAT 439: Introduction to Categorical Data Analysis
+Syllabus and calendar for STAT 439 at Montana State

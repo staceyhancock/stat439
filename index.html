@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Introduction to Categorical Data Analysis</title>
+
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">STAT 439</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="calendar.html">Calendar</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="mailto:&lt;stacey.hancock@montana.edu&gt;">
+    <span class="fa fa-envelope fa-lg"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="http://github.com/staceyhancock/stat439">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Introduction to Categorical Data Analysis</h1>
+<h3 class="subtitle">Spring 2022</h3>
+
+</div>
+
+
+<hr />
+<div id="course-description" class="section level1">
+<h1>Course description</h1>
+<hr />
+<p>STAT 439 will provide an introduction to the principles and general methods for the analysis of categorical data. Categorical data occur extensively in both observational and experimental studies, as well as in industrial and data science applications. Topics include, but are not limited to, contingency table analysis, Poisson regression, logistic regression, log-linear models, and multicategory logit models. While some theoretical statistical detail is given, the primary focus will be on methods of data analysis. Problems will be motivated from a scientific perspective.</p>
+<div id="learning-outcomes" class="section level2">
+<h2>Learning outcomes</h2>
+<p>At the completion of this course, students will:</p>
+<ol style="list-style-type: decimal">
+<li>Formulate scientific questions involving categorical response data.</li>
+<li>Identify appropriate statistical methods for categorical data and describe how they differ from methods for continuous data.</li>
+<li>Perform and interpret statistical inference for proportions, including the use of likelihood, Wald procedures, score procedures and likelihood-ratio procedures.</li>
+<li>Carry out and interpret contingency table analysis, including 2x2 and higher-order tables, estimation and testing for odds ratios, chi-squared tests of independence, and Fisher’s Exact Test.</li>
+<li>Understand the basic theory of generalized linear models—including logistic regression, multinomial logistic regression, and Poisson regression—and use these models to answer a research question.</li>
+<li>Perform and interpret a statistical analysis of matched pairs categorical data.</li>
+<li>Understand the basics of the analysis of correlated and clustered categorical response data including generalized estimating equations and generalized linear mixed models.</li>
+</ol>
+<hr />
+</div>
+</div>
+<div id="time-and-location" class="section level1">
+<h1>Time and location</h1>
+<hr />
+<p>TR 9:25-10:40am<br />
+Wilson Hall 1-143</p>
+<hr />
+</div>
+<div id="instructor" class="section level1">
+<h1>Instructor</h1>
+<hr />
+<p><a href="http://www.math.montana.edu/shancock/" target="_blank"><strong>Dr. Stacey Hancock</strong></a><br />
+email: <a href="mailto:stacey.hancock@montana.edu" class="email">stacey.hancock@montana.edu</a><br />
+Office: Wilson 2-195<br />
+Phone: (406) 994-5350</p>
+<div id="office-hours" class="section level2">
+<h2>Office hours:</h2>
+<ul>
+<li>Virtual (see D2L for Zoom link): Mondays 3:10-4:00pm</li>
+<li>In person (Wilson 2-195): Tuesdays and Thursdays 3:10-4:00pm</li>
+<li>By appointment — Please feel free to email me to schedule an appointment outside of office hours.</li>
+</ul>
+<hr />
+</div>
+</div>
+<div id="prerequisites" class="section level1">
+<h1>Prerequisites</h1>
+<hr />
+<p>Entrance to STAT 439 requires completion of STAT 412 or STAT 512 (Methods for Data Analysis II). Students may take STAT 412/512 concurrently with permission of the instructor.</p>
+<hr />
+</div>
+<div id="course-materials" class="section level1">
+<h1>Course materials</h1>
+<hr />
+<div id="textbook" class="section level2">
+<h2>Textbook</h2>
+<p>The required textbook for the course is Alan Agresti’s <a href="https://www.wiley.com/en-us/An+Introduction+to+Categorical+Data+Analysis%2C+3rd+Edition-p-9781119405269"><em>An Introduction to Categorical Data Analysis</em></a>, 3rd edition, Wiley, 2018.</p>
+<ul>
+<li><a href="http://users.stat.ufl.edu/~aa/">Author-maintained website</a></li>
+<li><a href="http://bcs.wiley.com/he-bcs/Books?action=index&amp;itemId=1119405262&amp;bcsId=11293">Student companion site</a></li>
+<li><a href="https://github.com/alanagresti/categorical-data">Textbook data sets</a></li>
+<li><a href="http://users.stat.ufl.edu/~aa/cat/errors.pdf">Corrections</a></li>
+</ul>
+<p><strong>Important</strong>: Agresti has another textbook called <em>Categorical Data Analysis</em>. Make sure you are using his book that starts with “An Introduction…”.</p>
+</div>
+<div id="computing" class="section level2">
+<h2>Computing</h2>
+<p>We will use the statistical programming language R through the RStudio interface. See my <a href="https://staceyhancock.github.io/computing/">statistical computing resources</a> page for download instructions and extra resources.</p>
+<p>For announcements, grades, discussion forums, and turning in assignments, see our <a href="https://ecat1.montana.edu/"><strong>D2L</strong></a> page.</p>
+<ul>
+<li>Make sure you are receiving email notifications for any D2L activity. In D2L, click on your name, then Notifications. Check that D2L is using an email address that you regularly check; you have the option of registering a mobile number. Check the boxes to get notifications for announcements, content, discussions, and grades.</li>
+<li>If you have a question about the course materials, computing, or logistics, please post your question to your <strong>D2L discussion board</strong> instead of emailing your instructors. This ensures all students can benefit from the responses. Other students are encouraged to respond.</li>
+</ul>
+<hr />
+</div>
+</div>
+<div id="course-assessment" class="section level1">
+<h1>Course assessment</h1>
+<hr />
+<p>Your grade in STAT 408 will be comprised of the following components.</p>
+<p><img src="index_files/figure-html/unnamed-chunk-1-1.png" width="75%" /></p>
+<ol style="list-style-type: decimal">
+<li><p><strong>Homework</strong> (25%): Homework and data analysis problems will be assigned approximately bi-weekly.</p></li>
+<li><p><strong>Quizzes</strong> (40%): In lieu of midterm exams, we will have bi-weekly 30-minute in-class quizzes over material from the past two weeks. The lowest quiz grade will be dropped.</p></li>
+<li><p><strong>Project</strong> (15%): A group data analysis project will be completed throughout the course. Due dates and details will be posted in D2L.</p></li>
+<li><p><strong>Final Exam</strong> (20%): We will have a comprehensive in-class final exam on *<strong>Thursday, May 12, 8:00–9:50am</strong> in our usual classroom.</p></li>
+</ol>
+<p>Letter grades generally follow the typical scale:</p>
+<p>93-100 = A<br />
+90-92 = A-<br />
+88-89 = B+<br />
+83-87 = B<br />
+80-82 = B-<br />
+etc.</p>
+<p>These cutoffs may be adjusted down (never up!) at the end of the semester, depending on the grade distribution in the course. Thus, a 93% will guarantee an A, a 90% will guarantee an A-, etc.</p>
+<hr />
+</div>
+<div id="course-policies" class="section level1">
+<h1>Course policies</h1>
+<hr />
+<div id="classroom-community" class="section level2">
+<h2>Classroom community</h2>
+<p>All members of the classroom community (instructor, students, visitors) are expected to treat each other with courtesy and respect. Our comments to others should be factual, constructive, and free from harassing statements. You are encouraged to disagree with others, but such disagreements need to be based upon facts and documentation (rather than prejudices and personalities). It is the instructor’s goal to promote an atmosphere of mutual respect in the classroom.</p>
+<p>The success of all students in this course depends on all members of the classroom community agreeing to:</p>
+<ul>
+<li>Show up and be present</li>
+<li>Listen</li>
+<li>Contribute</li>
+<li>Build on other’s ideas</li>
+<li>Speak clearly and loudly enough for all to hear</li>
+</ul>
+<p>Please contact the instructor if you have suggestions for improving the classroom environment.</p>
+</div>
+<div id="absences-illnesses-and-late-work-policy" class="section level2">
+<h2>Absences, illnesses, and late work policy</h2>
+<p>You will note that attendance is not a required component of your grade. However, there is no better predictor of college grades than class attendance (<a href="https://journals.sagepub.com/doi/pdf/10.3102/0034654310362998">Crede, Roch, &amp; Kieszczynka, 2010</a>). In order to participate in class discussions and build a complete classroom community, please plan to attend every class. If you are ill or have a conflict, an email letting me know you won’t be in class is appreciated.</p>
+<div id="homework" class="section level3">
+<h3><strong>Homework</strong></h3>
+<p>It is expected that students turn in homework by the posted deadline, but understood that life sometimes prevents us from meeting a deadline. Thus, homework will be accepted after the deadline for no penalty up until the point that homework solutions are posted. After homework solutions are posted, you may still earn half credit on your homework by turning in your completed assignment with extended explanations added to each problem. Extended explanations are required to demonstrate that you fully understand each problem and are not just mimicking the posted solutions. Late assignments which directly copy the posted solutions will be treated as plagiarism and will receive no credit.</p>
+</div>
+<div id="quizzes" class="section level3">
+<h3><strong>Quizzes</strong></h3>
+<p>The last quiz day of the semester will be a designated make-up quiz. Only students who had to miss a quiz earlier in the semester will be allowed to take this quiz, and the grade from this quiz will serve as the grade for your missed quiz. As an added tool to address missed quizzes, the lowest quiz grade will be dropped.</p>
+</div>
+</div>
+<div id="covid-19-related-expectations" class="section level2">
+<h2>COVID-19-related expectations</h2>
+<div id="face-mask-requirement" class="section level3">
+<h3><strong>Face mask requirement</strong></h3>
+<p>Face coverings that cover both your nose and mouth are required in all indoor spaces on the Bozeman campus, with the exception of the fitness center. MSU requires the wearing of masks in physical classrooms to help mitigate the transmission of SARS-CoV-2, which causes COVID-19. The MSU community views the adoption of these practices as a mark of good citizenship and respectful care of fellow classmates, faculty, and staff.</p>
+<p>Compliance with the face-covering protocol is expected. If a you do not comply with a classroom rule, you may be requested to leave class. Section 460.00 of the <a href="https://www.montana.edu/policy/student_conduct/#460">MSU Code of Student Conduct</a> covers “disruptive student behavior.”</p>
+<p>The complete details about MSU’s mask requirement can be found at <a href="https://www.montana.edu/health/coronavirus/index.html">https://www.montana.edu/health/coronavirus/index.html</a>.</p>
+</div>
+<div id="accommodations-for-not-wearing-a-mask" class="section level3">
+<h3><strong>Accommodations for not wearing a mask</strong></h3>
+<p>Individuals whose unique and individual circumstances require an exception to the face covering requirement, as indicated by a medical professional, may request one in accordance with the campus ADA policies. Students should contact the Office of Disability Services at 994-2824 or <a href="mailto:drv@montana.edu" class="email">drv@montana.edu</a> to receive written permission from the Office of Disability Services at MSU. It is strongly recommended that students make contact prior to arriving on campus in order to provide adequate time for their request to be evaluated.</p>
+</div>
+<div id="health-related-class-absences" class="section level3">
+<h3><strong>Health-related class absences</strong></h3>
+<p>Please evaluate your own health status regularly and refrain from attending class and other on-campus events if you are ill. MSU students who miss class due to illness will be given opportunities to access course materials online. You are encouraged to seek appropriate medical attention for treatment of illness. In the event of contagious illness, please do not come to class or to campus to turn in work. Instead notify us by email about your absence as soon as practical, so that accommodations can be made. Please note that documentation (a Doctor’s note) for medical excuses is not required. MSU University Health Partners–as part their commitment to maintain patient confidentiality, to encourage more appropriate use of healthcare resources, and to support meaningful dialogue between instructors and students–does not provide such documentation.</p>
+</div>
+</div>
+<div id="policy-on-collaboration-and-academic-misconduct" class="section level2">
+<h2>Policy on collaboration and academic misconduct</h2>
+<p>At a minimum, any act of academic dishonesty, which includes but is not limited to plagiarism, cheating, multiple submissions, or facilitating others’ misconduct, will result in a score of zero on the assignment/quiz/exam in question and notification of department and university officials. Further action may be taken as warranted. If you have any questions about the limits of collaboration or about using and citing sources, you are expected to ask for clarification.</p>
+<div id="collaboration-on-individual-assignments" class="section level3">
+<h3><strong>Collaboration on individual assignments</strong></h3>
+<p><em>After attempting to complete homework problems on your own</em>, you are permitted to collaborate on homework in a constructive manner for all involved—each individual in the collaboration needs to ensure they understand and could explain the process of solving each problem. While I encourage you to talk through problems with fellow students, the work you turn in must be your own and must be written in your own words (unless the assignment specifically states otherwise).</p>
+<p><strong>Each homework will require a “citations” page where you cite all sources (including web forums such as Stack Overflow) and individuals used to complete that homework assignment.</strong> Paraphrasing or quoting another’s work without citing the source is a form of academic dishonesty. Even inadvertent or unintentional misuse or appropriation of another’s work (such as relying heavily on source material that is not expressly acknowledged) is considered plagiarism. Homework assignments that do not cite sources or individuals, or assignments where answers are copied directly from another student, will be considered and treated as plagiarism, and will receive a zero grade. If you have any questions about the limits of collaboration or about using and citing sources, you are expected to ask for clarification.</p>
+</div>
+<div id="msu-policy" class="section level3">
+<h3><strong>MSU policy</strong></h3>
+<p>Students in an academic setting are responsible for approaching all assignments with rigor, integrity, and in compliance with the University Code of Student Conduct. This responsibility includes:</p>
+<ol style="list-style-type: decimal">
+<li>consulting and analyzing sources that are relevant to the topic of inquiry;</li>
+<li>clearly acknowledging when they draw from the ideas or the phrasing of those sources in their own writing;</li>
+<li>learning and using appropriate citation conventions within the field in which they are studying; and</li>
+<li>asking their instructor for guidance when they are uncertain of how to acknowledge the contributions of others in their thinking and writing.</li>
+</ol>
+<p><a href="https://www.montana.edu/deanofstudents/academicmisconduct/academicmisconduct.html">More information about Academic Misconduct from the Dean of Students</a></p>
+</div>
+</div>
+<div id="diversity-and-inclusivity-statements" class="section level2">
+<h2>Diversity and inclusivity statements</h2>
+<p><strong>Respect for Diversity</strong>: It is our intent that students from all diverse backgrounds and perspectives be well-served by this course, that students’ learning needs be addressed both in and out of class, and that the diversity that students bring to this class be viewed as a resource, strength and benefit. It is our intent to present materials and activities that are respectful of diversity: gender identity, sexual orientation, disability, age, socioeconomic status, ethnicity, race, religion, culture, perspective, and other background characteristics. Your suggestions about how to improve the value of diversity in this course are encouraged and appreciated. Please let us know ways to improve the effectiveness of the course for you personally or for other students or student groups.</p>
+<p>In addition, in scheduling exams, we have attempted to avoid conflicts with major religious holidays. If, however, we have inadvertently scheduled an exam or major deadline that creates a conflict with your religious observances, please let us know as soon as possible so that we can make other arrangements.</p>
+<p><strong>Support for Inclusivity</strong>: We support an inclusive learning environment where diversity and individual differences are understood, respected, appreciated, and recognized as a source of strength. We expect that students, faculty, administrators and staff at MSU will respect differences and demonstrate diligence in understanding how other peoples’ perspectives, behaviors, and worldviews may be different from their own.</p>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

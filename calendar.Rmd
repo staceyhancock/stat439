@@ -1,0 +1,146 @@
+---
+title: "Course Calendar and Materials"
+output:
+  pdf_document:
+    toc: no
+  html_document:
+    toc: no
+---
+
+---
+
+## Week 1 (Jan 19--21): 
+
+---
+
+
+---
+
+## Week 2 (Jan 24--28): 
+
+---
+
+
+
+
+---
+
+## Week 3 (Jan 31--Feb 4): 
+
+---
+
+
+
+---
+
+## Week 4 (Feb 7--11): 
+
+---
+
+
+
+---
+
+## Week 5 (Feb 14--18): 
+
+---
+
+
+
+---
+
+## Week 6 (Feb 21--25): 
+
+---
+
+
+
+
+---
+
+## Week 7 (Feb 28--Mar 4): 
+
+---
+
+
+
+
+---
+
+## Week 8 (Mar 7--11): 
+
+---
+
+
+
+---
+
+## Week 9 (Mar 21--25): 
+
+---
+
+
+
+
+---
+
+## Week 10 (Mar 28--Apr 1): 
+
+---
+
+
+
+
+---
+
+## Week 11 (Apr 4--8): 
+
+---
+
+
+
+
+
+---
+
+## Week 12 (Apr 11--15): 
+
+---
+
+
+
+
+
+---
+
+## Week 13 (Apr 18--22): 
+
+---
+
+
+
+
+---
+
+## Week 14 (Apr 25--29): 
+
+---
+
+
+
+---
+
+## Week 15 (May 2--6): 
+
+---
+
+
+
+
+---
+
+## Final Exam 
+
+---
+
+Thursday, May 12 8:00--9:50am
