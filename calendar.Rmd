@@ -12,7 +12,7 @@ output:
 ---
 
 * [Lecture 1 Slides](lectures/Lecture1Slides-Jan20.pdf)
-* Case Study: Challenger Explosion ([RMD](R/Week1-Jan20-Challenger.Rmd)) ([html](R/Week1-Jan20-Challenger.html))
+* Case Study: Challenger Explosion ([RMD](R/Week1-Jan20-Challenger.Rmd)) ([html](R/Week1-Jan20-Challenger.html)) ([Dalal et al., 1989](references/Dalal_etal_1989-Challenger.pdf))
 
 ---
 
