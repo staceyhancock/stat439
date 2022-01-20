@@ -2,9 +2,6 @@
 title: "Introduction to Categorical Data Analysis"
 subtitle: "Spring 2022"
 output:
-  pdf_document:
-    toc: yes
-    toc_depth: '3'
   html_document:
     toc: yes
     toc_depth: 2
@@ -167,7 +164,7 @@ grades %>% ggplot(aes(x=location, y=percent)) +
 
 3. **Project** (15%): A group data analysis project will be completed throughout the course. Due dates and details will be posted in D2L.
 
-4. **Final Exam** (20%): We will have a comprehensive in-class final exam on ***Thursday, May 12, 8:00--9:50am** in our usual classroom. 
+4. **Final Exam** (20%): We will have a comprehensive in-class final exam on **Thursday, May 12, 8:00--9:50am** in our usual classroom. 
 
 
 Letter grades generally follow the typical scale:
