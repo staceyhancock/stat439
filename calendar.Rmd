@@ -7,10 +7,12 @@ output:
 
 ---
 
-## Week 1 (Jan 19--21): 
+## Week 1 (Jan 19--21): Course Overview
 
 ---
 
+* [Lecture 1 Slides](lectures/Lecture1Slides-Jan20.pdf)
+* Case Study: Challenger Explosion ([RMD](R/Week1-Jan20-Challenger.Rmd)) ([html](R/Week1-Jan20-Challenger.html))
 
 ---
 
