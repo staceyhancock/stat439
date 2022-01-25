@@ -5,135 +5,250 @@ output:
     toc: no
 ---
 
+Each week, classes will be a mix of lecture, class discussion, and short activities. 
+
+*  **You should bring your laptop with you to every class period.** We will be using R and RStudio extensively in this course. In particular, students are encouraged to write homework assignments in R Markdown and compile to pdf for the submission.
+* Assigned readings for each week are posted. Whether you learn better by reading prior to lecture, or hearing a lecture prior to reading is up to you.
+* Weeks will typically alternate between homework assignments and in class quizzes, with both homework due dates and quizzes falling on Thursdays.
+
 ---
 
 ## Week 1 (Jan 19--21): Course Overview
 
 ---
 
-* [Lecture 1 Slides](lectures/Lecture1Slides-Jan20.pdf)
-* Case Study: Challenger Explosion ([RMD](R/Week1-Jan20-Challenger.Rmd)) ([html](R/Week1-Jan20-Challenger.html)) ([Dalal et al., 1989](references/Dalal_etal_1989-Challenger.pdf))
+* [Lecture 1 slides](lectures/Lecture1Slides-Jan20.pdf)
+* Case study: [Challenger explosion](R/Week1-Jan20-Challenger.html) ([RMD](R/Week1-Jan20-Challenger.Rmd)) ([Dalal et al., 1989](references/Dalal_etal_1989-Challenger.pdf))
 
 ---
 
-## Week 2 (Jan 24--28): 
+## Week 2 (Jan 24--28): Inference for One and Two Proportions
 
 ---
 
+### **Assigned readings**
 
+- Chapter 1 Sections 1.1--1.3, 1.6
+- Chapter 2 Sections 2.1--2.3
 
+### **Tuesday**
 
----
+- Lecture 2 notes (will post after class)
+- [Hypothesis testing playbook](handouts/Hypothesis_Testing_Playbook.pdf)
+- [Inference for proportions examples](handouts/Inference_for_Proportions-Examples.html) ([Rmd](handouts/Inference_for_Proportions-Examples.Rmd))
+- Inference for proportions solutions (will post after class)
+- [Pigs!](R/Week2-Jan25-Pigs.R)
 
-## Week 3 (Jan 31--Feb 4): 
+### **Thursday**
 
----
+- Lecture 3 notes (will post after class)
 
+### **Homework/Quiz**
 
-
----
-
-## Week 4 (Feb 7--11): 
-
----
-
-
-
----
-
-## Week 5 (Feb 14--18): 
+- [Homework 1](homework/Stat439-S22-HW1.pdf) ([Rmd](homework/Stat439-S22-HW1.Rmd)) Due Thur Jan 27 --- Chapter 1
 
 ---
 
-
-
----
-
-## Week 6 (Feb 21--25): 
+## Week 3 (Jan 31--Feb 4): Contingency Tables
 
 ---
 
+### **Assigned readings**
 
+### **Tuesday**
 
+### **Thursday**
 
----
+### **Homework/Quiz**
 
-## Week 7 (Feb 28--Mar 4): 
-
----
-
-
-
+- Quiz 1 in class Thur Feb 3 --- Chapter 1
 
 ---
 
-## Week 8 (Mar 7--11): 
+## Week 4 (Feb 7--11): Intro to Generalized Linear Models
 
 ---
 
+### **Assigned readings**
 
+### **Tuesday**
 
----
+### **Thursday**
 
-## Week 9 (Mar 21--25): 
+### **Homework/Quiz**
 
----
-
-
-
-
----
-
-## Week 10 (Mar 28--Apr 1): 
+- Homework 2 Thur Feb 10 --- Chapter 2
 
 ---
 
-
-
-
----
-
-## Week 11 (Apr 4--8): 
+## Week 5 (Feb 14--18): GLMs for Binary Data
 
 ---
 
+### **Assigned readings**
 
+### **Tuesday**
 
+### **Thursday**
 
+### **Homework/Quiz**
+
+- Quiz 2 Thur Feb 17 --- Chapter 2
 
 ---
 
-## Week 12 (Apr 11--15): 
+## Week 6 (Feb 21--25): GLMs for Binary Data
 
 ---
 
 
+### **Assigned readings**
 
+### **Tuesday**
+
+### **Thursday**
+
+### **Homework/Quiz**
+
+- Homework 3 Due Thur Feb 24 --- Chapters 3--4
+
+---
+
+## Week 7 (Feb 28--Mar 4): GLMs for Count Data
+
+---
+
+### **Assigned readings**
+
+### **Tuesday**
+
+### **Thursday**
+
+### **Homework/Quiz**
+
+- Quiz 3 Due Thur Mar 3 --- Chapters 3--4
 
 
 ---
 
-## Week 13 (Apr 18--22): 
+## Week 8 (Mar 7--11): Model Selection and Diagnostics with GLMs
+
+---
+
+### **Assigned readings**
+
+### **Tuesday**
+
+### **Thursday**
+
+### **Homework/Quiz**
+
+- Homework 4
+
+---
+
+## Week 9 (Mar 21--25): Multicategory Logit Models
+
+---
+
+### **Assigned readings**
+
+### **Tuesday**
+
+### **Thursday**
+
+### **Homework/Quiz**
+
+- Quiz 4
+
+---
+
+## Week 10 (Mar 28--Apr 1): Models for Matched Pairs
+
+---
+
+### **Assigned readings**
+
+### **Tuesday**
+
+### **Thursday**
+
+### **Homework/Quiz**
+
+- Homework 5
+
+---
+
+## Week 11 (Apr 4--8): Marginal Models and GEEs
+
+---
+
+### **Assigned readings**
+
+### **Tuesday**
+
+### **Thursday**
+
+### **Homework/Quiz**
+
+- Quiz 5
+
+
+---
+
+## Week 12 (Apr 11--15): Generalized Linear Mixed Models
 
 ---
 
 
+### **Assigned readings**
 
+### **Tuesday**
 
----
+### **Thursday**
 
-## Week 14 (Apr 25--29): 
+### **Homework/Quiz**
 
----
-
-
-
----
-
-## Week 15 (May 2--6): 
+- Homework 6
 
 ---
 
+## Week 13 (Apr 18--22): Classification
+
+---
+
+### **Assigned readings**
+
+### **Tuesday**
+
+### **Thursday**
+
+### **Homework/Quiz**
+
+- Quiz 6
+
+---
+
+## Week 14 (Apr 25--29): Catch Up
+
+---
+
+
+### **Assigned readings**
+
+### **Tuesday**
+
+### **Thursday**
+
+### **Homework/Quiz**
+
+- Homework 7
+
+---
+
+## Week 15 (May 2--6): Project Presentations
+
+---
 
 
 

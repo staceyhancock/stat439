@@ -1,0 +1,172 @@
+---
+title: 'Normal-based Inference for Proportions: Examples and Solutions'
+date: "1/25/2022"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## Problem 1
+
+To investigate the flame resistance of a material used in children’s pajamas, 85 material specimens were subjected to high temperatures, and 21 of those specimens ignited. The material will only be safe for use on the market if the true proportion of ignitions is less than 20%. Use these data to determine if the material is safe to use on the market.
+
+### Hypotheses:
+Let $\pi$ be the probability that a children's pajama material specimen subjected to high temperatures ignites. We will set up the hypotheses so that we have the ability to find evidence if the material is _unsafe_ for use on the market: $H_0: \pi = 0.20$ versus $H_0: \pi > 0.20$. 
+
+### Calculations:
+```{r}
+# Sample proportion
+p <- 21/85
+p
+# Test statistic
+z <- (p-0.20)/sqrt(0.20*0.80/85)
+z
+# p-value = Pr(Z >= z)
+1-pnorm(z)
+```
+With a large p-value, we do not have strong evidence that the material is unsafe for use on the market. (However, this does not mean it is safe! Note that the sample proportion was larger than 0.20, so if we tested more specimens and observed the same difference in proportions, we would find evidence that the material is unsafe.)
+
+It is not clear if this was a simple random sample of material specimens, but assuming the sample was representative, we could generalize this conclusion to the population of this type of children's pajama material.
+
+Calculations using built-in R function (performs chi-squared test):
+```{r}
+prop.test(21, 85, p = 0.20, alternative="greater", correct=FALSE)
+```
+Note that the chi-squared statistic in this output is equal to the z-test-statistic squared.
+
+## Problem 2
+
+Bozeman is known for having a large number of drivers who own Subaru vehicles, perhaps because these vehicles are known to perform well in winter driving conditions. But, is the proportion of residents in Bozeman who own Subarus higher than a place like Madison, Wisconsin? Researchers randomly selected 500 phone numbers from all local landlines in both Bozeman and Madison and found that 198 Bozeman residents owned a Subaru, while only 147 Madison residents owned a Subaru.
+
+### Hypotheses:
+Let $\pi_B$ be the true proportion of Bozeman residents that own a Subaru, and $\pi_M$ be the true proportion of Madison residents that own a Subaru. Then our parameter of interest is $\pi_B - \pi_M$, and we are testing: $H_0: \pi_B - \pi_M = 0$ versus $H_a: \pi_B - \pi_M > 0$. 
+
+### Calculations:
+```{r}
+# Sample proportions
+pB <- 198/500
+pM <- 147/500
+p.pool <- (198+147)/500
+pB
+pM
+p.pool
+# Test statistic
+z <- (pB-pM)/sqrt(p.pool*(1-p.pool)*(1/500 + 1/500))
+z
+# p-value = Pr(Z >= z)
+1-pnorm(z)
+```
+The small p-value indicates strong evidence that the proportion of all residents that own a Subaru in Bozeman is higher than that in Madison.
+
+Note, however, that the sample was randomly selected from all local landlines. Thus, these conclusions can only be generalized to local residents who own landlines.
+
+Calculations using built-in R function (performs chi-squared test with continuity correction):
+```{r}
+prop.test(c(198,147), c(500,500), alternative="greater")
+```
+
+## Problem 3
+
+Bozeman is known nationwide as one of the premier ski towns in the US. In fact, many students choose to attend MSU for that reason. With the hopes of increasing enrollment, MSU’s advertising team created two brochures. One of the brochures has a skier on the front, and the other has a snowboarder on the front. One hundred and fifty California students were chosen at random, half were randomly assigned to receive the skier brochure, and half were randomly assigned to receive the snowboarder brochure. The advertising team wants to know if the probability a California student enrolls at MSU differs based on the type of brochure they receive. The data are summarized below.
+```{r}
+dat <- matrix(c(17,14,58,61), nrow=2, ncol=2, byrow=TRUE,
+              dimnames=list(c("Enrolled","Not Enrolled"),
+                            c("Skier","Snowboarder")))
+dat
+```
+
+
+### Hypotheses:
+
+Let $\pi_{ski}$ be the true proportion of California residents that would have enrolled if given the skier brochure, and $\pi_{board}$ be the true proportion of California residents that would have enrolled if given the snowboarder brochure. Then our parameter of interest is $\pi_{ski} - \pi_{board}$, and we are testing: $H_0: \pi_{ski} - \pi_{board} = 0$ versus $H_a: \pi_{ski} - \pi_{board} \neq 0$. 
+
+### Calculations:
+```{r}
+# Sample proportions
+p.ski <- 17/75
+p.board <- 14/75
+p.pool <- (17+14)/150
+p.ski
+p.board
+p.pool
+# Test statistic
+z <- (p.ski-p.board)/sqrt(p.pool*(1-p.pool)*(1/75 + 1/75))
+z
+# p-value = 2*Pr(Z <= -|z|)
+2*pnorm(-abs(z))
+```
+With a large p-value, we do not have strong evidence that the type of brochure had an effect on the probability of enrollment at MSU among all California students.
+
+Calculations using built-in R function (performs chi-squared test with continuity correction):
+```{r}
+prop.test(c(17,14), c(75,75), alternative="two.sided")
+```
+
+## Problem 4
+
+There is no longer any doubt that smoking cigarettes is hazardous to your health and the health of those around you. Yet for someone who is addicted to smoking, quitting is no simple matter. One promising technique is to apply a patch to the skin that dispenses nicotine into the blood. In fact, these nicotine patches have become one of the most frequently prescribed medications in the United States. 
+
+To test the effectiveness of these patches on the cessation of smoking, Dr. Richard Hurt and his colleagues (1994) recruited 240 smokers at Mayo Clinics in Rochester, Minnesota; Jacksonville, Florida; and Scottsdale, Arizona. Volunteers were required to be between the ages of 20 and 65, have an expired carbon monoxide level of 10 ppm or greater (showing that they were indeed smokers), be in good health, have a history of smoking at least 20 cigarettes per day for the past year, and be motivated to quit. 
+
+Volunteers were randomly assigned to receive either 22-mg nicotine patches or placebo patches for 8 weeks (120 in each group). They were also provided with an intervention program recommended by the National Cancer Institute, in which they received counseling before, during, and for many months after the 8-week period of wearing the patches.
+
+After the 8-week period of nicotine or placebo patch use, almost half (46%) of the nicotine patch group had quit smoking, while only one-fifth (20%) of the control group had done so. Having quit was defined as “self-reported abstinence (not even a puff) since the last visit and an expired air carbon monoxide level of 8 ppm or less.” (Example quoted from Utts and Heckard, 2013, p. 201-202)
+
+### Hypotheses:
+Let $\pi_{N}$ be the probability of quitting if on the nicotine patch, and $\pi_{P}$ be the probability of quitting if on the placebo patch. Then our parameter of interest is $\pi_{N} - \pi_{P}$, and we are testing: $H_0: \pi_{N} - \pi_{P} = 0$ versus $H_a: \pi_{N} - \pi_{P} > 0$. 
+
+
+### Calculations:
+```{r}
+# Sample proportions
+pN <- 0.46
+pP <- 0.20
+p.pool <- (0.46*120 + 0.20*120)/240
+pN
+pP
+p.pool
+# Test statistic
+z <- (pN-pP)/sqrt(p.pool*(1-p.pool)*(1/120 + 1/120))
+z
+# p-value = Pr(Z >= z)
+1-pnorm(z)
+```
+We have very strong evidence that using a nicotine patch causes an increase in the probability of quitting smoking among smokers similar to those in the sample. (That is, we can only generalize to people between the ages of 20 and 65 with an expired carbon monoxide level of 10 ppm or greater, in good health, with a history of smoking at least 20 cigarettes per day for the past year, motivated to quit, and would have volunteered for the study.)
+
+Calculations using built-in R function (performs chi-squared test with continuity correction):
+```{r}
+prop.test(c(55,24), c(120,120), alternative="greater")
+```
+
+## Problem 5
+
+About 10% of the general US population is left-handed. Researchers notice that professional tennis players often tend to be left-handed. To study whether professional tennis players tend to be left-handed more often than the general US population, they collected a simple random sample of 125 professional tennis players and observed that 16 of these tennis players were left handed.
+
+### Hypotheses:
+Let $\pi$ be the probability that a professional US tennis player is left-handed. Then our hypotheses are: $H_0: \pi = 0.10$ versus $H_0: \pi > 0.10$. 
+
+### Calculations:
+```{r}
+# Sample proportion
+p <- 16/125
+p
+# Test statistic
+z <- (p-0.10)/sqrt(0.10*0.90/125)
+z
+# p-value = Pr(Z >= z)
+1-pnorm(z)
+```
+With a large p-value, we do not have strong evidence that professional US tennis players tend to be left-handed more often than the general US population.
+
+Since this was a simple random sample, we can generalize our conclusion to all US professional tennis players.
+
+Calculations using built-in R function (performs chi-squared test):
+```{r}
+prop.test(16, 125, p = 0.10, alternative="greater", correct=FALSE)
+```
+
