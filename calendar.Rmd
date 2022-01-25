@@ -33,11 +33,10 @@ Each week, classes will be a mix of lecture, class discussion, and short activit
 
 ### **Tuesday**
 
-- Lecture 2 notes (will post after class)
+- [Lecture 2 notes](notes/NotesJan25.pdf)
 - [Hypothesis testing playbook](handouts/Hypothesis_Testing_Playbook.pdf)
 - [Inference for proportions examples](handouts/Inference_for_Proportions-Examples.html) ([Rmd](handouts/Inference_for_Proportions-Examples.Rmd))
-- Inference for proportions solutions (will post after class)
-- [Pigs!](R/Week2-Jan25-Pigs.R)
+- [Inference for proportions solutions](handouts/Inference_for_Proportions-Examples-Solns.html) ([Rmd](handouts/Inference_for_Proportions-Examples-Solns.Rmd))
 
 ### **Thursday**
 
