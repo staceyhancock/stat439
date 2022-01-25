@@ -9,7 +9,9 @@ Each week, classes will be a mix of lecture, class discussion, and short activit
 
 *  **You should bring your laptop with you to every class period.** We will be using R and RStudio extensively in this course. In particular, students are encouraged to write homework assignments in R Markdown and compile to pdf for the submission.
 * Assigned readings for each week are posted. Whether you learn better by reading prior to lecture, or hearing a lecture prior to reading is up to you.
-* Weeks will typically alternate between homework assignments and in class quizzes, with both homework due dates and quizzes falling on Thursdays.
+* Weeks will typically alternate between homework assignments and in class quizzes, with both homework due dates and quizzes falling on Thursdays. 
+    - Homework assignments should be submitted in D2L by 5pm on the due date. 
+    - Quizzes will be taken in class.
 
 ---
 
@@ -45,6 +47,7 @@ Each week, classes will be a mix of lecture, class discussion, and short activit
 ### **Homework/Quiz**
 
 - [Homework 1](homework/Stat439-S22-HW1.pdf) ([Rmd](homework/Stat439-S22-HW1.Rmd)) Due Thur Jan 27 --- Chapter 1
+- [Agresti Chapter 1 Exercises](book/Ch1Ex.pdf)
 
 ---
 
