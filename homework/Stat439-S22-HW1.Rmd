@@ -1,6 +1,6 @@
 ---
 title: 'Stat 439: Homework 1'
-subtitle: 'Due 1/26/22 by 5pm in D2L'
+subtitle: 'Due Thur 1/27/22 by 5pm in D2L'
 output:
   pdf_document: default
   html_document: default
