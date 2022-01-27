@@ -43,7 +43,7 @@ Each week, classes will be a mix of lecture, class discussion, and short activit
 ### **Thursday**
 
 - [Lecture 3 slides](lectures/Lecture3Slides-Jan27-Sec2.1-2.3.pdf)
-- Lecture 3 notes (will post after class)
+- [Lecture 3 notes](notes/NotesJan27.pdf) 
 - [MLE Example in R](R/MLE-Jan27.R)
 
 ### **Homework/Quiz**
