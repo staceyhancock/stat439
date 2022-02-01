@@ -1,0 +1,168 @@
+---
+title: "Exact Inference for Contingency Tables in R"
+author: "Stacey Hancock"
+date: "2/1/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+This R Markdown file works through randomization (permutation) tests for one- and two-way tables, plus Fisher's Exact Test for two-way tables. Examples were taken from a handout by Allan Rossman at the Northwest Two-Year College Mathematics Conference, April 23, 2016.
+
+Though there are many ways to conduct simulation-based inference in R, for our purposes, we will use the `mosaic` package^[_See_ [Randomization-based inference using the `mosaic` package](https://cran.r-project.org/web/packages/mosaic/vignettes/Resampling.pdf) _by Kaplan, Horton, and Pruim for more information._].
+```{r, results=FALSE, message=FALSE, warning=FALSE}
+library(mosaic)
+```
+The following R functions used in this exercise are from the `mosaic` package:
+
+`shuffle`, `prop`, `diffprop`, `do`, `histogram`, `oddsRatio`.
+
+The `mosaic` package also loads the `ggformula` package as a dependency; `ggformula` contains the R function `gf_bar`.
+
+## Example 1: Tagging Penguins
+
+Are metal bands used for tagging harmful to penguins?  Researchers (Saraux et al., 2011) investigated this question with a sample of 20 penguins near Antarctica.  All of these penguins had already been tagged with RFID chips, and the researchers randomly assigned 10 of them to receive a metal band on their flippers in addition to the RFID chip. The other 10 penguins did not receive a metal band. Researchers then kept track of which penguins survived for the 4.5-year study and which did not. The researchers found that 9 of the 20 penguins survived, of whom 3 had a metal band and 6 did not.
+
+First, input these data as a data frame where each row is one penguin.
+```{r}
+penguins <- data.frame(
+    band = factor(rep(c("metal","control"), each=10), 
+                  levels=c("metal","control")),
+    survive = factor(rep(c("yes","no","yes","no"),
+                         times=c(3,7,6,4)),
+                     levels=c("yes","no"))
+)
+head(penguins)
+dim(penguins)
+```
+
+### Preliminary study questions
+1. Identify the explanatory and response variables in this study.
+2. Is this an observational study or a randomized experiment?
+3. What type of sampling was used -- binomial (row totals or column totals fixed), multinomial (sample size fixed), or Poisson (all cell quantities random)?
+
+### Descriptive statistics
+```{r}
+# Create 2x2 table
+tab <- xtabs(~band + survive, data = penguins)
+tab
+
+# Sample proportions
+prop(~survive | band, data = penguins)
+
+# Visualizations
+gf_bar(~survive | band, data = penguins, 
+       position = position_dodge(), 
+       fill = ~survive)
+mosaicplot(tab, main = "Survival by Band")
+```
+
+4. Calculate and interpret the relative risk of survival for the metal band group compared to the control group.
+5. Calculate and interpret the odds ratio for the metal band group compared to the control group.
+
+### Statistical inference
+We will conduct a randomization test to test if metal bands used for tagging are harmful to penguins, where "harmful" is measured by survival.
+
+With this small of a sample size, our asymptotic methods are not valid (i.e., normal-based approximations). Thus, let's use simulation instead. A **randomization test** for a 2x2 table follows these steps:
+
+> _Step 1:_	Assume that the null hypothesis is true.  
+> _Step 2:_	Simulate thousands of re-randomizations to treatment groups.  
+> _Step 3:_	Keep track of a summary statistic ((difference in proportions OR relative risk OR odds ratio OR count in first cell) in each re-randomization.  
+> _Step 4:_	Calculate the proportion of simulated re-randomizations that resulted in a value of the summary statistic as or more extreme than the one observed in the data. This is an estimate of your p-value.
+
+In assuming the null hypothesis, we will assume that the 9 penguins who survived would have done so with the metal band or not, and the 11 penguins who did not survive would also have not survived with the metal band or not.
+
+6. Explain in detail how you could use cards to simulate one re-randomization to treatment groups for this scenario.
+
+
+#### Using difference in proportions as our summary statistic
+```{r}
+# Observed difference in proportions
+obs <- diffprop(survive ~ band, data = penguins)
+
+# Calculate 1000 differences in proportions simulated
+# under the null hypothesis.
+nulldist <- do(1000)*diffprop(survive ~ shuffle(band), data = penguins)
+
+# Estimated p-value
+mean(nulldist >= obs)
+histogram(~ nulldist, groups=(nulldist >= obs),
+          xlab="Simulated Difference in Proportions")
+```
+
+#### Using odds ratio or relative risk as our summary statistic
+```{r}
+obs <- oddsRatio(tab)  ## Note direction! See help file
+oddsRatio(tab, verbose = TRUE)
+nulldist <- do(1000)*oddsRatio(xtabs(~shuffle(band) + survive,
+                                     data = penguins))
+
+# Estimated p-value
+mean(nulldist >= obs)
+hist(nulldist$OR, xlab="Simulated Odds Ratio", breaks=20)
+abline(v = obs)
+```
+
+#### Conclusions
+
+7. Based on the p-value, what is your conclusion of this test?
+8. What is the scope of inference for this study -- to whom can you generalize? can you conclude cause-and-effect?
+9. Does  this experiment provide evidence that the metal band has _no_ effect on penguins' survival? Explain.
+
+### Fisher's Exact Test
+
+Let's perform Fisher's Exact Test on these data. First, examine the probability distribution of the count in the (1,1) cell under the assumption that the null hypothesis holds, and all marginal totals need to remain fixed.
+```{r}
+probs <- dhyper(0:9, 9, 11, 10)
+obs.prob <- dhyper(3, 9, 11, 10)
+barplot(probs, names.arg = 0:9,
+        xlab = "(1,1) Cell Count",
+        main = "Probabilities under Null")
+abline(h=obs.prob, col="red")
+
+# p-value for one-sided alternative:
+# metal bands less likely to survive --> P(n11 <= 3)
+phyper(3, 9, 11, 10)
+
+# p-value for two-sided alternative
+# = probability of something as or less likely than observed
+# Why does this code make sense?
+sum(probs[probs<=obs.prob])
+```
+
+R also has a built-in function to conduct Fisher's Exact Test:
+```{r}
+fisher.test(tab, alternative="less")
+```
+
+10. We have a confession to make: The results described above were actually just a small part of the study.  We chose to start with partial results to make the by-hand simulation with cards fairly manageable.  But the actual study involved 100 penguins, with 50 randomly assigned to each group.  The researchers found that 16 of 50 survived in the metal band group, and 31 of 50 survived in the control group. Repeat your analysis using these data from the full study.
+
+
+## Example 2: Which Tire?
+
+A legendary story on college campuses concerns two students who miss a chemistry exam because of excessive partying but blame their absence on a flat tire.  The professor allowed them to take a make-up exam, and he sent them to separate rooms to take it.  The first question, worth five points, was quite easy.  The second question, worth ninety-five points, asked: Which tire was it?  I will ask each of you to indicate which tire you would pick.  Do not confer with anyone else before answering.
+
+### Collect data
+1.	Which tire would you pick: left front, left rear, right front, or right rear? 
+```{r class-data, eval=FALSE}
+# Enter class data here
+tire_data <- data.frame(choice = factor(c(       ),
+                                levels=c("left-front","left-rear","right-front","right-rear")))
+```
+
+### Statistical inference
+
+2. Define the parameters involved, using appropriate symbols.
+3. State the hypotheses in symbols.
+4. Describe how one could simulate one sample of [class size] people choosing tires under the assumption of the null hypothesis.
+5. Use R to conduct this simulation. Is there any evidence that one tire is preferred over another? Explain.
+
+```{r}
+# Enter analysis here
+```
+
+
+
+

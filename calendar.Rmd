@@ -64,6 +64,7 @@ Each week, classes will be a mix of lecture, class discussion, and short activit
 ### **Tuesday**
 
 - Lecture 4 notes (will post after class)
+- [Exact inference in R](R/Week3-Feb1-Resampling.html) ([Rmd](R/Week3-Feb1-Resampling.Rmd))
 
 ### **Thursday**
 
