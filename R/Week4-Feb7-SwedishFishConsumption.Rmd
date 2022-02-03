@@ -1,0 +1,243 @@
+---
+title: "Chi-squared Tests of Independence"
+author: "Stacey Hancock"
+date: "1/28/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r include=FALSE}
+library(tidyverse)
+```
+
+There are two popular large-sample test statistics
+used for testing independence between two
+categorical variables: the _Pearson chi-squared statistic_,
+$$
+X^2 = \sum_{i,j} \frac{(n_{ij} - \mbox{exp}_{ij})^2}{\mbox{exp}_{ij}},
+$$
+and the _likelihood ratio test statistic_,
+$$
+G^2 = 2 \sum_{i,j} n_{ij}\log\left(\frac{n_{ij}}{\mbox{exp}_{ij}}\right).
+$$
+In each case, $\mbox{exp}_{ij}$ is called the "expected count" for the ($i$, $j$)th cell, and is computed by
+$$
+\mbox{exp}_{ij} = \frac{(\mbox{row $i$ total}) \times (\mbox{column $j$ total})}{n}.
+$$
+This is the value we would expect to
+see in the ($i$, $j$)th cell _if the
+two variables were independent_. Why? It's
+the value that would make the distribution of
+conditional proportions identical for each row (or column).
+
+Each of these test statistics is a summary statistic
+that attempts to measure how far away the observed counts
+are from what we'd expect to see under the null hypothesis
+of independence, summarized into a single value.
+In an $I\times J$ table, for large samples (e.g., at least 5 in each cell), each of these statistics has an
+approximate $\chi^2$ distribution with degrees of freedom
+$(I - 1)\times(J-1)$ when $H_0$ holds.
+
+### Example 1: Swedish Fish Consumption and Prostate Cancer
+#### Data input as a table
+
+Medical researchers followed 6272 Swedish men for 30 
+years to see if there was an association between the 
+amount of fish in their diet and prostate cancer 
+(“Fatty Fish Consumption and Risk of Prostate Cancer,” Lancet, June 2001). 
+
+Here are the data (in a 2x2 table):
+```{r}
+fish <- matrix(c(110,2420,2769,507,
+                 14,201,209,42),
+               nrow = 4, ncol = 2,
+               dimnames = list(fish_consumption = c("never_seldom","small","moderate","large"),
+                               prostate_cancer = c("no","yes")))
+fish
+```
+
+Since we have a large sample (at least 5 in each cell),
+we are going to use a chi-squared test of independence to
+test the null hypothesis that fish consumption level and
+incidence of prostate cancer are independent. First,
+let's do the calculations "by hand".
+
+We can calculate the expected counts using a bit
+of matrix algebra. Specifically, calculate the outer product
+between the vector of row sums and the vector of column sums.
+```{r}
+# Row sums
+rowSums(fish)
+# Column sums
+colSums(fish)
+# Sample size
+sum(fish)
+# Expected counts = (row total) x (col total)/6272
+# Calculate using an outer product of row and col sums
+exp_counts <- outer(rowSums(fish), colSums(fish))/sum(fish)
+```
+
+Now that we have our observed and expected counts,
+we can calculate our chi-squared test statistic
+and the p-value. With four rows and two columns, our
+degrees of freedom are $(4 - 1)\times (2 - 1) = 3$.
+```{r}
+test_stat <- sum((fish - exp_counts)^2/(exp_counts))
+test_stat
+pval <- pchisq(test_stat, df = 3, lower.tail=FALSE)
+pval
+```
+With this large of a p-value, we have little evidence
+of an association between fish consumption level and
+incidence of prostate cancer among Swedish men
+similar to those recruited for the study.
+
+Now, let's check our calculations using the
+`chisq.test` function. If we assign the output
+of this function to an object, we can then
+extract many features of the test out of this object.
+```{r}
+fish_test <- chisq.test(fish, correct=FALSE)
+attributes(fish_test)
+```
+
+The code below displays (in the following order):
+
+- the default test output
+- observed counts
+- expected counts
+- chi-squared test statistic
+- p-value
+- residuals
+- standardized residuals
+
+```{r}
+fish_test
+fish_test$observed
+fish_test$expected
+fish_test$statistic
+fish_test$p.value
+fish_test$residuals
+fish_test$stdres
+```
+
+The residuals are the Pearson residuals:
+$$
+\frac{\mbox{observed} - \mbox{expected}}{\sqrt{\mbox{expected}}}
+$$
+Note that the sum of the squared residuals is equal to the
+chi-squared test statistic.
+```{r}
+fish_test$statistic
+sum(fish_test$residuals^2)
+```
+The standardized residuals are calculated as given
+in the formula (2.5) in Section 2.4.5 of the Agresti textbook.
+For large samples, under $H_0$, these standardized residuals
+have an approximate standard normal distribution.
+Thus, standardized residuals beyond -2 or 2 indicate
+lack of fit with the independence assumption. Visually,
+this can be seen in this mosaic plot:
+```{r}
+mosaicplot(fish, shade=TRUE)
+```
+For example, the Never/Seldom-No Prostate Cancer cell was slightly
+lower than expected, and the Moderate-No Prostate Cancer
+was slightly larger than expected. However,
+since every standardized residual in this
+table was between $-2.0$ and $2.0$, we
+don't see much departure from what we'd
+expect to see if the two variables were independent.
+
+We can also compute the likelihood ratio test statistic.
+```{r}
+lrt_test_stat <- 2*sum(fish * log(fish/exp_counts))
+lrt_test_stat
+pchisq(lrt_test_stat, df = 3, lower.tail=FALSE)
+```
+With the large sample size, the values of the chi-squared
+test statistic $X^2$ and the likelihood ratio test-statistic
+$G^2$ are similar, and they give the same conclusion.
+
+### Example 2: Nightlights and Nearsightedness
+#### Data input as a data.frame
+
+A survey of 479 children found that those who had
+slept with a nightlight or in a fully lit room
+before the age of 12 had a higher incidence
+of nearsightedness (myopia) later in childhood
+(_Sacramento Bee_, May 13, 1999, pp. A1, A18).
+(Taken from Example 2.2 in Utts and Heckard, 5th ed.)
+
+Import the raw data into R:
+```{r}
+eyesight <- read.csv("http://www.math.montana.edu/shancock/data/Nighlights_Nearsightedness.csv")
+# Re-order ordinal factors (since R orders alphabetically)
+eyesight$SleptWith = factor(eyesight$SleptWith,
+                            levels = c("Darkness",
+                                       "Nightlight",
+                                       "Full Light" ))
+```
+The object `eyesight` should have appeared in your RStudio Environment. Click on it to view the data set.
+
+A two-way table summarizing these data can be
+created using `xtabs`.
+```{r}
+xtabs(~ SleptWith + Nearsightedness, data = eyesight)
+```
+
+First, let's visualize the data with a bar plot.
+Note that the following code requires the `dplyr` and
+`ggplot2` packages from the `tidyverse`, which should
+have been loaded at the beginning of your .Rmd file.
+```{r}
+eyesight %>%
+    ggplot(aes(x = SleptWith, fill = Nearsightedness)) +
+    geom_bar(position = position_fill()) +
+    labs(
+        title = "Level of Myopia vs Sleeping Light Level",
+        x = "Slept With", y = "Proportion"
+    )
+```
+
+We can do a chi-squared test using the raw data frame with
+the following syntax.
+```{r}
+chisq.test(eyesight$SleptWith, eyesight$Nearsightedness)
+```
+
+Note the warning! Why might the chi-squared approximation
+be incorrect in this case? Hint: Look at the counts
+in each cell. What other method would be more appropriate?
+
+Fisher's Exact Test can be extended to two-way tables
+of larger dimensions than $2\times 2$ using a
+multivariate extension of the hypergeometric distribution.
+```{r}
+fisher.test(eyesight$SleptWith, eyesight$Nearsightedness)
+```
+
+We see that there is strong evidence that the level
+of light slept with as a child has an association
+with development of myopia later in life.
+
+Even though the assumptions are violated for the
+chi-squared test, the residuals still provide us
+with information on where the dependence
+between the two variables is strongest.
+```{r}
+mosaicplot(~ SleptWith + Nearsightedness,
+           data = eyesight, shade = TRUE, las = 2,
+           main = "Nearsightedness vs Nightlights")
+```
+
+We see that there are a lot fewer subjects
+in the Myopia-Darkness cell than expected
+under the assumption of independence, and
+a lot more subjects in the Myopia-Full Light
+cell than expected. Thus, it seems that
+the probability of developing Myopia increases
+with the level of light.

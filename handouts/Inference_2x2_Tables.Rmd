@@ -157,7 +157,7 @@ _Example Interpretation_: We are 95% confident that the probability a California
 
 The sampling distribution of the sample odds ratio, $\hat{\theta}_O$ is heavily right skewed. However, the sampling distribution of $\log\hat{\theta}_O$ is relatively symmetric and has an asymptotic normal distribution. Thus, as in the case of the relative risk, inference for the odds ratio is conducted on the log scale.
 
-**Standard error of $\log\hat{\theta}_O$**:  -->
+**Standard error of $\log\hat{\theta}_O$**:
 $$
 SE(\log\hat{\theta}_O) = \sqrt{\frac{1}{n_{11}} + \frac{1}{n_{12}} + \frac{1}{n_{21}} + \frac{1}{n_{22}}}
 $$
