@@ -63,13 +63,13 @@ Each week, classes will be a mix of lecture, class discussion, and short activit
 
 ### **Tuesday**
 
-- Lecture 4 notes (will post after class)
-- [Exact inference in R](R/Week3-Feb1-Resampling.html) ([Rmd](R/Week3-Feb1-Resampling.Rmd))
+- [Lecture 4 notes](notes/NotesFeb1.pdf)
+- [Asymptotic inference for 2x2 tables]() ([Rmd]())
 
 ### **Thursday**
 
 - Lecture 5 notes (will post after class)
-
+- [Exact inference in R](R/Week3-Feb1-Resampling.html) ([Rmd](R/Week3-Feb1-Resampling.Rmd))
 
 ### **Homework/Quiz**
 
