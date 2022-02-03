@@ -65,6 +65,7 @@ Each week, classes will be a mix of lecture, class discussion, and short activit
 
 - [Lecture 4 notes](notes/NotesFeb1.pdf)
 - [Asymptotic inference for 2x2 tables in-class R code](R/Inference_2x2Tables-Feb1.R)
+- [Extended asymptotic inference for 2x2 tables](handouts/Inference_2x2_Tables.pdf) ([Rmd](handouts/Inference_2x2_Tables.Rmd))
 
 ### **Thursday**
 
