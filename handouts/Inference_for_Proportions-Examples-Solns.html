@@ -219,20 +219,20 @@ z</code></pre>
 <pre class="r"><code># Sample proportions
 pB &lt;- 198/500
 pM &lt;- 147/500
-p.pool &lt;- (198+147)/500
+p.pool &lt;- (198+147)/1000
 pB</code></pre>
 <pre><code>## [1] 0.396</code></pre>
 <pre class="r"><code>pM</code></pre>
 <pre><code>## [1] 0.294</code></pre>
 <pre class="r"><code>p.pool</code></pre>
-<pre><code>## [1] 0.69</code></pre>
+<pre><code>## [1] 0.345</code></pre>
 <pre class="r"><code># Test statistic
 z &lt;- (pB-pM)/sqrt(p.pool*(1-p.pool)*(1/500 + 1/500))
 z</code></pre>
-<pre><code>## [1] 3.487103</code></pre>
+<pre><code>## [1] 3.392657</code></pre>
 <pre class="r"><code># p-value = Pr(Z &gt;= z)
 1-pnorm(z)</code></pre>
-<pre><code>## [1] 0.0002441416</code></pre>
+<pre><code>## [1] 0.000346091</code></pre>
 <p>The small p-value indicates strong evidence that the proportion of all residents that own a Subaru in Bozeman is higher than that in Madison.</p>
 <p>Note, however, that the sample was randomly selected from all local landlines. Thus, these conclusions can only be generalized to local residents who own landlines.</p>
 <p>Calculations using built-in R function (performs chi-squared test with continuity correction):</p>

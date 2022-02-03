@@ -51,7 +51,7 @@ Let $\pi_B$ be the true proportion of Bozeman residents that own a Subaru, and $
 # Sample proportions
 pB <- 198/500
 pM <- 147/500
-p.pool <- (198+147)/500
+p.pool <- (198+147)/1000
 pB
 pM
 p.pool
