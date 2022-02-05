@@ -2,6 +2,7 @@
 title: 'Stat 439: Homework 2'
 subtitle: 'Due Thur 2/10/22 by 5pm in D2L'
 author: 'Your name here'
+urlcolor: blue
 output:
   pdf_document: default
   html_document: default
@@ -65,4 +66,8 @@ bank_table
 
 a. Carry out a randomization test for these data using the odds ratio for the statistic. Include: (i) definition of the parameter, (ii) hypotheses, (iii) value of the estimated odds ratio, (iv) p-value, and (v) conclusion. Your conclusion should also include the scope of inference for this study; that is, to which population can you generalize? and can you conclude causation?
 a. Find the p-value for the Fisher's Exact Test of these data using only the `dhyper` and/or `phyper` functions in R (though you may check your work with the `fisher.test` function). Does the p-value from this exact test match the p-value for the randomization test?
+
+## Part III: Cite Sources
+
+Write the sources you used to complete this assignment at the end of your homework submission, adhering to the "Guidance on Citing Sources" bullet points in the [collaboration policy section on our course syllabus](https://staceyhancock.github.io/stat439/index.html#Policy_on_collaboration_and_academic_misconduct).
 
