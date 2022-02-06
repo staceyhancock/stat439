@@ -2,7 +2,9 @@
 title: "Course Calendar and Materials"
 output:
   html_document:
-    toc: no
+    toc: yes
+    toc_depth: 2
+    toc_float: yes
 ---
 
 
@@ -12,28 +14,39 @@ Each week, classes will be a mix of lecture, class discussion, and short activit
 * Assigned readings for each week are posted. Whether you learn better by reading prior to lecture, or hearing a lecture prior to reading is up to you.
 * Weeks will typically alternate between homework assignments and in-class quizzes, with homework due dates and quizzes falling on Thursdays. 
     - Homework assignments should be submitted in D2L by 11pm on the due date. 
-    - Quizzes will be taken in class.
+    - Each quiz will cover the content from the previous week's homework, e.g., Quiz 1 will cover content from Homework 1.
 
 
 ---
 
-## Week 1 (Jan 19--21): Course Overview
+## Week 1 (Jan 19--21)
 
 ---
+
+_Course Overview_
 
 * [Lecture 1 slides](lectures/Lecture1Slides-Jan20.pdf)
 * Case study: [Challenger explosion](R/Week1-Jan20-Challenger.html) ([RMD](R/Week1-Jan20-Challenger.Rmd)) ([Dalal et al., 1989](references/Dalal_etal_1989-Challenger.pdf))
 
 ---
 
-## Week 2 (Jan 24--28): Inference for One and Two Proportions
+## Week 2 (Jan 24--28)
 
 ---
+
+### _Content_
+
+- Probability distributions for categorical data: binomial, multinomial, negative binomial
+- Asymptotic inference for one and two proportions
+- Exact (binomial) inference for one proportion
+- Maximum likelihood estimation
+- Types of sampling and studies
+- Probability structure for $I\times J$ contingency tables
 
 ### **Assigned readings**
 
 - Chapter 1 Sections 1.1--1.3, 1.6
-- Chapter 2 Sections 2.1--2.3
+- Chapter 2 Section 2.1
 
 ### **Tuesday**
 
@@ -50,18 +63,22 @@ Each week, classes will be a mix of lecture, class discussion, and short activit
 
 ### **Homework/Quiz**
 
-- [Homework 1](homework/Stat439-S22-HW1.pdf) ([Rmd](homework/Stat439-S22-HW1.Rmd)) Due Thur Jan 27 by 11pm --- Chapter 1
+- [Homework 1](homework/Stat439-S22-HW1.pdf) ([Rmd](homework/Stat439-S22-HW1.Rmd)) due Thur Jan 27 by 11pm --- probability distributions for categorical data, asymptotic and exact inference for one proportion, MLE
 - [Agresti Chapter 1 Exercises](book/Ch1Ex.pdf)
 
 ---
 
-## Week 3 (Jan 31--Feb 4): Contingency Tables
+## Week 3 (Jan 31--Feb 4)
 
 ---
 
+### _Content_
+
+- Asymptotic inference for $2\times 2$ tables: difference in proportions, relative risk, odds ratio
+
 ### **Assigned readings**
 
-- Chapter 2 Sections 2.2--2.3 (continued)
+- Chapter 2 Sections 2.2--2.3
 
 ### **Tuesday**
 
@@ -78,13 +95,20 @@ Each week, classes will be a mix of lecture, class discussion, and short activit
 
 ### **Homework/Quiz**
 
-- Quiz 1 in class Thur Feb 3 --- Chapter 1
+- Quiz 1 in class Thur Feb 3
 
 ---
 
-## Week 4 (Feb 7--11): Contingency Tables (cont)
+## Week 4 (Feb 7--11)
 
 ---
+
+### _Content_
+
+- Randomization tests for $2\times 2$ tables
+- Fisher's Exact Test for $2\times 2$ tables
+- Chi-squared tests of independence for $I\times J$ contingency tables
+- Association in three-way tables
 
 ### **Assigned readings**
 
@@ -101,38 +125,25 @@ Each week, classes will be a mix of lecture, class discussion, and short activit
 
 ### **Homework/Quiz**
 
-- [Homework 2](homework/Stat439-S22-HW2.pdf) ([Rmd](homework/Stat439-S22-HW2.Rmd)) Due Thur Feb 10 by 11pm --- Chapter 2 Sections 2.1--2.4, 2.6--2.7
+- [Homework 2](homework/Stat439-S22-HW2.pdf) ([Rmd](homework/Stat439-S22-HW2.Rmd)) due Thur Feb 10 by 11pm --- types of sampling and studies, asymptotic inference for $2\times 2$ tables, randomization tests, Fisher's Exact Test
 
 ---
 
-## Week 5 (Feb 14--18): Introduction to GLMs
+## Week 5 (Feb 14--18)
 
 ---
+
+### _Content_
+
+- Components of a generalized linear model (GLM)
+- GLMs for binary data
 
 ### **Assigned readings**
 
-- Chapter 3 Sections 3.1--3.3
-
-
-### **Tuesday**
-
-### **Thursday**
-
-### **Homework/Quiz**
-
-- Quiz 2 Thur Feb 17 --- Chapter 2 Sections 2.1--2.4, 2.6--2.7
-
----
-
-## Week 6 (Feb 21--25): GLMs for Binary Data
-
----
-
-
-### **Assigned readings**
-
-- Chapter 3 Section 3.5
+- Chapter 3 Sections 3.1--3.2
 - Chapter 4 Sections 4.1--4.6
+- Chapter 5 Section 5.3
+
 
 ### **Tuesday**
 
@@ -140,17 +151,21 @@ Each week, classes will be a mix of lecture, class discussion, and short activit
 
 ### **Homework/Quiz**
 
-- Homework 3 Due Thur Feb 24 --- Chapter 3 Sections 3.1--3.3, 3.5
+- Quiz 2 in class Thur Feb 17
 
 ---
 
-## Week 7 (Feb 28--Mar 4): GLMs for Count Data
+## Week 6 (Feb 21--25)
 
 ---
+
+### _Content_
+
+- GLMs for binary data (continued)
 
 ### **Assigned readings**
 
-- Review Chapter 3 Section 3.3
+- (continued from last week)
 
 ### **Tuesday**
 
@@ -158,18 +173,44 @@ Each week, classes will be a mix of lecture, class discussion, and short activit
 
 ### **Homework/Quiz**
 
-- Quiz 3 Due Thur Mar 3 --- Chapter 2 Section 2.4,  Chapter 3 Sections 3.1--3.3
+- Homework 3 due Thur Feb 24 by 11pm --- chi-squared tests of independence, three-way tables, components of a GLM
 
+---
+
+## Week 7 (Feb 28--Mar 4)
 
 ---
 
-## Week 8 (Mar 7--11): Model Selection and Diagnostics with GLMs
+### _Content_
 
----
+- GLMs for count data
 
 ### **Assigned readings**
 
-- Chapter 3 Section 3.4
+- Chapter 3 Section 3.3
+
+### **Tuesday**
+
+### **Thursday**
+
+### **Homework/Quiz**
+
+- Quiz 3 in class Thur Mar 3
+
+
+---
+
+## Week 8 (Mar 7--11)
+
+---
+
+### _Content_
+
+- Model fitting, selection and diagnostics for GLMs
+
+### **Assigned readings**
+
+- Chapter 3 Section 3.4--3.5
 - Chapter 5 Sections 5.1--5.3
 
 ### **Tuesday**
@@ -178,17 +219,21 @@ Each week, classes will be a mix of lecture, class discussion, and short activit
 
 ### **Homework/Quiz**
 
-- Homework 4 Due Thur Mar 10 --- Chapter 3 Section 3.5, Chapter 4 Sections 4.1--4.6
+- Homework 4 due Thur Mar 10 by 11pm --- GLMs for binary and count data
 
 ---
 
-## Week 9 (Mar 21--25): Multicategory Logit Models
+## Week 9 (Mar 21--25)
 
 ---
+
+### _Content_
+
+- Multicategory logit models
 
 ### **Assigned readings**
 
-- Chapter 6 Sections 6.1--6.3
+- Chapter 6 Sections 6.1--6.2
 
 ### **Tuesday**
 
@@ -196,17 +241,21 @@ Each week, classes will be a mix of lecture, class discussion, and short activit
 
 ### **Homework/Quiz**
 
-- Quiz 4
+- Quiz 4 in class Thur Mar 24
 
 ---
 
-## Week 10 (Mar 28--Apr 1): Models for Matched Pairs
+## Week 10 (Mar 28--Apr 1)
 
 ---
+
+### _Content_
+
+- Models for matched pairs
 
 ### **Assigned readings**
 
-- Chapter 8 Sections 8.1--8.5
+- Chapter 8 Sections 8.1, 8.3, 8.5
 
 ### **Tuesday**
 
@@ -214,16 +263,46 @@ Each week, classes will be a mix of lecture, class discussion, and short activit
 
 ### **Homework/Quiz**
 
-- Homework 5
+- Homework 5 due Thur Mar 31 by 11pm --- model fitting, selection and diagnostics for GLMs; multicategory logit models
 
 ---
 
-## Week 11 (Apr 4--8): Marginal Models and GEEs
+## Week 11 (Apr 4--8)
 
 ---
+
+### _Content_
+
+- Modeling ordinal data
 
 ### **Assigned readings**
 
+- Chapter 2 Section 2.5
+- Chapter 6 Section 6.2
+- Chapter 8 Section 8.4
+
+### **Tuesday**
+
+### **Thursday**
+
+### **Homework/Quiz**
+
+- Quiz 5 in class Thur Apr 7
+
+
+---
+
+## Week 12 (Apr 11--15)
+
+---
+
+### _Content_
+
+- Marginal models (GEEs)
+
+### **Assigned readings**
+
+- Chapter 8 Section 8.2
 - Chapter 9 Sections 9.1--9.2
 
 ### **Tuesday**
@@ -232,18 +311,21 @@ Each week, classes will be a mix of lecture, class discussion, and short activit
 
 ### **Homework/Quiz**
 
-- Quiz 5
-
-
----
-
-## Week 12 (Apr 11--15): Generalized Linear Mixed Models
+- Homework 6 due Thur Apr 14 by 11pm --- matched pairs and ordinal data
 
 ---
 
+## Week 13 (Apr 18--22)
+
+---
+
+### _Content_
+
+- Generalized linear mixed models (GLMMs)
 
 ### **Assigned readings**
 
+- Chapter 8 Section 8.2
 - Chapter 10 Sections 10.1--10.2
 
 ### **Tuesday**
@@ -252,13 +334,18 @@ Each week, classes will be a mix of lecture, class discussion, and short activit
 
 ### **Homework/Quiz**
 
-- Homework 6
+- Quiz 6 in class Thur Apr 21
 
 ---
 
-## Week 13 (Apr 18--22): Classification
+## Week 14 (Apr 25--29)
 
 ---
+
+### _Content_
+
+- Classification and clustering
+
 
 ### **Assigned readings**
 
@@ -271,30 +358,22 @@ Each week, classes will be a mix of lecture, class discussion, and short activit
 
 ### **Homework/Quiz**
 
-- Quiz 6
+- Homework 7 due Thur Apr 28 by 11pm --- GEEs and GLMMs
 
 ---
 
-## Week 14 (Apr 25--29): Catch Up
+## Week 15 (May 2--6)
 
 ---
 
+### _Content_
 
-### **Tuesday**
-
-### **Thursday**
+- Project presentations
 
 ### **Homework/Quiz**
 
-- Homework 7
-
----
-
-## Week 15 (May 2--6): Project Presentations
-
----
-
-
+- Quiz 7 in class Thur May 5 (make-up quiz only)
+- Homework 8 due Thur May 5 by 11pm --- classification and clustering
 
 ---
 

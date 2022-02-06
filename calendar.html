@@ -29,6 +29,9 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
@@ -221,6 +224,69 @@ $(document).ready(function () {
 
 
 
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
 
 </head>
 
@@ -228,6 +294,16 @@ $(document).ready(function () {
 
 
 <div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -285,27 +361,39 @@ $(document).ready(function () {
 <li>Weeks will typically alternate between homework assignments and in-class quizzes, with homework due dates and quizzes falling on Thursdays.
 <ul>
 <li>Homework assignments should be submitted in D2L by 11pm on the due date.</li>
-<li>Quizzes will be taken in class.</li>
+<li>Each quiz will cover the content from the previous week’s homework, e.g., Quiz 1 will cover content from Homework 1.</li>
 </ul></li>
 </ul>
 <hr />
-<div id="week-1-jan-1921-course-overview" class="section level2">
-<h2>Week 1 (Jan 19–21): Course Overview</h2>
+<div id="week-1-jan-1921" class="section level2">
+<h2>Week 1 (Jan 19–21)</h2>
 <hr />
+<p><em>Course Overview</em></p>
 <ul>
 <li><a href="lectures/Lecture1Slides-Jan20.pdf">Lecture 1 slides</a></li>
 <li>Case study: <a href="R/Week1-Jan20-Challenger.html">Challenger explosion</a> (<a href="R/Week1-Jan20-Challenger.Rmd">RMD</a>) (<a href="references/Dalal_etal_1989-Challenger.pdf">Dalal et al., 1989</a>)</li>
 </ul>
 <hr />
 </div>
-<div id="week-2-jan-2428-inference-for-one-and-two-proportions" class="section level2">
-<h2>Week 2 (Jan 24–28): Inference for One and Two Proportions</h2>
+<div id="week-2-jan-2428" class="section level2">
+<h2>Week 2 (Jan 24–28)</h2>
 <hr />
+<div id="content" class="section level3">
+<h3><em>Content</em></h3>
+<ul>
+<li>Probability distributions for categorical data: binomial, multinomial, negative binomial</li>
+<li>Asymptotic inference for one and two proportions</li>
+<li>Exact (binomial) inference for one proportion</li>
+<li>Maximum likelihood estimation</li>
+<li>Types of sampling and studies</li>
+<li>Probability structure for <span class="math inline">\(I\times J\)</span> contingency tables</li>
+</ul>
+</div>
 <div id="assigned-readings" class="section level3">
 <h3><strong>Assigned readings</strong></h3>
 <ul>
 <li>Chapter 1 Sections 1.1–1.3, 1.6</li>
-<li>Chapter 2 Sections 2.1–2.3</li>
+<li>Chapter 2 Section 2.1</li>
 </ul>
 </div>
 <div id="tuesday" class="section level3">
@@ -328,19 +416,25 @@ $(document).ready(function () {
 <div id="homeworkquiz" class="section level3">
 <h3><strong>Homework/Quiz</strong></h3>
 <ul>
-<li><a href="homework/Stat439-S22-HW1.pdf">Homework 1</a> (<a href="homework/Stat439-S22-HW1.Rmd">Rmd</a>) Due Thur Jan 27 by 11pm — Chapter 1</li>
+<li><a href="homework/Stat439-S22-HW1.pdf">Homework 1</a> (<a href="homework/Stat439-S22-HW1.Rmd">Rmd</a>) due Thur Jan 27 by 11pm — probability distributions for categorical data, asymptotic and exact inference for one proportion, MLE</li>
 <li><a href="book/Ch1Ex.pdf">Agresti Chapter 1 Exercises</a></li>
 </ul>
 <hr />
 </div>
 </div>
-<div id="week-3-jan-31feb-4-contingency-tables" class="section level2">
-<h2>Week 3 (Jan 31–Feb 4): Contingency Tables</h2>
+<div id="week-3-jan-31feb-4" class="section level2">
+<h2>Week 3 (Jan 31–Feb 4)</h2>
 <hr />
+<div id="content-1" class="section level3">
+<h3><em>Content</em></h3>
+<ul>
+<li>Asymptotic inference for <span class="math inline">\(2\times 2\)</span> tables: difference in proportions, relative risk, odds ratio</li>
+</ul>
+</div>
 <div id="assigned-readings-1" class="section level3">
 <h3><strong>Assigned readings</strong></h3>
 <ul>
-<li>Chapter 2 Sections 2.2–2.3 (continued)</li>
+<li>Chapter 2 Sections 2.2–2.3</li>
 </ul>
 </div>
 <div id="tuesday-1" class="section level3">
@@ -364,14 +458,23 @@ $(document).ready(function () {
 <div id="homeworkquiz-1" class="section level3">
 <h3><strong>Homework/Quiz</strong></h3>
 <ul>
-<li>Quiz 1 in class Thur Feb 3 — Chapter 1</li>
+<li>Quiz 1 in class Thur Feb 3</li>
 </ul>
 <hr />
 </div>
 </div>
-<div id="week-4-feb-711-contingency-tables-cont" class="section level2">
-<h2>Week 4 (Feb 7–11): Contingency Tables (cont)</h2>
+<div id="week-4-feb-711" class="section level2">
+<h2>Week 4 (Feb 7–11)</h2>
 <hr />
+<div id="content-2" class="section level3">
+<h3><em>Content</em></h3>
+<ul>
+<li>Randomization tests for <span class="math inline">\(2\times 2\)</span> tables</li>
+<li>Fisher’s Exact Test for <span class="math inline">\(2\times 2\)</span> tables</li>
+<li>Chi-squared tests of independence for <span class="math inline">\(I\times J\)</span> contingency tables</li>
+<li>Association in three-way tables</li>
+</ul>
+</div>
 <div id="assigned-readings-2" class="section level3">
 <h3><strong>Assigned readings</strong></h3>
 <ul>
@@ -394,18 +497,27 @@ $(document).ready(function () {
 <div id="homeworkquiz-2" class="section level3">
 <h3><strong>Homework/Quiz</strong></h3>
 <ul>
-<li><a href="homework/Stat439-S22-HW2.pdf">Homework 2</a> (<a href="homework/Stat439-S22-HW2.Rmd">Rmd</a>) Due Thur Feb 10 by 11pm — Chapter 2 Sections 2.1–2.4, 2.6–2.7</li>
+<li><a href="homework/Stat439-S22-HW2.pdf">Homework 2</a> (<a href="homework/Stat439-S22-HW2.Rmd">Rmd</a>) due Thur Feb 10 by 11pm — types of sampling and studies, asymptotic inference for <span class="math inline">\(2\times 2\)</span> tables, randomization tests, Fisher’s Exact Test</li>
 </ul>
 <hr />
 </div>
 </div>
-<div id="week-5-feb-1418-introduction-to-glms" class="section level2">
-<h2>Week 5 (Feb 14–18): Introduction to GLMs</h2>
+<div id="week-5-feb-1418" class="section level2">
+<h2>Week 5 (Feb 14–18)</h2>
 <hr />
+<div id="content-3" class="section level3">
+<h3><em>Content</em></h3>
+<ul>
+<li>Components of a generalized linear model (GLM)</li>
+<li>GLMs for binary data</li>
+</ul>
+</div>
 <div id="assigned-readings-3" class="section level3">
 <h3><strong>Assigned readings</strong></h3>
 <ul>
-<li>Chapter 3 Sections 3.1–3.3</li>
+<li>Chapter 3 Sections 3.1–3.2</li>
+<li>Chapter 4 Sections 4.1–4.6</li>
+<li>Chapter 5 Section 5.3</li>
 </ul>
 </div>
 <div id="tuesday-3" class="section level3">
@@ -417,19 +529,24 @@ $(document).ready(function () {
 <div id="homeworkquiz-3" class="section level3">
 <h3><strong>Homework/Quiz</strong></h3>
 <ul>
-<li>Quiz 2 Thur Feb 17 — Chapter 2 Sections 2.1–2.4, 2.6–2.7</li>
+<li>Quiz 2 in class Thur Feb 17</li>
 </ul>
 <hr />
 </div>
 </div>
-<div id="week-6-feb-2125-glms-for-binary-data" class="section level2">
-<h2>Week 6 (Feb 21–25): GLMs for Binary Data</h2>
+<div id="week-6-feb-2125" class="section level2">
+<h2>Week 6 (Feb 21–25)</h2>
 <hr />
+<div id="content-4" class="section level3">
+<h3><em>Content</em></h3>
+<ul>
+<li>GLMs for binary data (continued)</li>
+</ul>
+</div>
 <div id="assigned-readings-4" class="section level3">
 <h3><strong>Assigned readings</strong></h3>
 <ul>
-<li>Chapter 3 Section 3.5</li>
-<li>Chapter 4 Sections 4.1–4.6</li>
+<li>(continued from last week)</li>
 </ul>
 </div>
 <div id="tuesday-4" class="section level3">
@@ -441,18 +558,24 @@ $(document).ready(function () {
 <div id="homeworkquiz-4" class="section level3">
 <h3><strong>Homework/Quiz</strong></h3>
 <ul>
-<li>Homework 3 Due Thur Feb 24 — Chapter 3 Sections 3.1–3.3, 3.5</li>
+<li>Homework 3 due Thur Feb 24 by 11pm — chi-squared tests of independence, three-way tables, components of a GLM</li>
 </ul>
 <hr />
 </div>
 </div>
-<div id="week-7-feb-28mar-4-glms-for-count-data" class="section level2">
-<h2>Week 7 (Feb 28–Mar 4): GLMs for Count Data</h2>
+<div id="week-7-feb-28mar-4" class="section level2">
+<h2>Week 7 (Feb 28–Mar 4)</h2>
 <hr />
+<div id="content-5" class="section level3">
+<h3><em>Content</em></h3>
+<ul>
+<li>GLMs for count data</li>
+</ul>
+</div>
 <div id="assigned-readings-5" class="section level3">
 <h3><strong>Assigned readings</strong></h3>
 <ul>
-<li>Review Chapter 3 Section 3.3</li>
+<li>Chapter 3 Section 3.3</li>
 </ul>
 </div>
 <div id="tuesday-5" class="section level3">
@@ -464,18 +587,24 @@ $(document).ready(function () {
 <div id="homeworkquiz-5" class="section level3">
 <h3><strong>Homework/Quiz</strong></h3>
 <ul>
-<li>Quiz 3 Due Thur Mar 3 — Chapter 2 Section 2.4, Chapter 3 Sections 3.1–3.3</li>
+<li>Quiz 3 in class Thur Mar 3</li>
 </ul>
 <hr />
 </div>
 </div>
-<div id="week-8-mar-711-model-selection-and-diagnostics-with-glms" class="section level2">
-<h2>Week 8 (Mar 7–11): Model Selection and Diagnostics with GLMs</h2>
+<div id="week-8-mar-711" class="section level2">
+<h2>Week 8 (Mar 7–11)</h2>
 <hr />
+<div id="content-6" class="section level3">
+<h3><em>Content</em></h3>
+<ul>
+<li>Model fitting, selection and diagnostics for GLMs</li>
+</ul>
+</div>
 <div id="assigned-readings-6" class="section level3">
 <h3><strong>Assigned readings</strong></h3>
 <ul>
-<li>Chapter 3 Section 3.4</li>
+<li>Chapter 3 Section 3.4–3.5</li>
 <li>Chapter 5 Sections 5.1–5.3</li>
 </ul>
 </div>
@@ -488,18 +617,24 @@ $(document).ready(function () {
 <div id="homeworkquiz-6" class="section level3">
 <h3><strong>Homework/Quiz</strong></h3>
 <ul>
-<li>Homework 4 Due Thur Mar 10 — Chapter 3 Section 3.5, Chapter 4 Sections 4.1–4.6</li>
+<li>Homework 4 due Thur Mar 10 by 11pm — GLMs for binary and count data</li>
 </ul>
 <hr />
 </div>
 </div>
-<div id="week-9-mar-2125-multicategory-logit-models" class="section level2">
-<h2>Week 9 (Mar 21–25): Multicategory Logit Models</h2>
+<div id="week-9-mar-2125" class="section level2">
+<h2>Week 9 (Mar 21–25)</h2>
 <hr />
+<div id="content-7" class="section level3">
+<h3><em>Content</em></h3>
+<ul>
+<li>Multicategory logit models</li>
+</ul>
+</div>
 <div id="assigned-readings-7" class="section level3">
 <h3><strong>Assigned readings</strong></h3>
 <ul>
-<li>Chapter 6 Sections 6.1–6.3</li>
+<li>Chapter 6 Sections 6.1–6.2</li>
 </ul>
 </div>
 <div id="tuesday-7" class="section level3">
@@ -511,18 +646,24 @@ $(document).ready(function () {
 <div id="homeworkquiz-7" class="section level3">
 <h3><strong>Homework/Quiz</strong></h3>
 <ul>
-<li>Quiz 4</li>
+<li>Quiz 4 in class Thur Mar 24</li>
 </ul>
 <hr />
 </div>
 </div>
-<div id="week-10-mar-28apr-1-models-for-matched-pairs" class="section level2">
-<h2>Week 10 (Mar 28–Apr 1): Models for Matched Pairs</h2>
+<div id="week-10-mar-28apr-1" class="section level2">
+<h2>Week 10 (Mar 28–Apr 1)</h2>
 <hr />
+<div id="content-8" class="section level3">
+<h3><em>Content</em></h3>
+<ul>
+<li>Models for matched pairs</li>
+</ul>
+</div>
 <div id="assigned-readings-8" class="section level3">
 <h3><strong>Assigned readings</strong></h3>
 <ul>
-<li>Chapter 8 Sections 8.1–8.5</li>
+<li>Chapter 8 Sections 8.1, 8.3, 8.5</li>
 </ul>
 </div>
 <div id="tuesday-8" class="section level3">
@@ -534,18 +675,26 @@ $(document).ready(function () {
 <div id="homeworkquiz-8" class="section level3">
 <h3><strong>Homework/Quiz</strong></h3>
 <ul>
-<li>Homework 5</li>
+<li>Homework 5 due Thur Mar 31 by 11pm — model fitting, selection and diagnostics for GLMs; multicategory logit models</li>
 </ul>
 <hr />
 </div>
 </div>
-<div id="week-11-apr-48-marginal-models-and-gees" class="section level2">
-<h2>Week 11 (Apr 4–8): Marginal Models and GEEs</h2>
+<div id="week-11-apr-48" class="section level2">
+<h2>Week 11 (Apr 4–8)</h2>
 <hr />
+<div id="content-9" class="section level3">
+<h3><em>Content</em></h3>
+<ul>
+<li>Modeling ordinal data</li>
+</ul>
+</div>
 <div id="assigned-readings-9" class="section level3">
 <h3><strong>Assigned readings</strong></h3>
 <ul>
-<li>Chapter 9 Sections 9.1–9.2</li>
+<li>Chapter 2 Section 2.5</li>
+<li>Chapter 6 Section 6.2</li>
+<li>Chapter 8 Section 8.4</li>
 </ul>
 </div>
 <div id="tuesday-9" class="section level3">
@@ -557,18 +706,25 @@ $(document).ready(function () {
 <div id="homeworkquiz-9" class="section level3">
 <h3><strong>Homework/Quiz</strong></h3>
 <ul>
-<li>Quiz 5</li>
+<li>Quiz 5 in class Thur Apr 7</li>
 </ul>
 <hr />
 </div>
 </div>
-<div id="week-12-apr-1115-generalized-linear-mixed-models" class="section level2">
-<h2>Week 12 (Apr 11–15): Generalized Linear Mixed Models</h2>
+<div id="week-12-apr-1115" class="section level2">
+<h2>Week 12 (Apr 11–15)</h2>
 <hr />
+<div id="content-10" class="section level3">
+<h3><em>Content</em></h3>
+<ul>
+<li>Marginal models (GEEs)</li>
+</ul>
+</div>
 <div id="assigned-readings-10" class="section level3">
 <h3><strong>Assigned readings</strong></h3>
 <ul>
-<li>Chapter 10 Sections 10.1–10.2</li>
+<li>Chapter 8 Section 8.2</li>
+<li>Chapter 9 Sections 9.1–9.2</li>
 </ul>
 </div>
 <div id="tuesday-10" class="section level3">
@@ -580,19 +736,25 @@ $(document).ready(function () {
 <div id="homeworkquiz-10" class="section level3">
 <h3><strong>Homework/Quiz</strong></h3>
 <ul>
-<li>Homework 6</li>
+<li>Homework 6 due Thur Apr 14 by 11pm — matched pairs and ordinal data</li>
 </ul>
 <hr />
 </div>
 </div>
-<div id="week-13-apr-1822-classification" class="section level2">
-<h2>Week 13 (Apr 18–22): Classification</h2>
+<div id="week-13-apr-1822" class="section level2">
+<h2>Week 13 (Apr 18–22)</h2>
 <hr />
+<div id="content-11" class="section level3">
+<h3><em>Content</em></h3>
+<ul>
+<li>Generalized linear mixed models (GLMMs)</li>
+</ul>
+</div>
 <div id="assigned-readings-11" class="section level3">
 <h3><strong>Assigned readings</strong></h3>
 <ul>
-<li>Review Chapter 4 Section 4.6</li>
-<li>Chapter 11 Sections 11.1–11.3</li>
+<li>Chapter 8 Section 8.2</li>
+<li>Chapter 10 Sections 10.1–10.2</li>
 </ul>
 </div>
 <div id="tuesday-11" class="section level3">
@@ -604,14 +766,27 @@ $(document).ready(function () {
 <div id="homeworkquiz-11" class="section level3">
 <h3><strong>Homework/Quiz</strong></h3>
 <ul>
-<li>Quiz 6</li>
+<li>Quiz 6 in class Thur Apr 21</li>
 </ul>
 <hr />
 </div>
 </div>
-<div id="week-14-apr-2529-catch-up" class="section level2">
-<h2>Week 14 (Apr 25–29): Catch Up</h2>
+<div id="week-14-apr-2529" class="section level2">
+<h2>Week 14 (Apr 25–29)</h2>
 <hr />
+<div id="content-12" class="section level3">
+<h3><em>Content</em></h3>
+<ul>
+<li>Classification and clustering</li>
+</ul>
+</div>
+<div id="assigned-readings-12" class="section level3">
+<h3><strong>Assigned readings</strong></h3>
+<ul>
+<li>Review Chapter 4 Section 4.6</li>
+<li>Chapter 11 Sections 11.1–11.3</li>
+</ul>
+</div>
 <div id="tuesday-12" class="section level3">
 <h3><strong>Tuesday</strong></h3>
 </div>
@@ -621,15 +796,28 @@ $(document).ready(function () {
 <div id="homeworkquiz-12" class="section level3">
 <h3><strong>Homework/Quiz</strong></h3>
 <ul>
-<li>Homework 7</li>
+<li>Homework 7 due Thur Apr 28 by 11pm — GEEs and GLMMs</li>
 </ul>
 <hr />
 </div>
 </div>
-<div id="week-15-may-26-project-presentations" class="section level2">
-<h2>Week 15 (May 2–6): Project Presentations</h2>
+<div id="week-15-may-26" class="section level2">
+<h2>Week 15 (May 2–6)</h2>
 <hr />
+<div id="content-13" class="section level3">
+<h3><em>Content</em></h3>
+<ul>
+<li>Project presentations</li>
+</ul>
+</div>
+<div id="homeworkquiz-13" class="section level3">
+<h3><strong>Homework/Quiz</strong></h3>
+<ul>
+<li>Quiz 7 in class Thur May 5 (make-up quiz only)</li>
+<li>Homework 8 due Thur May 5 by 11pm — classification and clustering</li>
+</ul>
 <hr />
+</div>
 </div>
 <div id="final-exam" class="section level2">
 <h2>Final Exam</h2>
@@ -639,6 +827,8 @@ $(document).ready(function () {
 
 
 
+</div>
+</div>
 
 </div>
 
@@ -671,6 +861,35 @@ $(document).ready(function () {
 
 <!-- code folding -->
 
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>
