@@ -117,11 +117,14 @@ _Course Overview_
 ### **Tuesday**
 
 - [Lecture 6 notes](notes/NotesFeb8.pdf)
-- [Exact inference in R](R/Week4-Feb7-Resampling.html) ([Rmd](R/Week4-Feb7-Resampling.Rmd))
+- [Exact inference in R](R/Week4-Feb8-Resampling.html) ([Rmd](R/Week4-Feb8-Resampling.Rmd))
 
 ### **Thursday**
 
-- Lecture 7 notes (will post after class)
+- [Chi-squared tests for contingency tables slides](lectures/Lecture7Slides-Feb10-Sec2.4.pdf)
+- [Swedish fish example in R](R/Week4-Feb10-SwedishFishConsumption.html) ([Rmd](R/Week4-Feb10-SwedishFishConsumption.Rmd))
+- [Association in three-way tables and Simpson's paradox slides](lectures/Lecture7Slides-Feb10-Sec2.7.pdf)
+- [Berkeley graduate admissions R script](R/Week4-Feb10-BerkeleyGradAdmissions.R)
 
 ### **Homework/Quiz**
 
