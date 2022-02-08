@@ -116,7 +116,7 @@ _Course Overview_
 
 ### **Tuesday**
 
-- Lecture 6 notes (will post after class)
+- [Lecture 6 notes](notes/NotesFeb8.pdf)
 - [Exact inference in R](R/Week4-Feb7-Resampling.html) ([Rmd](R/Week4-Feb7-Resampling.Rmd))
 
 ### **Thursday**
