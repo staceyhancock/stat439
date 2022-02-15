@@ -150,6 +150,9 @@ _Course Overview_
 
 ### **Tuesday**
 
+- [Confounders and effect modifiers slides](lectures/Lecture8Slides-Feb15-Sec2.7cont.pdf)
+- Lecture 8 notes (will post after lecture)
+
 ### **Thursday**
 
 ### **Homework/Quiz**
