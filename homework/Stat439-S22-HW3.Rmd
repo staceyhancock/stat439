@@ -1,0 +1,71 @@
+---
+title: 'Stat 439: Homework 3'
+author: 'Your name here'
+subtitle: 'Due Thur 2/24/22 by 5pm in D2L'
+urlcolor: 'blue'
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+## Instructions
+
+You are strongly encouraged to use R Markdown to complete your Homework assignments, starting with this file as a template and Knitting to pdf. Submit your homework to [Gradescope](https://www.gradescope.com/) as a single pdf file.
+
+## Part I: Book Exercises
+
+Agresti Exercises 2.16, 2.25, 2.30cde, 3.1
+
+## Part II
+
+### 1.
+
+For this problem, we are going to use data from the 2008 General Social Survey. 
+You can read this data set into R using the following command:
+```{r}
+gss <- read.csv("http://www.math.montana.edu/shancock/data/GSS-08.csv", 
+     na.string="")
+```
+We are interested in the two categorical variables `polparty` 
+(the respondent's political party -- Democrat, Republican, Independent, or Other) 
+and `owngun` (does the respondent own a gun? -- Yes or No). 
+Note that there are some missing values in this data set. 
+We only want to work with the complete cases for our two variables. 
+Use the following R code to delete observations with missing values 
+for either of these variables:
+```{r}
+gss <- gss[complete.cases(gss[,c(5,9)]), ]
+```
+
+a. Use the R function `xtabs` to create a contingency table with political 
+party as the rows and gun ownership as the columns. 
+b. Display this set of data (only the two variables of interest) in 
+an appropriate plot.  Write a few sentences describing what your 
+graph shows about the relationship between political party and gun ownership.
+c. State the null and alternative hypotheses for a chi-squared test of 
+independence for these two variables. State the hypotheses both using 
+mathematical notation, and also in words in context of the problem.
+d. Check the assumptions for using chi-squared distribution for
+a Pearson chi-squared or likelihood ratio test statistic on these data.
+Clearly explain why the assumptions are or are not met.
+e. **Without using the `chisq.test` function**, calculate the estimated 
+expected frequencies under the null hypotheses, the Pearson chi-squared 
+test statistic, and the p-value. (You may use `chisq.test` to check your answer.)
+f. Based on the p-value in part d., write a conclusion of the test 
+in context of the problem. 
+g. Calculate the likelihood ratio chi-squared test statistic and its p-value. 
+Do you reach the same conclusion using this test statistic as you did
+with the Pearson chi-squared test statistic?
+h. Use the `chisq.test` function to calculate the scaled (Pearson) residuals. 
+Write a few sentences describing what these values tell you about the 
+relationship between political party and gun ownership.
+
+## Part III: Cite Sources
+
+Write the sources you used to complete this assignment at the end of your homework submission, adhering to the "Guidance on Citing Sources" bullet points in the [collaboration policy section on our course syllabus](https://staceyhancock.github.io/stat439/index.html#Policy_on_collaboration_and_academic_misconduct).
+
+

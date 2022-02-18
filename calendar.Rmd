@@ -179,7 +179,7 @@ _Course Overview_
 
 ### **Homework/Quiz**
 
-- Homework 3 due Thur Feb 24 by 11pm --- chi-squared tests of independence, three-way tables, components of a GLM
+- [Homework 3](homework/Stat439-S22-HW3.pdf) ([Rmd](homework/Stat439-S22-HW3.Rmd)) due Thur Feb 24 by 11pm --- chi-squared tests of independence, three-way tables, components of a GLM
 
 ---
 
