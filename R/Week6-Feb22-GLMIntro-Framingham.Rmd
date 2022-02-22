@@ -1,0 +1,360 @@
+---
+title: 'GLM Intro: Framingham Heart Study'
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+The [Framingham heart study](https://www.framinghamheartstudy.org/fhs-about/) is a cohort longitudinal study on residents of a small Massachusetts town (Framingham) that has been
+studying risk factors for cardiovascular disease (CVD) for over 70 years, since 1948. The data set we'll use here contains data
+on 4699 subjects (men and women between the ages of 30 and 62).
+The subjects were given biennial exams for blood pressure,
+serum cholesterol, and relative weight. These data are
+the 30-year follow-up data. Major endpoints include
+the occurrence of coronary heart disease (CHD) and
+deaths from CHD, cerebrovasular accident (CVA or stroke),
+cancer, and other causes. 
+
+## Scientific Objective
+Identify the common factors or characteristics that contribute to cardiovascular disease (CVD) by following its development over a long period of time in a large group of participants who had not yet developed overt symptoms of CVD or suffered a heart attack or stroke.
+
+## Variable Descriptions
+sex      : Sex (1 = male; 2 = female)  
+sbp      : Systolic Blood Pressure  
+dbp      : Diastolic Blood Pressure  
+scl      : Serum Cholesterol  
+chdfate  : Coronary Heart Disease Indicator
+followup : Follow-up in Days  
+age      : Age in Years  
+bmi      : Body Mass Index (wt (kg) / h^2 (m)  
+month    : Study Month of Baseline Exam  
+id       : Subject ID
+
+## Analysis
+Load in Framingham data:
+```{r}
+fram <- read.table("http://www.math.montana.edu/shancock/data/Framingham.txt")
+# Check data were read in correctly:
+head(fram)
+tail(fram)
+dim(fram)
+names(fram)
+```
+
+We will only consider one potential predictor, systolic blood pressure, `sbp` on the response variable `chdfate`. We would like to investigate
+the research question: _Does SBP influence probability of CHD?_
+
+### Data Visualization and Descriptive Statistics
+
+Univariate distributions:
+```{r}
+fram %>% ggplot(aes(x = chdfate)) +
+    geom_bar()
+hist(fram$sbp)
+```
+Simple scatterplot and side-by-side boxplots (note
+response and explanatory variables reversed axes than
+typically used):
+```{r}
+plot(chdfate~sbp, xlab="Systolic BP", ylab="Coronary Heart Disease Indicator", data=fram)
+boxplot(sbp ~ chdfate, data=fram)
+```
+
+Since it is hard to visualize a response variable of 0's and 1's,
+let's create subgroups for SBP and look at the proportion
+who experienced CHD in each group.
+```{r}
+fram$sbpgrp <- with(fram,
+               cut(sbp, breaks = c(min(sbp),126,146,166,max(sbp)),
+			include.lowest=TRUE)
+)
+# Count number of CHD incidences within each group:
+counts <- with(fram,
+               table(list(chdfate,sbpgrp))
+)
+counts
+# Proportions in each group:
+props <- counts[2,]/colSums(counts)
+props
+```
+
+Now plot proportions and add to the original scatterplot.
+```{r}
+# SBP Midpoints:
+mids = c(103,136,156,218)
+plot(chdfate~sbp, xlab="Systolic BP", ylab="Coronary Heart Disease Indicator", data=fram)
+points(props~mids, xlab="Systolic BP", ylab="Proportion with CHD", col="tomato", pch = 16)
+lines(lowess(fram$chdfate~fram$sbp), col="red")
+```
+
+
+### Models
+
+_Linear probability model_:
+```{r}
+mod1 <- glm(chdfate ~ sbp, family=binomial(link="identity"), data=fram)
+summary(mod1)
+```
+
+
+_Logistic regression model_:
+The default link for binomial family is logit.
+```{r}
+mod2 <- glm(chdfate~sbp, family=binomial, data=fram)
+summary(mod2)
+```
+
+
+_Probit regression model_:
+```{r}
+mod3 <- glm(chdfate~sbp, family=binomial(link="probit"), data=fram)
+summary(mod3)
+```
+
+Add the three fitted models to the scatterplot:
+```{r}
+plot(chdfate~sbp, xlab="Systolic BP", ylab="Coronary Heart Disease Indicator", data=fram)
+points(props~mids, xlab="Systolic BP", ylab="Proportion with CHD", col="tomato", pch = 16)
+# Linear:
+abline(mod1,lwd=2,col="darkgreen")
+# Logistic:
+curve(exp(mod2$coef[1]+mod2$coef[2]*x)/(1+exp(mod2$coef[1]+mod2$coef[2]*x)),
+		add=T,lwd=2,lty=2,from=90, to=300,col="red")
+# Probit:
+curve(pnorm(mod3$coef[1]+mod3$coef[2]*x),
+		add=T,lwd=2,lty=3,col="blue")
+legend("topleft",c("Linear","Logit","Probit"),lty=c(1,2,3),
+	col=c("darkgreen","red","blue"))
+```
+
+Let's continue using `mod2`, the logistic regression model.
+
+### Interpreting coefficients
+
+Interpretations are always on the odds scale in logistic regression.
+```{r}
+exp(mod2$coef)
+```
+`(Intercept)` The estimated odds of CHD for an individual with 0 mmHg systolic blood pressure are 0.0494 to 1.
+
+`sbp` A one mmHg increase in systolic blood pressure is associated with a 1.673\% increase in estimated odds of CHD.
+
+### Confidence intervals for coefficients
+
+Confidence interval for slope - interpret on odds scale:
+```{r}
+exp(confint(mod2))
+```
+A one mmHg increase in systolic blood pressure is associated with an increase of between 1.40\% to 1.95\% in the odds of CHD.
+
+### Odds ratios for an x change in SBP
+Estimated odds ratio of CHD for SBP = 140 compared to SBP = 120:
+```{r}
+exp(mod2$coef[2] * (140-120))
+# same as
+exp(mod2$coef[2] * (110-90))
+```
+
+To calculate a 95% CI for this odds ratio, first calculate a CI
+for $\beta$:
+```{r}
+ztable <- summary(mod2)$coefficients
+ztable
+CIbeta <- ztable[2,1] + c(-1,1)*qnorm(.975)*ztable[2,2]
+CIbeta
+```
+Then multiply by 20 and transform the endpoints to get CI for $e^{20\beta}$:
+```{r}
+exp(CIbeta * 20)
+```
+
+### Median effective level
+Estimated median effective level:
+```{r}
+-mod2$coef[1]/mod2$coef[2]
+```
+The estimated probability of CHD is 0.5 when systolic blood pressure is 181.33 mmHg.
+
+Your rate of change in the odds of CHD with SBP is highest around an SBP of 181.33 mmHg.
+
+
+### Predictions
+Estimated risk of CHD and rate of change in risk for a one unit increase in SBP
+when SBP is around 140 (hypertension):
+```{r}
+co <- mod2$coef
+p140 <- exp(co[1]+co[2]*140)/(1+exp(co[1]+co[2]*140))
+# Risk
+p140
+# Rate of change
+co[2] * p140 * (1-p140)
+```
+
+The predicted probability of CHD for an individual with systolic blood pressure of 140 mmMg is 0.335. That is,
+there is an estimated 33.5\% chance of CHD at some point in the 30 years of the study. 
+
+For each additional mmMg for that individual, the predicted probability of CHD increases (additively) by 0.0037.
+
+More efficiently, we can write a function to calculate estimated probabilities:
+```{r}
+prob <- function(co,x){
+	# co = vector of coefficients (logistic model 1 predictor)
+	# x = x-value
+	as.numeric(exp(co[1]+co[2]*x)/(1+exp(co[1]+co[2]*x)))
+}
+# Predicted risk of CHD when SBP = 120:
+prob(mod2$coef,120)
+```
+
+
+Predictions using Logistic model, by hand:
+```{r}
+co <- mod2$coef
+# Odds for sbp = 110:
+exp(mod2$coef[1]+mod2$coef[2]*110)
+# Probability for sbp = 110:
+exp(mod2$coef[1]+mod2$coef[2]*110)/(1+exp(mod2$coef[1]+mod2$coef[2]*110))
+```
+or by using the predict function:
+```{r}
+?predict.glm
+newdata <- data.frame(sbp = c(110,150))
+# Predicted probabilities:
+predict(mod2,newdata,type="response")
+# Predicted log-odds:
+predict(mod2,newdata,type="link")
+# Predicted odds:
+exp(predict(mod2,newdata,type="link"))
+```
+
+#### Checking Predictive Power
+Check the predictive power of our logistic regression model. First, create a classification table using a cutoff of the sample proportion of those that experienced CHD.
+```{r}
+# Predictive probabilities
+probs <- fitted(mod2)
+# Proportion in sample with chdfate = 1
+mean(fram$chdfate)  # About 0.31
+
+# Use 0.31 as cutoff to calculate sensitivity and specificity:
+# pred prob > 0.31 -> 1; <= 0.31 -> 0
+preds <- as.numeric(probs>0.31)
+table(fram$chdfate,preds)
+```
+
+Sensitivity = P(y-hat = 1 | y = 1):
+```{r}
+775/(698+775)
+```
+
+Specificity = P(y-hat = 0 | y = 0):
+```{r}
+2036/(2036+1190)
+```
+The classification table is sensitive to our choice of cutoff. How do answers change if we use a cutoff of 0.5?
+```{r}
+preds <- as.numeric(probs>0.5)
+table(fram$chdfate,preds)
+```
+
+##### ROC Curve
+```{r}
+library(ROCR)
+# arguments = fitted probabilities; observed 0/1
+pred.obj <- prediction(probs,fram$chdfate)  
+# Plot ROC curve
+plot(performance(pred.obj,"tpr","fpr"))
+# Area under the ROC curve
+performance(pred.obj,"auc")
+```
+Our model is a very poor predictor of CHD.
+
+### Examine logistic model with predictors sbp and sex
+```{r}
+# Recode sex to be an indicator of female
+fram$sex <- fram$sex-1
+```
+
+#### No interaction
+Logistic regression with two predictors - no interaction between sbp and sex:
+```{r}
+mod4 <- glm(chdfate ~ sbp + sex, family = "binomial", data = fram)
+summary(mod4)
+exp(coef(mod4))
+```
+
+_Interpretations?_
+
+`spb`:  
+
+- For every one mmMg increase in SBP, the estimated increase of odds of CHD is 1.8\%, controlling for sex.
+- A one mmMg increase in SBP is associated with an estimated 1.8\% of the odds of CHD, adjusting for sex.
+- A one mmMg increase in SBP is associated with an estimated 1.8\% of the odds of CHD when comparing individuals of the same sex.
+
+`sex`:
+
+- The estimated odds of CHD for females are 54.28\% lower than for males, controlling for SBP.
+- Among individuals with the same SBP, the odds ratio of CHD for females to males is 0.457.
+
+#### Interaction
+Logistic regression with two predictors - interaction between sbp and sex:
+```{r}
+mod5 <- glm(chdfate ~ sbp*sex, family = "binomial", data = fram)
+summary(mod5)
+exp(coef(mod5))
+```
+
+Look at the model within each sex:
+
+_Males_ (sex = 0): ($x$ = sbp)
+$$
+\log\left(\frac{\hat{\pi}}{1-\hat{\pi}}\right) = -2.0888 + 0.0128x 
+$$
+
+The estimated odds of CHD for _males_ increase by 1.28\% for each additional mmMg in systolic blood pressure.
+
+OR
+
+A one mmMG increase in systolic blood pressure is associated with an estimated 1.28\% increase in the odds of CHD for _males_. 
+
+_Females_ (sex = 1): ($x$ = sbp)
+```{r}
+# Intercept for females
+coef(mod5)[1]+coef(mod5)[3]
+# Slope for females
+coef(mod5)[2]+coef(mod5)[4]
+```
+$$
+\begin{eqnarray*}
+\log\left(\frac{\hat{\pi}}{1-\hat{\pi}}\right) &= (-2.0888-1.8667) + (0.0128+0.008048)x \\
+&= -3.9555 + 0.0208x
+\end{eqnarray*}
+$$
+For every one mmMg increase in SBP, the estimated increase of odds of CHD is 2.1\% for _females_.
+
+##### Interpret interaction coefficient directly
+```{r}
+exp(coef(mod5))
+```
+
+How the effect of SBP changes with sex:
+
+The increase in estimated odds for a one mmHg increase in SBP
+is 0.8\% higher for females than for males.
+
+OR
+
+How the effect of sex changes with SBP:
+
+The change in estimated odds from males to females is 0.8\% higher for each 1 mmHG increase in SBP.
+
+OR
+
+The estimated odds ratio of CHD for females compared to males increases by 0.8\% for each additional mmHG in systolic blood pressure.
+
+
+

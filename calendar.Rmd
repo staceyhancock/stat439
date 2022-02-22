@@ -175,6 +175,8 @@ _Course Overview_
 
 ### **Tuesday**
 
+- [Framingham heart study example](R/Week6-Feb22-GLMIntro-Framingham.html) ([Rmd](R/Week6-Feb22-GLMIntro-Framingham.Rmd))
+
 ### **Thursday**
 
 ### **Homework/Quiz**
