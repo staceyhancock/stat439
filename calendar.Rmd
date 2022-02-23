@@ -122,8 +122,11 @@ _Course Overview_
 ### **Thursday**
 
 - [Chi-squared tests for contingency tables slides](lectures/Lecture7Slides-Feb10-Sec2.4.pdf)
+    * Dr. Greenwood's [annotated notes](notes/ind_annotated-Feb10.pdf)
 - [Swedish fish example in R](R/Week4-Feb10-SwedishFishConsumption.html) ([Rmd](R/Week4-Feb10-SwedishFishConsumption.Rmd))
+    * Dr. Greenwood's [annotated notes](notes/swedishfish_annotated-Feb10.pdf)
 - [Association in three-way tables and Simpson's paradox slides](lectures/Lecture7Slides-Feb10-Sec2.7.pdf)
+    * Dr. Greenwood's [annotated notes](notes/three-way_annotated-Feb10.pdf)
 - [Berkeley graduate admissions R script](R/Week4-Feb10-BerkeleyGradAdmissions.R)
 
 ### **Homework/Quiz**
@@ -155,6 +158,8 @@ _Course Overview_
 
 ### **Thursday**
 
+- Quiz 2 only
+
 ### **Homework/Quiz**
 
 - Quiz 2 in class Thur Feb 17
@@ -176,6 +181,7 @@ _Course Overview_
 ### **Tuesday**
 
 - [Framingham heart study example](R/Week6-Feb22-GLMIntro-Framingham.html) ([Rmd](R/Week6-Feb22-GLMIntro-Framingham.Rmd))
+- [In-class notes](notes/NotesFeb15.pdf)
 
 ### **Thursday**
 

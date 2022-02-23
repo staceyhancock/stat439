@@ -28,7 +28,7 @@ sex      : Sex (1 = male; 2 = female)
 sbp      : Systolic Blood Pressure  
 dbp      : Diastolic Blood Pressure  
 scl      : Serum Cholesterol  
-chdfate  : Coronary Heart Disease Indicator
+chdfate  : Coronary Heart Disease Indicator  
 followup : Follow-up in Days  
 age      : Age in Years  
 bmi      : Body Mass Index (wt (kg) / h^2 (m)  
