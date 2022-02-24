@@ -37,7 +37,7 @@ id       : Subject ID
 
 ## Analysis
 Load in Framingham data:
-```{r}
+```{r load-data}
 fram <- read.table("http://www.math.montana.edu/shancock/data/Framingham.txt")
 # Check data were read in correctly:
 head(fram)
@@ -52,7 +52,7 @@ the research question: _Does SBP influence probability of CHD?_
 ### Data Visualization and Descriptive Statistics
 
 Univariate distributions:
-```{r}
+```{r histogram, out.width="50%", fig.align='center'}
 fram %>% ggplot(aes(x = chdfate)) +
     geom_bar()
 hist(fram$sbp)
@@ -60,7 +60,7 @@ hist(fram$sbp)
 Simple scatterplot and side-by-side boxplots (note
 response and explanatory variables reversed axes than
 typically used):
-```{r}
+```{r scatterplot, out.width="50%", fig.align='center'}
 plot(chdfate~sbp, xlab="Systolic BP", ylab="Coronary Heart Disease Indicator", data=fram)
 boxplot(sbp ~ chdfate, data=fram)
 ```
@@ -68,7 +68,7 @@ boxplot(sbp ~ chdfate, data=fram)
 Since it is hard to visualize a response variable of 0's and 1's,
 let's create subgroups for SBP and look at the proportion
 who experienced CHD in each group.
-```{r}
+```{r props}
 fram$sbpgrp <- with(fram,
                cut(sbp, breaks = c(min(sbp),126,146,166,max(sbp)),
 			include.lowest=TRUE)
@@ -84,7 +84,7 @@ props
 ```
 
 Now plot proportions and add to the original scatterplot.
-```{r}
+```{r scatterplot-props, out.width="50%", fig.align='center'}
 # SBP Midpoints:
 mids = c(103,136,156,218)
 plot(chdfate~sbp, xlab="Systolic BP", ylab="Coronary Heart Disease Indicator", data=fram)
@@ -96,7 +96,7 @@ lines(lowess(fram$chdfate~fram$sbp), col="red")
 ### Models
 
 _Linear probability model_:
-```{r}
+```{r lpm}
 mod1 <- glm(chdfate ~ sbp, family=binomial(link="identity"), data=fram)
 summary(mod1)
 ```
@@ -104,20 +104,20 @@ summary(mod1)
 
 _Logistic regression model_:
 The default link for binomial family is logit.
-```{r}
+```{r logistic}
 mod2 <- glm(chdfate~sbp, family=binomial, data=fram)
 summary(mod2)
 ```
 
 
 _Probit regression model_:
-```{r}
+```{r probit}
 mod3 <- glm(chdfate~sbp, family=binomial(link="probit"), data=fram)
 summary(mod3)
 ```
 
 Add the three fitted models to the scatterplot:
-```{r}
+```{r scatterplot-models, out.width="50%", fig.align='center'}
 plot(chdfate~sbp, xlab="Systolic BP", ylab="Coronary Heart Disease Indicator", data=fram)
 points(props~mids, xlab="Systolic BP", ylab="Proportion with CHD", col="tomato", pch = 16)
 # Linear:
@@ -262,13 +262,13 @@ table(fram$chdfate,preds)
 ```
 
 ##### ROC Curve
-```{r}
+```{r roc, out.width="50%", fig.align='center'}
 library(ROCR)
 # arguments = fitted probabilities; observed 0/1
-pred.obj <- prediction(probs,fram$chdfate)  
+pred.obj <- prediction(probs, fram$chdfate)  
 # Plot ROC curve
 plot(performance(pred.obj,"tpr","fpr"))
-# Area under the ROC curve
+# Area under the ROC curve - not sure why this isn't working; need to investigate
 performance(pred.obj,"auc")
 ```
 Our model is a very poor predictor of CHD.
@@ -289,6 +289,16 @@ exp(coef(mod4))
 
 _Interpretations?_
 
+In-class:
+* `sbp`: Within one sex, a one mmHG increase in systolic blood pressure
+is associated with a 1.8% estimated increase in odds of a heart attack.
+* `sex`: We estimate that the odds of a heart attack are 54% lower for females
+compared to males, holding systolic blood pressure constant.
+OR
+The estimated odds ratio of a heart attack for females compared to males 
+with the same systolic blood pressure is 0.4572.
+
+
 `spb`:  
 
 - For every one mmMg increase in SBP, the estimated increase of odds of CHD is 1.8\%, controlling for sex.
@@ -304,6 +314,7 @@ _Interpretations?_
 Logistic regression with two predictors - interaction between sbp and sex:
 ```{r}
 mod5 <- glm(chdfate ~ sbp*sex, family = "binomial", data = fram)
+mod5 <- glm(chdfate ~ 1 + sbp + sex + sbp:sex, family = "binomial", data = fram)
 summary(mod5)
 exp(coef(mod5))
 ```
@@ -335,6 +346,33 @@ $$
 \end{eqnarray*}
 $$
 For every one mmMg increase in SBP, the estimated increase of odds of CHD is 2.1\% for _females_.
+
+What does interaction between sex and sbp mean?
+* The effect of sbp on CHD (relationship between spb and CHD) is going to differ between men and women.
+* The effect of sex on CHD (relationship between sex and CHD) is going to
+depend on systolic blood pressure.
+
+_Interpretations In-class_:
+* `sex`: We estimate that the odds of a heart attack are 85% lower for females
+compared to males, among men and women with systolic blood pressure equal to zero.
+(no longer meaningful)
+OR
+The estimated odds ratio of a heart attack for females compared to males 
+with the systolic blood pressure equal to zerois 0.4572.
+* `sbp`: For males, a one mmHG increase in systolic blood pressure
+is associated with a 1.28% estimated increase in odds of a heart attack.
+--> For women, a one mmHG increase in systolic blood pressure is associated
+with a `r (exp(coef(mod5)[2]+coef(mod5)[4]) - 1)*100`% estimated increase in odds of a heart attack.
+* `sex:spb`: For each additional mmHg in systolic blood pressure,
+the estimated [odds ratio of CHD for females compared to males] increases by 0.80%.
+OR
+For each additional mmHg in systolic blood pressure,
+the estimated percent decrease in odds of CHD for females compared
+to males increases by 0.80%.
+OR
+The estimated odds ratio of CHD for a one mmHG increase in systolic blood pressure
+is 0.80% higher for women.
+
 
 ##### Interpret interaction coefficient directly
 ```{r}
