@@ -181,9 +181,13 @@ _Course Overview_
 ### **Tuesday**
 
 - [Framingham heart study example](R/Week6-Feb22-GLMIntro-Framingham.html) ([Rmd](R/Week6-Feb22-GLMIntro-Framingham.Rmd))
-- [In-class notes](notes/NotesFeb15.pdf)
+- [In-class notes](notes/NotesFeb22.pdf)
 
 ### **Thursday**
+
+- Berkeley example R files:
+    * [Ungrouped vs grouped data and model comparison tests](R/Week6-LogReg-Berkeley.R)
+    * [Linear combinations of coefficients](R/Week6-LinContrasts-Berkeley.R)
 
 ### **Homework/Quiz**
 
