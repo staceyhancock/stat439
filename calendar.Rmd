@@ -200,17 +200,17 @@ _Course Overview_
 ### _Content_
 
 - Logistic regression with categorical predictors
-- GLMs for count data
 
 ### **Assigned readings**
 
-- Chapter 3 Section 3.3
+- (continued from last week)
 
 ### **Tuesday**
 
 - Berkeley example R files:
     * [Ungrouped vs grouped data and model comparison tests](R/Week6-LogReg-Berkeley.R)
     * [Linear combinations of coefficients](R/Week6-LinContrasts-Berkeley.R)
+- [In-class notes](notes/NotesMar1.pdf)
 
 ### **Thursday**
 
@@ -227,11 +227,12 @@ _Course Overview_
 
 ### _Content_
 
+- GLMs for count data
 - Model fitting, selection and diagnostics for GLMs
 
 ### **Assigned readings**
 
-- Chapter 3 Section 3.4--3.5
+- Chapter 3 Sections 3.3--3.5
 - Chapter 5 Sections 5.1--5.3
 
 ### **Tuesday**
