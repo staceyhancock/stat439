@@ -7,7 +7,8 @@
 ##### Berkeley admissions data
 
 ### Enter data as (ungrouped) binary observations:
-##
+## = each row is a single observational unit
+
 # Indicator for sex: 1 = male; 0 = female
 Sex <- c(rep(1,2681),rep(0,1835))
 
@@ -21,9 +22,23 @@ Program <- factor(c(rep("A",511),rep("B",352),rep("C",120),rep("D",137),rep("E",
 	rep("A",19),rep("B",8),rep("C",391),rep("D",243),rep("E",298),rep("F",317)),
 	levels = c("A","B","C","D","E","F"), ordered = FALSE)
 	
-Berkeley <- data.frame(Sex,Admit,Program)
+Berkeley <- data.frame(Sex, Admit, Program)
 head(Berkeley)  # Each row = one individual
 tail(Berkeley)
+
+## Practice with dummy variables
+mod0 <- glm(Admit ~ Program, family = binomial, data = Berkeley)
+summary(mod0)
+
+# Relevel so that baseline is Program E
+mod0_E <- glm(Admit ~ relevel(Program, "E"),
+              family = binomial, data = Berkeley)
+
+Berkeley$Program_RelevelE <- relevel(Berkeley$Program, "E")
+mod0_E <- glm(Admit ~ Program_RelevelE,
+              family = binomial, data = Berkeley)
+
+###
 
 mod1 <- glm(Admit ~ Sex*Program, family=binomial, data=Berkeley)
 summary(mod1)
