@@ -10,7 +10,7 @@ Berk.grp = data.frame(Sex = rep(c("Male","Female"),each=6),
 Berk.grp
 
 ### Simple model - marginal association between admission and program:
-mod1 <- glm(cbind(Admit,Deny) ~ Program, family=binomial, data=Berk.grp)
+mod1 <- glm(cbind(Admit, Deny) ~ Program, family=binomial, data=Berk.grp)
 summary(mod1)
 
 ## Variance-covariance matrix of fitted coefficients:
@@ -31,7 +31,7 @@ exp(beta.hat[2]-beta.hat[3])
 # Estimated variance of beta2hat - beta1hat:
 V.hat[2,2] + V.hat[3,3] - 2*V.hat[2,3]
 # Estimated standard error:
-se = sqrt(V.hat[2,2] + V.hat[3,3] - 2*V.hat[2,3])
+se <- sqrt(V.hat[2,2] + V.hat[3,3] - 2*V.hat[2,3])
 se
 
 # Approximate 95% CI for beta2-beta1:
@@ -39,11 +39,20 @@ beta.hat[2]-beta.hat[3] + c(-1,1)*1.96*se
 # For odds ratio:
 exp( beta.hat[2]-beta.hat[3] + c(-1,1)*1.96*se )
 
-### In matrix form:
-A = matrix(c(0,1,-1,0,0,0),nrow=1)
+## Interpret: 
+# We are 95% confident that the true odds of admission when applying
+# to Program B are between 155% to 292% higher than when applying
+# to Program C.
+
+### In matrix form: Log-odds of Program B - log-odds of Program C
+A <- matrix(c(0,1,-1,0,0,0), nrow=1)
 # Estimate:
 A %*% beta.hat  # On log scale
 exp(A %*% beta.hat)  # On odds scale
+
+# More carefully:
+beta.hat <- matrix(beta.hat, ncol = 1)
+
 
 # Standard error:
 sqrt( A %*% V.hat %*% t(A) )

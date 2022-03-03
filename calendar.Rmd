@@ -214,6 +214,8 @@ _Course Overview_
 
 ### **Thursday**
 
+- [In-class notes](notes/NotesMar3.pdf)
+
 ### **Homework/Quiz**
 
 - Quiz 3 in class Thur Mar 3

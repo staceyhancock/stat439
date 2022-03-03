@@ -51,7 +51,7 @@ anova(mod2, mod1, test="LRT")
 
 
 ### Enter data as grouped binomial data:
-Berk.grp = data.frame(Sex = rep(c("Male","Female"),each=6), 
+Berk.grp <- data.frame(Sex = rep(c("Male","Female"),each=6), 
 						Program = rep(c("A","B","C","D","E","F"),2),
 						Admit = c(511,352,120,137,53,22,
 								89,17,202,132,95,24),
