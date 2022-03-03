@@ -36,51 +36,51 @@ as 0's and 1's, so first create an indicator variable for survival:
 Donner$survive <- as.numeric(Donner$y == "survived")
 ```
 
-## Q1
+## Q1 (1 pt)
 How many people in the Donner Party survived? What proportion survived?
 
 ## Q2
-Fit a logistic regression model to these data using only `age` as the predictor,
+(1 pt) Fit a logistic regression model to these data using only `age` as the predictor,
 and call this model `mod1`.
-Report a summary of the model. Then answer the following:
+Report a summary of the model. Then use this model to answer the following:
 
-a. Write out the equation of the fitted model. Define any symbols used.
-b. Create a scatterplot with `age` on the x-axis and `survive` on the y-axis.
+a. (2 pts) Write out the equation of the fitted model. Define any symbols used.
+b. (2 pts) Create a scatterplot with `age` on the x-axis and `survive` on the y-axis.
 Add a nonparametric smoother (e.g., `lowess`), and add the fitted model curve.
 Ensure your plot is well-labeled.
-c. Write a sentence interpreting the estimated slope on the odds scale.
-d. What is the estimated probability of survival for a 20-year-old?
-e. What is the estimated relative "risk" of survival for a 60-year-old
+c. (2 pts) Write a sentence interpreting the estimated slope on the odds scale.
+d. (1 pt) What is the estimated probability of survival for a 20-year-old?
+e. (1 pt) What is the estimated relative "risk" of survival for a 60-year-old
 compared to a 20-year-old.
-f. Calculate and interpret a 95% confidence interval for the odds ratio
+f. (4 pts) Calculate and interpret a 95% confidence interval for the odds ratio
 of survival for a 60-year-old compared to a 20-year-old.
 Write a sentence interpreting this interval.
 
-## Q3
+## Q3 (3 pts)
 Fit a logistic regression model to these data using only `sex` as the predictor.
 Call this model `mod2`. What does this model estimate for the odds ratio
 of survival for males compared to females?
 
-## Q4
+## Q4 (2 pts)
 Create a 2x2 table with `sex` as the rows and `survive` as the columns.
 Use this table to estimate the odds ratio of survival for males compared to females.
 Does this value match your answer to part c.?
 
 ## Q5
-Now, fit a logistic regression model using both `age` and `sex` as predictors,
-with no interaction. Call this model `mod3`. Then answer the following:
+(1 pt) Now, fit a logistic regression model using both `age` and `sex` as predictors,
+with no interaction. Call this model `mod3`. Then use this model to answer the following:
 
-a. Write out the equation of the fitted model for Males, and the equation
+a. (3 pts) Write out the equation of the fitted model for Males, and the equation
 of the fitted model for Females.
-b. Write a sentence interpreting the `sex` coefficient in this model.
+b. (2 pts) Write a sentence interpreting the `sex` coefficient in this model.
 
 ## Q6
-Lastly, fit a logistic regression model using both `age` and `sex` as predictors,
+(5 pts) Lastly, fit a logistic regression model using both `age` and `sex` as predictors,
 and include an interaction term. Call this model `mod4`.
 Write an interpretation of each coefficient (except the intercept) in this model.
 
 ## Q7
-Again, create a scatterplot with `age` on the x-axis and `survive` on the y-axis.
+(4 pts) Again, create a scatterplot with `age` on the x-axis and `survive` on the y-axis.
 On the same plot, add the following:
 
 - Fitted curve from `mod1`
@@ -92,7 +92,7 @@ Use different line types for the different models, and different colors
 for the different sexes. Add a legend. Ensure your plot is well-labeled.
 
 ## Q8
-Choose which model you think fits the data best. Then create an ROC curve
+(2 pts) Choose which model you think fits the data best. Then create an ROC curve
 for your chosen model. How well does your model predict survival?
 
 
