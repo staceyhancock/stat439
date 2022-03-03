@@ -1,7 +1,7 @@
 ---
 title: 'Stat 439: Homework 4'
 author: 'Your name here'
-subtitle: 'Due Thur 3/10/22 by 5pm in D2L'
+subtitle: 'Due Thur 3/10/22 by 11pm in Gradescope'
 urlcolor: 'blue'
 output:
   pdf_document: default
