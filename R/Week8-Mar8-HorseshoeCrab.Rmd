@@ -1,0 +1,232 @@
+---
+title: 'Poisson Regression: Horseshoe Crab Data'
+date: '2022-03-08'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(knitr)
+library(tidyverse)
+```
+
+# Poisson Regression: Horseshoe crab example
+
+## Data set from Agresti (2007)
+
+Study of nesting horseshoe crabs (J. Brockman, Ethology, 1996).
+Each female crab in the study had a male crab attached to her in her nest.
+The study investigated factors that affect whether the female crab had
+any other males, called satellites, residing nearby her.
+Explanatory variables thought possibly to affect this included the
+female crab's color, spine condition, weight, and carapace width.
+The response outcome for each female crab is her number of satellites.
+
+**Variable descriptions:**
+
+- `color`: 1 - light medium, 2 - medium, 3 - dark medium, 4 - dark
+- `spine`: 1 - both good, 2 - one worn or broken, 3 - both worn or broken
+- `width`: carapace width in cm
+- `satell`: number of satellites
+- `weight`: weight in kg
+
+Read in the data and recode factors.
+```{r}
+crab <- read.table("http://www.math.montana.edu/shancock/data/horseshoe.txt",header=T)
+crab$colorF <- factor(crab$color, levels=c(1,2,3,4), labels=c("LM","M","DM","D"))
+crab$spineF <- factor(crab$spine, levels=c(1,2,3), labels=c("Good","Soso","Poor"))
+str(crab)
+```
+
+## Exploratory data analysis
+
+Summary statistics for each variable:
+```{r}
+summary(crab)
+```
+
+Plot all variables against one another:
+```{r}
+plot(crab)
+```
+
+Boxplots for categorical predictors:
+```{r}
+boxplot(satell ~ colorF, data=crab, xlab="Color", ylab="No. of Satellites")
+boxplot(satell ~ spineF, data=crab, xlab="Spine Condition", ylab="No. of Satellites")
+```
+
+Based on the plots alone, what variables seem to be the best predictors of number of satellites?
+
+
+## Poisson regression models
+
+### One quantitative predictor: `width`
+
+```{r}
+crab.glm <- glm(satell ~ width, family = poisson(link = "log"), data = crab)
+summary(crab.glm)
+```
+
+How would you interpret each coefficient?
+
+Note that the log link is the default for poisson, so we could have used
+`family = poisson` rather than `family = poisson(link = "log")`.
+
+#### Checking model fit
+How can we check if the model fits well?
+
+Add fitted model to plot.
+```{r}
+co <- crab.glm$coefficients
+plot(satell ~ width, xlab="Width (cm)", ylab="No. of Satellites", data=crab)
+curve(exp(co[1]+co[2]*x),add=T)
+```
+
+#### Check for overdispersion
+
+What is "overdisperson"?
+
+Create the eight width categories used in book:
+
+- 1 = <23.25
+- 2 = 23.25-24.25
+- 3 = 24.25-25.25
+- 4 = 25.25-26.25
+- 5 = 26.25-27.25
+- 6 = 27.25-28.25
+- 7 = 28.25-29.25
+- 8 = >29.25 - Note: Book error = 30.25
+
+One option to create width categories is the `cut` function.
+Note that the resulting factor is treated as nominal even though it is ordinal.
+```{r}
+crab$width.grp <- cut(crab$width, breaks = c(0, seq(23.25,29.25,by=1), 35), labels=c(1:8))
+is.factor(crab$width.grp)
+head(cbind(crab$width, crab$width.grp))
+```
+
+Explore association between number of satellites and width group.
+```{r}
+xtabs(~ satell+width.grp, data=crab)
+```
+
+Since `width.grp` is a factor, R defaults to side-by-side boxplots when we use `plot`.
+```{r}
+plot(satell ~ width.grp, data=crab,
+     xlab = "Width Group", ylab = "Number of Satellites")
+```
+
+Examine our fitted model over the means for each group.
+
+```{r}
+means <- tapply(crab$satell, crab$width.grp, mean)
+plot(seq(22.75,29.75,by=1), means, 
+     xlab="Width", ylab="Mean No. of Satellites")
+curve(exp(co[1]+co[2]*x), add=T)
+```
+
+Check for overdispersion by comparing the means within each group to
+the sample variances.
+```{r}
+vars <- tapply(crab$satell, crab$width.grp, var)
+kable(data.frame(width.grp = 1:8, means = round(means, 3), variances = round(vars,3)))
+```
+The variances in each group are much larger than the means for each group,
+indicating overdispersion is present.
+This may indicate need to include other predictors to reduce unexplained variability.
+
+
+### One categorical predictor: `colorF`
+
+```{r}
+crab.glmF <- glm(satell ~ colorF, family = poisson(link = "log"), data = crab)
+summary(crab.glmF)
+```
+
+How would you interpret each coefficient?
+
+
+### Poisson regression with two predictors: `width` and `colorF`
+
+Model with interaction:
+```{r}
+crab.glm2 <- glm(satell ~ width*colorF, data=crab, family=poisson)
+summary(crab.glm2)
+```
+
+How to interpret coefficient estimates?
+
+Plot number of satellites vs width by color and add fitted model.
+```{r}
+co <- crab.glm2$coef
+plot(satell ~ width, data=crab, xlab="Width (cm)", ylab="No. of Satellites", 
+     pch=color, col=(color+1))
+legend("topright", c("LM","M","DM","D"), pch=c(1,2,3,4), col=c(2,3,4,5))
+# Add fitted models by color
+# LM
+curve(exp(co[1]+co[2]*x), col=2, add=TRUE)
+# M
+curve(exp(co[1]+co[3] + (co[2]+co[6])*x), col=3, add=TRUE)
+# DM
+curve(exp(co[1]+co[4] + (co[2]+co[7])*x), col=4, add=TRUE)
+# D
+curve(exp(co[1]+co[5] + (co[2]+co[8])*x), col=5, add=TRUE)
+```
+
+
+Or with the effects package:
+```{r}
+library(effects)
+plot(allEffects(crab.glm2), type="response", multiline=T, ci.style="bands")
+plot(allEffects(crab.glm2), type="link", multiline=T, ci.style="bands")
+plot(allEffects(crab.glm2, residuals=T), type="link")
+```
+
+
+Additive model (no interaction):
+```{r warning=F, message=F, fig.height=7, fig.width=10}
+crab.glm2a <- glm(satell ~ width + colorF, data=crab, family=poisson)
+co <- crab.glm2a$coef
+plot(satell ~ width, data=crab, xlab="Width (cm)", ylab="No. of Satellites", pch=color, col=(color+1))
+legend("topright", c("LM","M","DM","D"), pch=c(1,2,3,4), col=c(2,3,4,5))
+# LM
+curve(exp(co[1]+co[2]*x), col=2, add=TRUE, lty=2)
+# M
+curve(exp(co[1]+co[3] + (co[2])*x), col=3, add=TRUE, lty=2)
+# DM
+curve(exp(co[1]+co[4] + (co[2])*x), col=4, add=TRUE, lty=2)
+# D
+curve(exp(co[1]+co[5] + (co[2])*x), col=5, add=TRUE, lty=2)
+```
+
+
+What if we treated color as quantitative? (Is this valid?)
+```{r warning=F, message=F, fig.height=7, fig.width=10}
+crab.glm3 <- glm(satell ~ width*color, data=crab, family=poisson)
+summary(crab.glm3)
+# Note significant interaction term.
+```
+
+```{r}
+plot(satell ~ width, data=crab, xlab="Width (cm)", ylab="No. of Satellites", pch=color, col=(color+1))
+legend("topleft", c("LM","M","DM","D"), pch=c(1,2,3,4), col=c(2,3,4,5))
+## Add fitted model where color is quantitative to plot:
+co <- crab.glm3$coef
+# LM
+curve(exp(co[1] + co[2]*x + co[3]*1 + co[4]*x*1), col=2, add=TRUE, lty=3, lwd=2)
+# M
+curve(exp(co[1] + co[2]*x + co[3]*2 + co[4]*x*2), col=3, add=TRUE, lty=3, lwd=2)
+# DM
+curve(exp(co[1] + co[2]*x + co[3]*3 + co[4]*x*3), col=4, add=TRUE, lty=3, lwd=2)
+# D
+curve(exp(co[1] + co[2]*x + co[3]*4 + co[4]*x*4), col=5, add=TRUE, lty=3, lwd=2)
+```
+
+```{r}
+# Effect of a one cm increase in width for each color:
+for(i in 1:4){
+	print(exp(crab.glm3$coef[2]+crab.glm3$coef[4]*i))
+}
+```
+

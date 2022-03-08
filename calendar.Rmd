@@ -239,6 +239,8 @@ _Course Overview_
 
 ### **Tuesday**
 
+- Horseshoe crabs Poisson regression example ([Rmd](R/Week8-Mar8-HorseshoeCrab.Rmd)) ([html](R/Week8-Mar8-HorseshoeCrab.html))
+
 ### **Thursday**
 
 ### **Homework/Quiz**
