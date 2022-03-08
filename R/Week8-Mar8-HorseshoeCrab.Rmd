@@ -57,6 +57,15 @@ boxplot(satell ~ spineF, data=crab, xlab="Spine Condition", ylab="No. of Satelli
 ```
 
 Based on the plots alone, what variables seem to be the best predictors of number of satellites?
+```{r}
+cor(crab[,1:5])
+```
+Note that weight and width are highly correlated. What happens if we fit them both in the model?
+```{r}
+summary(glm(satell ~ width, family = poisson, data = crab))
+summary(glm(satell ~ weight, family = poisson, data = crab))
+summary(glm(satell ~ width + weight, family = poisson, data = crab))
+```
 
 
 ## Poisson regression models
@@ -69,6 +78,26 @@ summary(crab.glm)
 ```
 
 How would you interpret each coefficient?
+
+Fitted model: $\mu$ = mean number of satellites among the population of female crabs represented by this sample
+$$
+\log(\hat{\mu}) = -3.3048 + 0.16405x,
+$$
+where $x$ is the width of the crab in cm.
+
+OR
+$$
+\hat{\mu} = \exp(-3.3048 + 0.16405x),
+$$
+
+To interpret, exponentiate to get to original scale.
+```{r}
+exp(crab.glm$coefficients)
+```
+
+A one cm increase in crab width is associated with a 17.8% increase
+in [predicted number]/[estimated mean number] of satellites.
+
 
 Note that the log link is the default for poisson, so we could have used
 `family = poisson` rather than `family = poisson(link = "log")`.
@@ -83,7 +112,7 @@ plot(satell ~ width, xlab="Width (cm)", ylab="No. of Satellites", data=crab)
 curve(exp(co[1]+co[2]*x),add=T)
 ```
 
-#### Check for overdispersion
+#### Check for overdispersion (start here Thur)
 
 What is "overdisperson"?
 

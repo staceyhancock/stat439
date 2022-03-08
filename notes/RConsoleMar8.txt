@@ -1,0 +1,640 @@
+# R Console 3/8/2022
+
+> # Indicator for sex: 1 = male; 0 = female
+> Sex <- c(rep(1,2681),rep(0,1835))
+> # Indicator for admission: 1 = admitted; 0 = denied
+> Admit <- c(rep(1,1195),rep(0,1486),rep(1,559),rep(0,1276))
+> # Program:
+> Program <- factor(c(rep("A",511),rep("B",352),rep("C",120),rep("D",137),rep("E",53),rep("F",22),
++ 	rep("A",314),rep("B",208),rep("C",205),rep("D",270),rep("E",138),rep("F",351),
++ 	rep("A",89),rep("B",17),rep("C",202),rep("D",132),rep("E",95),rep("F",24),
++ 	rep("A",19),rep("B",8),rep("C",391),rep("D",243),rep("E",298),rep("F",317)),
++ 	levels = c("A","B","C","D","E","F"), ordered = FALSE)
+> Berkeley <- data.frame(Sex, Admit, Program)
+> head(Berkeley)  # Each row = one individual
+  Sex Admit Program
+1   1     1       A
+2   1     1       A
+3   1     1       A
+4   1     1       A
+5   1     1       A
+6   1     1       A
+> ### Enter data as grouped binomial data:
+> Berk.grp <- data.frame(Sex = rep(c("Male","Female"),each=6), 
++ 						Program = rep(c("A","B","C","D","E","F"),2),
++ 						Admit = c(511,352,120,137,53,22,
++ 								89,17,202,132,95,24),
++ 						Deny = c(314,208,205,270,138,351,
++ 								19,8,391,243,298,317))
+> Berk.grp
+      Sex Program Admit Deny
+1    Male       A   511  314
+2    Male       B   352  208
+3    Male       C   120  205
+4    Male       D   137  270
+5    Male       E    53  138
+6    Male       F    22  351
+7  Female       A    89   19
+8  Female       B    17    8
+9  Female       C   202  391
+10 Female       D   132  243
+11 Female       E    95  298
+12 Female       F    24  317
+> ## Practice with dummy variables
+> mod0 <- glm(Admit ~ Program, family = binomial, data = Berkeley)
+> mod1 <- glm(Admit ~ Sex*Program, family=binomial, data=Berkeley)
+> mod2 <- glm(Admit ~ Sex+Program, family=binomial, data=Berkeley)
+> # Null deviance
+> mod0.grp <- glm(cbind(Admit,Deny) ~ 1, family = binomial, data = Berk.grp)
+> mod1.grp <- glm(cbind(Admit,Deny) ~ Sex*Program, family=binomial, data=Berk.grp)	
+> mod2.grp <- update(mod1.grp, .~.-Sex:Program)	
+> # Likelihood Ratio Test to compare the two models:
+> anova(mod2, mod1, test="LRT")
+Analysis of Deviance Table
+
+Model 1: Admit ~ Sex + Program
+Model 2: Admit ~ Sex * Program
+  Resid. Df Resid. Dev Df Deviance Pr(>Chi)   
+1      4509     5183.6                        
+2      4504     5163.4  5    20.23 0.001131 **
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+> summary(mod1)
+
+Call:
+glm(formula = Admit ~ Sex * Program, family = binomial, data = Berkeley)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-1.8642  -0.9127  -0.3821   0.9788   2.3793  
+
+Coefficients:
+             Estimate Std. Error z value Pr(>|z|)    
+(Intercept)    1.5442     0.2527   6.110 9.94e-10 ***
+Sex           -1.0572     0.2627  -4.025 5.71e-05 ***
+ProgramB      -0.7904     0.4977  -1.588 0.112241    
+ProgramC      -2.2046     0.2672  -8.252  < 2e-16 ***
+ProgramD      -2.1545     0.2749  -7.838 4.58e-15 ***
+ProgramE      -2.6874     0.2788  -9.638  < 2e-16 ***
+ProgramF      -4.1250     0.3297 -12.512  < 2e-16 ***
+Sex:ProgramB   0.8295     0.5104   1.625 0.104085    
+Sex:ProgramC   1.1821     0.2995   3.946 7.93e-05 ***
+Sex:ProgramD   0.9890     0.3028   3.266 0.001091 ** 
+Sex:ProgramE   1.2435     0.3302   3.766 0.000166 ***
+Sex:ProgramF   0.8683     0.4027   2.156 0.031046 *  
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 6033.6  on 4515  degrees of freedom
+Residual deviance: 5163.4  on 4504  degrees of freedom
+AIC: 5187.4
+
+Number of Fisher Scoring iterations: 5
+
+> dim(Berkeley)
+[1] 4516    3
+> 4516-12
+[1] 4504
+> summary(mod2)
+
+Call:
+glm(formula = Admit ~ Sex + Program, family = binomial, data = Berkeley)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-1.4748  -0.9375  -0.3740   0.9616   2.3612  
+
+Coefficients:
+            Estimate Std. Error z value Pr(>|z|)    
+(Intercept)  0.67647    0.09909   6.827 8.69e-12 ***
+Sex         -0.09900    0.08087  -1.224    0.221    
+ProgramB    -0.04613    0.10975  -0.420    0.674    
+ProgramC    -1.25745    0.10660 -11.795  < 2e-16 ***
+ProgramD    -1.27089    0.10610 -11.978  < 2e-16 ***
+ProgramE    -1.72506    0.12593 -13.699  < 2e-16 ***
+ProgramF    -3.30147    0.16996 -19.425  < 2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 6033.6  on 4515  degrees of freedom
+Residual deviance: 5183.6  on 4509  degrees of freedom
+AIC: 5197.6
+
+Number of Fisher Scoring iterations: 5
+
+> 4516-7
+[1] 4509
+> dim(Berk.grp)
+[1] 12  4
+> mod1.grp <- glm(cbind(Admit,Deny) ~ Sex*Program, family=binomial, data=Berk.grp)	
+> summary(mod1.grp)
+
+Call:
+glm(formula = cbind(Admit, Deny) ~ Sex * Program, family = binomial, 
+    data = Berk.grp)
+
+Deviance Residuals: 
+ [1]  0  0  0  0  0  0  0  0  0  0  0  0
+
+Coefficients:
+                 Estimate Std. Error z value Pr(>|z|)    
+(Intercept)        1.5442     0.2527   6.110 9.94e-10 ***
+SexMale           -1.0572     0.2627  -4.025 5.71e-05 ***
+ProgramB          -0.7904     0.4977  -1.588 0.112241    
+ProgramC          -2.2046     0.2672  -8.252  < 2e-16 ***
+ProgramD          -2.1545     0.2749  -7.838 4.58e-15 ***
+ProgramE          -2.6874     0.2788  -9.638  < 2e-16 ***
+ProgramF          -4.1250     0.3297 -12.512  < 2e-16 ***
+SexMale:ProgramB   0.8295     0.5104   1.625 0.104085    
+SexMale:ProgramC   1.1821     0.2995   3.946 7.93e-05 ***
+SexMale:ProgramD   0.9890     0.3028   3.266 0.001091 ** 
+SexMale:ProgramE   1.2435     0.3302   3.766 0.000166 ***
+SexMale:ProgramF   0.8683     0.4027   2.156 0.031046 *  
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance:  8.7026e+02  on 11  degrees of freedom
+Residual deviance: -3.7526e-14  on  0  degrees of freedom
+AIC: 92.938
+
+Number of Fisher Scoring iterations: 3
+
+> fitted(mod2)
+        1         2         3         4         5         6         7 
+0.6404864 0.6404864 0.6404864 0.6404864 0.6404864 0.6404864 0.6404864 
+        8         9        10        11        12        13        14 
+0.6404864 0.6404864 0.6404864 0.6404864 0.6404864 0.6404864 0.6404864 
+       15        16        17        18        19        20        21 
+0.6404864 0.6404864 0.6404864 0.6404864 0.6404864 0.6404864 0.6404864 
+       22        23        24        25        26        27        28 
+...
+988       989       990       991       992       993       994 
+0.3332729 0.3332729 0.3332729 0.3332729 0.3332729 0.3332729 0.3332729 
+      995       996       997       998       999      1000 
+0.3332729 0.3332729 0.3332729 0.3332729 0.3332729 0.3332729 
+ [ reached getOption("max.print") -- omitted 3516 entries ]
+> head(fitted(mod2))
+        1         2         3         4         5         6 
+0.6404864 0.6404864 0.6404864 0.6404864 0.6404864 0.6404864 
+> head(Berkeley)
+  Sex Admit Program
+1   1     1       A
+2   1     1       A
+3   1     1       A
+4   1     1       A
+5   1     1       A
+6   1     1       A
+> head(fitted(mod2.grp))
+         1          2          3          4          5          6 
+0.64048638 0.62979613 0.33626638 0.33327293 0.24093071 0.06157233 
+> Berk.grp[1,]
+   Sex Program Admit Deny
+1 Male       A   511  314
+> 511/(511+314)
+[1] 0.6193939
+> fitted(mod2.grp)
+         1          2          3          4          5          6 
+0.64048638 0.62979613 0.33626638 0.33327293 0.24093071 0.06157233 
+         7          8          9         10         11         12 
+0.66295123 0.65256662 0.35870730 0.35562111 0.25949678 0.06754699 
+> Berk.grp
+      Sex Program Admit Deny
+1    Male       A   511  314
+2    Male       B   352  208
+3    Male       C   120  205
+4    Male       D   137  270
+5    Male       E    53  138
+6    Male       F    22  351
+7  Female       A    89   19
+8  Female       B    17    8
+9  Female       C   202  391
+10 Female       D   132  243
+11 Female       E    95  298
+12 Female       F    24  317
+> Berk.grp[,3] / (Berk.grp[,3]+Berk.grp[,4])
+ [1] 0.61939394 0.62857143 0.36923077 0.33660934 0.27748691 0.05898123
+ [7] 0.82407407 0.68000000 0.34064081 0.35200000 0.24173028 0.07038123
+> mod2.grp
+
+Call:  glm(formula = cbind(Admit, Deny) ~ Sex + Program, family = binomial, 
+    data = Berk.grp)
+
+Coefficients:
+(Intercept)      SexMale     ProgramB     ProgramC     ProgramD  
+    0.67647     -0.09900     -0.04613     -1.25745     -1.27089  
+   ProgramE     ProgramF  
+   -1.72506     -3.30147  
+
+Degrees of Freedom: 11 Total (i.e. Null);  5 Residual
+Null Deviance:	    870.3 
+Residual Deviance: 20.23 	AIC: 103.2
+> fitted(mod1.grp)
+         1          2          3          4          5          6 
+0.61939394 0.62857143 0.36923077 0.33660934 0.27748691 0.05898123 
+         7          8          9         10         11         12 
+0.82407407 0.68000000 0.34064081 0.35200000 0.24173028 0.07038123 
+> Berk.grp[,3] / (Berk.grp[,3]+Berk.grp[,4])
+ [1] 0.61939394 0.62857143 0.36923077 0.33660934 0.27748691 0.05898123
+ [7] 0.82407407 0.68000000 0.34064081 0.35200000 0.24173028 0.07038123
+> anova(mod2, mod1)
+Analysis of Deviance Table
+
+Model 1: Admit ~ Sex + Program
+Model 2: Admit ~ Sex * Program
+  Resid. Df Resid. Dev Df Deviance
+1      4509     5183.6            
+2      4504     5163.4  5    20.23
+> anova(mod2.grp, mod1.grp)
+Analysis of Deviance Table
+
+Model 1: cbind(Admit, Deny) ~ Sex + Program
+Model 2: cbind(Admit, Deny) ~ Sex * Program
+  Resid. Df Resid. Dev Df Deviance
+1         5      20.23            
+2         0       0.00  5    20.23
+> summary(mod2.grp)
+
+Call:
+glm(formula = cbind(Admit, Deny) ~ Sex + Program, family = binomial, 
+    data = Berk.grp)
+
+Deviance Residuals: 
+      1        2        3        4        5        6        7        8  
+-1.2574  -0.0600   1.2485   0.1427   1.1625  -0.2096   3.7442   0.2900  
+      9       10       11       12  
+-0.9208  -0.1466  -0.8097   0.2072  
+
+Coefficients:
+            Estimate Std. Error z value Pr(>|z|)    
+(Intercept)  0.67647    0.09909   6.827 8.69e-12 ***
+SexMale     -0.09900    0.08087  -1.224    0.221    
+ProgramB    -0.04613    0.10975  -0.420    0.674    
+ProgramC    -1.25745    0.10660 -11.795  < 2e-16 ***
+ProgramD    -1.27089    0.10610 -11.978  < 2e-16 ***
+ProgramE    -1.72506    0.12593 -13.699  < 2e-16 ***
+ProgramF    -3.30147    0.16996 -19.425  < 2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 870.26  on 11  degrees of freedom
+Residual deviance:  20.23  on  5  degrees of freedom
+AIC: 103.17
+
+Number of Fisher Scoring iterations: 4
+
+> # Null deviance
+> mod0.grp <- glm(cbind(Admit,Deny) ~ 1, family = binomial, data = Berk.grp)
+> summary(mod0.grp)
+
+Call:
+glm(formula = cbind(Admit, Deny) ~ 1, family = binomial, data = Berk.grp)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-14.817   -3.955   -1.809    4.535   13.383  
+
+Coefficients:
+            Estimate Std. Error z value Pr(>|z|)    
+(Intercept) -0.45406    0.03053  -14.87   <2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 870.26  on 11  degrees of freedom
+Residual deviance: 870.26  on 11  degrees of freedom
+AIC: 941.19
+
+Number of Fisher Scoring iterations: 4
+
+> mod2.grp$deviance
+[1] 20.23002
+> mod1.grp$deviance
+[1] -3.752554e-14
+> ### LRT H0: mod2.grp (additive), Ha: mod1.grp (interaction)
+> dev0 <- mod2.grp$deviance
+> deva <- mod1.grp$deviance
+> # Test statistic
+> G2 <- dev0 - deva
+> G2
+[1] 20.23002
+> ## Original case:
+> mod0 <- glm(cbind(Admit, Deny) ~ Sex, family = binomial, data = Berk.grp)
+> mod0
+
+Call:  glm(formula = cbind(Admit, Deny) ~ Sex, family = binomial, data = Berk.grp)
+
+Coefficients:
+(Intercept)      SexMale  
+    -0.8253       0.6074  
+
+Degrees of Freedom: 11 Total (i.e. Null);  10 Residual
+Null Deviance:	    870.3 
+Residual Deviance: 777.7 	AIC: 850.7
+> pchisq(870.3 - 777.7, 1, lower.tail=FALSE)
+[1] 6.400743e-22
+> anova(mod0, mod2.grp)
+Analysis of Deviance Table
+
+Model 1: cbind(Admit, Deny) ~ Sex
+Model 2: cbind(Admit, Deny) ~ Sex + Program
+  Resid. Df Resid. Dev Df Deviance
+1        10     777.75            
+2         5      20.23  5   757.52
+> anova(mod0, mod1.grp)
+Analysis of Deviance Table
+
+Model 1: cbind(Admit, Deny) ~ Sex
+Model 2: cbind(Admit, Deny) ~ Sex * Program
+  Resid. Df Resid. Dev Df Deviance
+1        10     777.75            
+2         0       0.00 10   777.75
+> anova(mod2.grp, mod1.grp)
+Analysis of Deviance Table
+
+Model 1: cbind(Admit, Deny) ~ Sex + Program
+Model 2: cbind(Admit, Deny) ~ Sex * Program
+  Resid. Df Resid. Dev Df Deviance
+1         5      20.23            
+2         0       0.00  5    20.23
+> anova(mod2.grp, mod1.grp, test = "LRT")
+Analysis of Deviance Table
+
+Model 1: cbind(Admit, Deny) ~ Sex + Program
+Model 2: cbind(Admit, Deny) ~ Sex * Program
+  Resid. Df Resid. Dev Df Deviance Pr(>Chi)   
+1         5      20.23                        
+2         0       0.00  5    20.23 0.001131 **
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+> ### Relationship to likelihood ratio chi-square statistic
+> ### when testing independence from Ch. 2:
+> Berk.grp2 <- data.frame(Sex = c("Male","Female"), Admit = c(1195,559), Deny = c(1486,1276))	
+> Berk.grp2
+     Sex Admit Deny
+1   Male  1195 1486
+2 Female   559 1276
+> mod0.grp2 <- glm(cbind(Admit,Deny) ~ Sex, family=binomial, data=Berk.grp2)
+> summary(mod0.grp2)
+
+Call:
+glm(formula = cbind(Admit, Deny) ~ Sex, family = binomial, data = Berk.grp2)
+
+Deviance Residuals: 
+[1]  0  0
+
+Coefficients:
+            Estimate Std. Error z value Pr(>|z|)    
+(Intercept) -0.82534    0.05072 -16.272   <2e-16 ***
+SexMale      0.60739    0.06389   9.506   <2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 9.2510e+01  on 1  degrees of freedom
+Residual deviance: 3.4062e-13  on 0  degrees of freedom
+AIC: 20.135
+
+Number of Fisher Scoring iterations: 2
+
+> fitted(mod0.grp2)
+        1         2 
+0.4457292 0.3046322 
+> mod0.grp2
+
+Call:  glm(formula = cbind(Admit, Deny) ~ Sex, family = binomial, data = Berk.grp2)
+
+Coefficients:
+(Intercept)      SexMale  
+    -0.8253       0.6074  
+
+Degrees of Freedom: 1 Total (i.e. Null);  0 Residual
+Null Deviance:	    92.51 
+Residual Deviance: 3.406e-13 	AIC: 20.13
+> Berk.grp2
+     Sex Admit Deny
+1   Male  1195 1486
+2 Female   559 1276
+> (1195/1486) / (559/1276)
+[1] 1.835642
+> log((1195/1486) / (559/1276))
+[1] 0.6073942
+> anova(mod0.grp2, test = "LRT")
+Analysis of Deviance Table
+
+Model: binomial, link: logit
+
+Response: cbind(Admit, Deny)
+
+Terms added sequentially (first to last)
+
+
+     Df Deviance Resid. Df Resid. Dev  Pr(>Chi)    
+NULL                     1      92.51              
+Sex   1    92.51         0       0.00 < 2.2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+> Berk.table <- matrix(c(1195,1486,559,1276), 2 ,2, byrow=TRUE,
++                      dimnames=list(Sex = c("Male","Female"), Admission=c("Admit","Deny")))
+> ## Expected counts under independence:
+> ex <- chisq.test(Berk.table)$expected
+> ## G^2 test statistic = null deviance in mod0.grp2
+> G2 <- 2*sum(Berk.table*log(Berk.table/ex))
+> G2
+[1] 92.51045
+
+
+
+
+> crab <- read.table("http://www.math.montana.edu/shancock/data/horseshoe.txt",header=T)
+> View(crab)
+> crab$colorF <- factor(crab$color, levels=c(1,2,3,4), labels=c("LM","M","DM","D"))
+> crab$spineF <- factor(crab$spine, levels=c(1,2,3), labels=c("Good","Soso","Poor"))
+> str(crab)
+'data.frame':	173 obs. of  7 variables:
+ $ color : int  2 3 1 3 3 2 1 3 2 3 ...
+ $ spine : int  3 3 1 3 3 3 1 2 1 3 ...
+ $ width : num  28.3 22.5 26 24.8 26 23.8 26.5 24.7 23.7 25.6 ...
+ $ satell: int  8 0 9 0 4 0 0 0 0 0 ...
+ $ weight: num  3.05 1.55 2.3 2.1 2.6 2.1 2.35 1.9 1.95 2.15 ...
+ $ colorF: Factor w/ 4 levels "LM","M","DM",..: 2 3 1 3 3 2 1 3 2 3 ...
+ $ spineF: Factor w/ 3 levels "Good","Soso",..: 3 3 1 3 3 3 1 2 1 3 ...
+> summary(crab)
+     color           spine           width          satell      
+ Min.   :1.000   Min.   :1.000   Min.   :21.0   Min.   : 0.000  
+ 1st Qu.:2.000   1st Qu.:2.000   1st Qu.:24.9   1st Qu.: 0.000  
+ Median :2.000   Median :3.000   Median :26.1   Median : 2.000  
+ Mean   :2.439   Mean   :2.486   Mean   :26.3   Mean   : 2.919  
+ 3rd Qu.:3.000   3rd Qu.:3.000   3rd Qu.:27.7   3rd Qu.: 5.000  
+ Max.   :4.000   Max.   :3.000   Max.   :33.5   Max.   :15.000  
+     weight      colorF   spineF   
+ Min.   :0.200   LM:12   Good: 37  
+ 1st Qu.:2.000   M :95   Soso: 15  
+ Median :2.350   DM:44   Poor:121  
+ Mean   :2.427   D :22             
+ 3rd Qu.:2.850                     
+ Max.   :5.200                     
+> plot(crab)
+> boxplot(satell ~ colorF, data=crab, xlab="Color", ylab="No. of Satellites")
+> boxplot(satell ~ spineF, data=crab, xlab="Spine Condition", ylab="No. of Satellites")
+> cor(crab[,1:5])
+            color       spine      width      satell     weight
+color   1.0000000  0.37850163 -0.2643863 -0.19078455 -0.2748001
+spine   0.3785016  1.00000000 -0.1218946 -0.08993242 -0.1707781
+width  -0.2643863 -0.12189458  1.0000000  0.33989033  0.8560429
+satell -0.1907846 -0.08993242  0.3398903  1.00000000  0.3542486
+weight -0.2748001 -0.17077808  0.8560429  0.35424861  1.0000000
+> summary(glm(satell ~ width, family = poisson, data = crab))
+
+Call:
+glm(formula = satell ~ width, family = poisson, data = crab)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-2.8526  -1.9884  -0.4933   1.0970   4.9221  
+
+Coefficients:
+            Estimate Std. Error z value Pr(>|z|)    
+(Intercept) -3.30476    0.54224  -6.095  1.1e-09 ***
+width        0.16405    0.01997   8.216  < 2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for poisson family taken to be 1)
+
+    Null deviance: 632.79  on 172  degrees of freedom
+Residual deviance: 567.88  on 171  degrees of freedom
+AIC: 927.18
+
+Number of Fisher Scoring iterations: 6
+
+> summary(glm(satell ~ weight, family = poisson, data = crab))
+
+Call:
+glm(formula = satell ~ weight, family = poisson, data = crab)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-2.9182  -2.0169  -0.5926   1.0290   4.9755  
+
+Coefficients:
+            Estimate Std. Error z value Pr(>|z|)    
+(Intercept) -0.36997    0.17811  -2.077   0.0378 *  
+weight       0.56837    0.06496   8.750   <2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for poisson family taken to be 1)
+
+    Null deviance: 632.79  on 172  degrees of freedom
+Residual deviance: 564.35  on 171  degrees of freedom
+AIC: 923.65
+
+Number of Fisher Scoring iterations: 5
+
+> summary(glm(satell ~ width + weight, family = poisson, data = crab))
+
+Call:
+glm(formula = satell ~ width + weight, family = poisson, data = crab)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-2.9194  -1.9390  -0.5447   1.0694   4.9683  
+
+Coefficients:
+            Estimate Std. Error z value Pr(>|z|)  
+(Intercept) -1.69254    0.86372  -1.960   0.0500 .
+width        0.06972    0.04435   1.572   0.1159  
+weight       0.35659    0.14906   2.392   0.0167 *
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for poisson family taken to be 1)
+
+    Null deviance: 632.79  on 172  degrees of freedom
+Residual deviance: 561.93  on 170  degrees of freedom
+AIC: 923.23
+
+Number of Fisher Scoring iterations: 6
+
+> crab.glm <- glm(satell ~ width, family = poisson(link = "log"), data = crab)
+> summary(crab.glm)
+
+Call:
+glm(formula = satell ~ width, family = poisson(link = "log"), 
+    data = crab)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-2.8526  -1.9884  -0.4933   1.0970   4.9221  
+
+Coefficients:
+            Estimate Std. Error z value Pr(>|z|)    
+(Intercept) -3.30476    0.54224  -6.095  1.1e-09 ***
+width        0.16405    0.01997   8.216  < 2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for poisson family taken to be 1)
+
+    Null deviance: 632.79  on 172  degrees of freedom
+Residual deviance: 567.88  on 171  degrees of freedom
+AIC: 927.18
+
+Number of Fisher Scoring iterations: 6
+
+> exp(crab.glm$coefficients)
+(Intercept)       width 
+ 0.03670812  1.17826744 
+> co <- crab.glm$coefficients
+> plot(satell ~ width, xlab="Width (cm)", ylab="No. of Satellites", data=crab)
+> curve(exp(co[1]+co[2]*x),add=T)
+> hist(crab$satell)
+> mean(crab$satell)
+[1] 2.919075
+> dpois(0:15, lamda = 2.92)
+Error in dpois(0:15, lamda = 2.92) : unused argument (lamda = 2.92)
+> dpois(0:15,  2.92)
+ [1] 5.393369e-02 1.574864e-01 2.299301e-01 2.237986e-01 1.633730e-01 9.540983e-02
+ [7] 4.643278e-02 1.936910e-02 7.069723e-03 2.293732e-03 6.697699e-04 1.777935e-04
+[13] 4.326307e-05 9.717552e-06 2.026804e-06 3.945511e-07
+> cbind(0:15, dpois(0:15,  2.92))
+      [,1]         [,2]
+ [1,]    0 5.393369e-02
+ [2,]    1 1.574864e-01
+ [3,]    2 2.299301e-01
+ [4,]    3 2.237986e-01
+ [5,]    4 1.633730e-01
+ [6,]    5 9.540983e-02
+ [7,]    6 4.643278e-02
+ [8,]    7 1.936910e-02
+ [9,]    8 7.069723e-03
+[10,]    9 2.293732e-03
+[11,]   10 6.697699e-04
+[12,]   11 1.777935e-04
+[13,]   12 4.326307e-05
+[14,]   13 9.717552e-06
+[15,]   14 2.026804e-06
+[16,]   15 3.945511e-07
+> table(crab$satell)
+
+ 0  1  2  3  4  5  6  7  8  9 10 11 12 14 15 
+62 16  9 19 19 15 13  4  6  3  3  1  1  1  1 
+> table(crab$satell)/length(crab$satell)
+
+          0           1           2           3           4           5           6 
+0.358381503 0.092485549 0.052023121 0.109826590 0.109826590 0.086705202 0.075144509 
+          7           8           9          10          11          12          14 
+0.023121387 0.034682081 0.017341040 0.017341040 0.005780347 0.005780347 0.005780347 
+         15 
+0.005780347 
+>

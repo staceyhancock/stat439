@@ -82,6 +82,10 @@ G2 <- dev0 - deva
 # p-value
 pchisq(G2, df = 5, lower.tail=FALSE)
 
+## Original case:
+mod0 <- glm(cbind(Admit, Deny) ~ Sex, family = binomial, data = Berk.grp)
+
+
 
 ### Relationship to likelihood ratio chi-square statistic
 ### when testing independence from Ch. 2:
@@ -91,7 +95,8 @@ summary(mod0.grp2)  # Compare coef. of SexMale to sample log(OR)
 mod0.grp2$fitted   # Compare to conditional row percentages in sample
 anova(mod0.grp2, test = "LRT")
 
-Berk.table <- matrix(c(1195,1486,559,1276),2,2,byrow=TRUE, dimnames=list(Sex = c("Male","Female"), Admission=c("Admit","Deny")))
+Berk.table <- matrix(c(1195,1486,559,1276), 2 ,2, byrow=TRUE,
+                     dimnames=list(Sex = c("Male","Female"), Admission=c("Admit","Deny")))
 ## Expected counts under independence:
 ex <- chisq.test(Berk.table)$expected
 ## G^2 test statistic = null deviance in mod0.grp2
