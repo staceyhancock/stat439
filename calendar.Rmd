@@ -246,6 +246,9 @@ _Course Overview_
 
 ### **Thursday**
 
+- Homicides and gun registraction Poisson regression example ([Rmd](R/Week8-Mar10-GunRegistration.Rmd)) ([html](R/Week8-Mar10-GunRegistration.html))
+
+
 ### **Homework/Quiz**
 
 - [Homework 4](homework/Stat439-S22-HW4.pdf) ([Rmd](homework/Stat439-S22-HW4.Rmd)) due Thur Mar 10 by 11pm in Gradescope --- GLMs for binary data (logistic regression)
