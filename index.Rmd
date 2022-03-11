@@ -1,5 +1,7 @@
 ---
-title: "Introduction to Categorical Data Analysis"
+title: |
+       | STAT 439
+       | Introduction to Categorical Data Analysis
 subtitle: "Spring 2022"
 output:
   html_document:

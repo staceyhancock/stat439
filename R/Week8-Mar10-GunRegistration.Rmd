@@ -70,6 +70,14 @@ row.names = c("AL", "AR", "CA", "CT", "DC", "FL", "HI", "IA", "IL", "MA",
 ```
 
 
+# Fitting Poisson regression with rates
+
+mod <- glm(homicides ~ gunreg, family = poisson, data = GunReg,
+offset = log(pop))
+summary(mod)
+
+mod.wrong <- glm(homicides ~ gunreg, family = poisson, data = GunReg)
+summary(mod.wrong)
 # Analysis
 
 ## Exploratory Data Analysis

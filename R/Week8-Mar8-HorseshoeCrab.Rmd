@@ -130,7 +130,9 @@ Create the eight width categories used in book:
 One option to create width categories is the `cut` function.
 Note that the resulting factor is treated as nominal even though it is ordinal.
 ```{r}
-crab$width.grp <- cut(crab$width, breaks = c(0, seq(23.25,29.25,by=1), 35), labels=c(1:8))
+crab$width.grp <- cut(crab$width, 
+                      breaks = c(0, seq(23.25, 29.25, by=1), 35), 
+                      labels=c(1:8))
 is.factor(crab$width.grp)
 head(cbind(crab$width, crab$width.grp))
 ```
@@ -171,9 +173,22 @@ This may indicate need to include other predictors to reduce unexplained variabi
 ```{r}
 crab.glmF <- glm(satell ~ colorF, family = poisson(link = "log"), data = crab)
 summary(crab.glmF)
+exp(crab.glmF$coefficients)
 ```
 
 How would you interpret each coefficient?
+
+If we treat color as quantitative?
+
+```{r}
+crab.color <- glm(satell ~ color, family = poisson, data = crab)
+summary(crab.color)
+exp(crab.color$coefficients[2]*2)-1
+```
+
+The estimated mean number of satellites for dark medium
+crabs are about `r (1-exp(crab.color$coefficients[2]*2))*100`% less than
+for light medium crabs.
 
 
 ### Poisson regression with two predictors: `width` and `colorF`
@@ -191,7 +206,7 @@ Plot number of satellites vs width by color and add fitted model.
 co <- crab.glm2$coef
 plot(satell ~ width, data=crab, xlab="Width (cm)", ylab="No. of Satellites", 
      pch=color, col=(color+1))
-legend("topright", c("LM","M","DM","D"), pch=c(1,2,3,4), col=c(2,3,4,5))
+legend("topleft", c("LM","M","DM","D"), pch=c(1,2,3,4), col=c(2,3,4,5))
 # Add fitted models by color
 # LM
 curve(exp(co[1]+co[2]*x), col=2, add=TRUE)

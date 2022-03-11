@@ -247,6 +247,7 @@ _Course Overview_
 ### **Thursday**
 
 - Homicides and gun registraction Poisson regression example ([Rmd](R/Week8-Mar10-GunRegistration.Rmd)) ([html](R/Week8-Mar10-GunRegistration.html))
+- [In-class notes](notes/NotesMar10.pdf)
 
 
 ### **Homework/Quiz**
