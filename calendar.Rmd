@@ -262,13 +262,16 @@ _Course Overview_
 
 ### _Content_
 
-- Multicategory logit models
+- GLMs for count data (continued)
+- Model fitting, selection and diagnostics for GLMs
 
 ### **Assigned readings**
 
-- Chapter 6 Sections 6.1--6.2
+- (continued from last week)
 
 ### **Tuesday**
+
+- [Model selection slides](lectures/LectureSlides-Mar22-ModelSelection.pdf)
 
 ### **Thursday**
 
@@ -284,10 +287,12 @@ _Course Overview_
 
 ### _Content_
 
+- Multicategory logit models
 - Models for matched pairs
 
 ### **Assigned readings**
 
+- Chapter 6 Sections 6.1--6.2
 - Chapter 8 Sections 8.1, 8.3, 8.5
 
 ### **Tuesday**
@@ -296,7 +301,7 @@ _Course Overview_
 
 ### **Homework/Quiz**
 
-- Homework 5 due Thur Mar 31 by 11pm --- model fitting, selection and diagnostics for GLMs; multicategory logit models
+- Homework 5 due Thur Mar 31 by 11pm --- GLMS for Poisson regression, model fitting, selection and diagnostics for GLMs
 
 ---
 
@@ -344,7 +349,7 @@ _Course Overview_
 
 ### **Homework/Quiz**
 
-- Homework 6 due Thur Apr 14 by 11pm --- matched pairs and ordinal data
+- Homework 6 due Thur Apr 14 by 11pm
 
 ---
 
@@ -391,7 +396,7 @@ _Course Overview_
 
 ### **Homework/Quiz**
 
-- Homework 7 due Thur Apr 28 by 11pm --- GEEs and GLMMs
+- Homework 7 due Thur Apr 28 by 11pm
 
 ---
 
@@ -406,7 +411,7 @@ _Course Overview_
 ### **Homework/Quiz**
 
 - Quiz 7 in class Thur May 5 (make-up quiz only)
-- Homework 8 due Thur May 5 by 11pm --- classification and clustering
+- Homework 8 due Thur May 5 by 11pm
 
 ---
 
