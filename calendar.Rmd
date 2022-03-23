@@ -246,7 +246,7 @@ _Course Overview_
 
 ### **Thursday**
 
-- Homicides and gun registraction Poisson regression example ([Rmd](R/Week8-Mar10-GunRegistration.Rmd)) ([html](R/Week8-Mar10-GunRegistration.html))
+- Homicides and gun registraction Poisson regression example ([Rmd](R/Week8-Mar10-GunRegistration.Rmd)) ([html](R/Week8-Mar10-GunRegistration.html)) (updated 3/22)
 - [In-class notes](notes/NotesMar10.pdf)
 
 
@@ -271,9 +271,13 @@ _Course Overview_
 
 ### **Tuesday**
 
-- [Model selection slides](lectures/LectureSlides-Mar22-ModelSelection.pdf)
+- [In-class notes](notes/NotesMar22.pdf)
+- See R example from last week for updated code
+
 
 ### **Thursday**
+
+- [Model selection slides](lectures/LectureSlides-Mar22-ModelSelection.pdf)
 
 ### **Homework/Quiz**
 

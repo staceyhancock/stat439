@@ -1,12 +1,13 @@
 ---
 title: 'Poisson Regression: Homicide Rates and Gun Registration'
 output: html_document
-date: '2022-03-10'
+date: '2022-03-10 and 2022-03-22'
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
+library(car)
 ```
 
 The dataset below contains data by state, including population,
@@ -69,19 +70,74 @@ row.names = c("AL", "AR", "CA", "CT", "DC", "FL", "HI", "IA", "IL", "MA",
    "VA", "VT", "WI", "WV", "WY"), class = "data.frame")
 ```
 
+## Exploratory Data Analysis
+
+Create a "population density" variable
+```{r}
+GunReg <- GunReg %>% mutate(pop_density = (pop*1000)/(area*1000))
+```
+
+Scatterplot matrix
+```{r}
+plot(GunReg)
+scatterplotMatrix(GunReg)
+```
+
+Create homicide rate variable:
+```{r}
+GunReg <- GunReg %>% mutate(homicide_rate = homicides/pop)
+GunReg <- data.frame(state = row.names(GunReg), GunReg)
+```
+
+Correlations
+```{r}
+cor(GunReg[,c(2:8)])
+```
+
+```{r}
+GunReg %>% ggplot(aes(x = poverty, y = homicide_rate)) +
+  geom_point()
+plot(GunReg$poverty, GunReg$homicide_rate,
+     xlab = "Percent poverty", ylab = "Homicide rate per 1000 people")
+# Use code below to interactively identify outliers:
+# identify(GunReg$poverty, GunReg$homicide_rate)
+```
+
+```{r}
+boxplot(GunReg$homicide_rate ~ GunReg$gunreg,
+        xlab = "Gun Registration Law (0 = No)",
+        ylab = "Homicide Rate per 1,000 people")
+```
+
+
 
 # Fitting Poisson regression with rates
 
-mod <- glm(homicides ~ gunreg, family = poisson, data = GunReg,
-offset = log(pop))
+```{r}
+mod <- glm(homicides ~ gunreg, family = poisson, 
+           data = GunReg, offset = log(pop))
 summary(mod)
+```
 
+```{r}
+# Incorrect model since no offset is included
 mod.wrong <- glm(homicides ~ gunreg, family = poisson, data = GunReg)
 summary(mod.wrong)
-# Analysis
-
-## Exploratory Data Analysis
+```
 
 
-## Modeling
+Something strange...
+```{r}
+GunReg$x <- rnorm(51)
+mod <- glm(homicides ~ gunreg + x, family = poisson, 
+           data = GunReg, offset = log(pop))
+summary(mod)
+```
+
+Quasi-Poisson model
+```{r}
+mod_q <- glm(homicides ~ gunreg, family = quasipoisson, 
+           data = GunReg, offset = log(pop))
+summary(mod_q)
+```
 
