@@ -359,7 +359,7 @@ pre code {
 
 <h1 class="title toc-ignore">Poisson Regression: Homicide Rates and Gun
 Registration</h1>
-<h4 class="date">2022-03-10 and 2022-03-22</h4>
+<h4 class="date">2022-03-10, 2022-03-22, and 2022-03-24</h4>
 
 </div>
 
@@ -532,21 +532,21 @@ summary(mod)</code></pre>
 ## 
 ## Deviance Residuals: 
 ##     Min       1Q   Median       3Q      Max  
-## -16.863   -8.106   -3.158    2.494   33.392  
+## -19.851   -7.986   -2.861    2.088   34.520  
 ## 
 ## Coefficients:
-##              Estimate Std. Error z value Pr(&gt;|z|)    
-## (Intercept) -2.535560   0.014236 -178.10   &lt;2e-16 ***
-## gunreg       0.246487   0.015977   15.43   &lt;2e-16 ***
-## x            0.169417   0.007579   22.35   &lt;2e-16 ***
+##              Estimate Std. Error  z value Pr(&gt;|z|)    
+## (Intercept) -2.550845   0.014326 -178.059   &lt;2e-16 ***
+## gunreg       0.253389   0.015977   15.859   &lt;2e-16 ***
+## x           -0.005565   0.005533   -1.006    0.315    
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
 ## (Dispersion parameter for poisson family taken to be 1)
 ## 
 ##     Null deviance: 5742.1  on 50  degrees of freedom
-## Residual deviance: 4977.1  on 48  degrees of freedom
-## AIC: 5344.2
+## Residual deviance: 5477.5  on 48  degrees of freedom
+## AIC: 5844.6
 ## 
 ## Number of Fisher Scoring iterations: 4</code></pre>
 <p>Quasi-Poisson model</p>
@@ -576,6 +576,91 @@ summary(mod_q)</code></pre>
 ## AIC: NA
 ## 
 ## Number of Fisher Scoring iterations: 4</code></pre>
+<p>Check calculations:</p>
+<pre class="r"><code>pres &lt;- residuals(mod, type = &quot;pearson&quot;)
+phihat &lt;- sum(pres^2)/(51 - 2)
+orig_se &lt;- summary(mod)$coefficients[,2]
+corrected_se &lt;- orig_se*sqrt(phihat)</code></pre>
+<p>Model comparison tests:</p>
+<pre class="r"><code>mod0 &lt;- glm(homicides ~ gunreg, family = poisson, 
+           data = GunReg, offset = log(pop))
+mod0_q &lt;- glm(homicides ~ gunreg, family = quasipoisson, 
+           data = GunReg, offset = log(pop))
+mod1 &lt;- glm(homicides ~ gunreg + poverty + urban, family = poisson, 
+           data = GunReg, offset = log(pop))
+mod1_q &lt;- glm(homicides ~ gunreg + poverty + urban, family = quasipoisson, 
+           data = GunReg, offset = log(pop))
+
+anova(mod0, mod1, test = &quot;LRT&quot;)</code></pre>
+<pre><code>## Analysis of Deviance Table
+## 
+## Model 1: homicides ~ gunreg
+## Model 2: homicides ~ gunreg + poverty + urban
+##   Resid. Df Resid. Dev Df Deviance  Pr(&gt;Chi)    
+## 1        49     5478.5                          
+## 2        47     3919.4  2   1559.2 &lt; 2.2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code>anova(mod0_q, mod1_q, test = &quot;LRT&quot;)</code></pre>
+<pre><code>## Analysis of Deviance Table
+## 
+## Model 1: homicides ~ gunreg
+## Model 2: homicides ~ gunreg + poverty + urban
+##   Resid. Df Resid. Dev Df Deviance  Pr(&gt;Chi)    
+## 1        49     5478.5                          
+## 2        47     3919.4  2   1559.2 0.0001154 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code># Same deviance, but different p-values!
+
+dev &lt;- anova(mod0, mod1, test = &quot;LRT&quot;)$Deviance[2]
+# p-values
+pchisq(dev, df = 2, lower.tail=FALSE) # p-value in original LRT</code></pre>
+<pre><code>## [1] 0</code></pre>
+<pre class="r"><code>pchisq(dev/phihat, df = 2, lower.tail=FALSE) # corrected p-value...?</code></pre>
+<pre><code>## [1] 0.004117905</code></pre>
+<p>Other way to deal with overdispersion: negative binomial
+regression</p>
+<pre class="r"><code>library(MASS)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;MASS&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:dplyr&#39;:
+## 
+##     select</code></pre>
+<pre class="r"><code>mod_nb &lt;- glm.nb(homicides ~ gunreg + poverty + urban + offset(log(pop)), 
+           data = GunReg)
+summary(mod_nb)</code></pre>
+<pre><code>## 
+## Call:
+## glm.nb(formula = homicides ~ gunreg + poverty + urban + offset(log(pop)), 
+##     data = GunReg, init.theta = 3.418144423, link = log)
+## 
+## Deviance Residuals: 
+##      Min        1Q    Median        3Q       Max  
+## -2.78734  -0.84712  -0.06245   0.28497   2.73334  
+## 
+## Coefficients:
+##              Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept) -5.262017   0.478178 -11.004  &lt; 2e-16 ***
+## gunreg       0.158352   0.166324   0.952  0.34106    
+## poverty      0.100595   0.018321   5.491 4.01e-08 ***
+## urban        0.017749   0.005608   3.165  0.00155 ** 
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for Negative Binomial(3.4181) family taken to be 1)
+## 
+##     Null deviance: 106.179  on 50  degrees of freedom
+## Residual deviance:  53.877  on 47  degrees of freedom
+## AIC: 634.09
+## 
+## Number of Fisher Scoring iterations: 1
+## 
+## 
+##               Theta:  3.418 
+##           Std. Err.:  0.677 
+## 
+##  2 x log-likelihood:  -624.088</code></pre>
 </div>
 <div class="footnotes footnotes-end-of-document">
 <hr />

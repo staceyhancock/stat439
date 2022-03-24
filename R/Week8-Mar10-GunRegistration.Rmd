@@ -1,7 +1,7 @@
 ---
 title: 'Poisson Regression: Homicide Rates and Gun Registration'
 output: html_document
-date: '2022-03-10 and 2022-03-22'
+date: '2022-03-10, 2022-03-22, and 2022-03-24'
 ---
 
 ```{r setup, include=FALSE}
@@ -139,5 +139,41 @@ Quasi-Poisson model
 mod_q <- glm(homicides ~ gunreg, family = quasipoisson, 
            data = GunReg, offset = log(pop))
 summary(mod_q)
+```
+Check calculations:
+```{r}
+pres <- residuals(mod, type = "pearson")
+phihat <- sum(pres^2)/(51 - 2)
+orig_se <- summary(mod)$coefficients[,2]
+corrected_se <- orig_se*sqrt(phihat)
+```
+
+Model comparison tests:
+```{r}
+mod0 <- glm(homicides ~ gunreg, family = poisson, 
+           data = GunReg, offset = log(pop))
+mod0_q <- glm(homicides ~ gunreg, family = quasipoisson, 
+           data = GunReg, offset = log(pop))
+mod1 <- glm(homicides ~ gunreg + poverty + urban, family = poisson, 
+           data = GunReg, offset = log(pop))
+mod1_q <- glm(homicides ~ gunreg + poverty + urban, family = quasipoisson, 
+           data = GunReg, offset = log(pop))
+
+anova(mod0, mod1, test = "LRT")
+anova(mod0_q, mod1_q, test = "LRT")
+# Same deviance, but different p-values!
+
+dev <- anova(mod0, mod1, test = "LRT")$Deviance[2]
+# p-values
+pchisq(dev, df = 2, lower.tail=FALSE) # p-value in original LRT
+pchisq(dev/phihat, df = 2, lower.tail=FALSE) # corrected p-value...?
+```
+
+Other way to deal with overdispersion: negative binomial regression
+```{r}
+library(MASS)
+mod_nb <- glm.nb(homicides ~ gunreg + poverty + urban + offset(log(pop)), 
+           data = GunReg)
+summary(mod_nb)
 ```
 

@@ -246,7 +246,7 @@ _Course Overview_
 
 ### **Thursday**
 
-- Homicides and gun registraction Poisson regression example ([Rmd](R/Week8-Mar10-GunRegistration.Rmd)) ([html](R/Week8-Mar10-GunRegistration.html)) (updated 3/22)
+- Homicides and gun registraction Poisson regression example ([Rmd](R/Week8-Mar10-GunRegistration.Rmd)) ([html](R/Week8-Mar10-GunRegistration.html)) (updated 3/22 and 3/24)
 - [In-class notes](notes/NotesMar10.pdf)
 
 
@@ -277,8 +277,8 @@ _Course Overview_
 
 ### **Thursday**
 
-- [Model selection slides](lectures/LectureSlides-Mar22-ModelSelection.pdf)
-- [Model selection with horseshoe crab data](R/Week9-Mar22-ModelSelection-Horseshoe.html) ([Rmd](R/Week9-Mar22-ModelSelection-Horseshoe.Rmd))
+- [In-class notes](notes/NotesMar24.pdf)
+- See R example from last week for updated code
 
 ### **Homework/Quiz**
 
@@ -292,15 +292,17 @@ _Course Overview_
 
 ### _Content_
 
+- Model fitting, selection and diagnostics for GLMs (cont)
 - Multicategory logit models
-- Models for matched pairs
 
 ### **Assigned readings**
 
 - Chapter 6 Sections 6.1--6.2
-- Chapter 8 Sections 8.1, 8.3, 8.5
 
 ### **Tuesday**
+
+- [Model selection slides](lectures/LectureSlides-Mar22-ModelSelection.pdf)
+- [Model selection with horseshoe crab data](R/Week9-Mar22-ModelSelection-Horseshoe.html) ([Rmd](R/Week9-Mar22-ModelSelection-Horseshoe.Rmd))
 
 ### **Thursday**
 
@@ -316,10 +318,15 @@ _Course Overview_
 
 ### _Content_
 
+- Models for matched pairs
 - Modeling ordinal data
 
 ### **Assigned readings**
 
+Matched pairs:
+- Chapter 8 Sections 8.1, 8.3, 8.5
+
+Ordinal data:
 - Chapter 2 Section 2.5
 - Chapter 6 Section 6.2
 - Chapter 8 Section 8.4
