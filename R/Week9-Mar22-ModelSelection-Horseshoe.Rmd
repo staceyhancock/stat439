@@ -1,0 +1,223 @@
+---
+title: "Model Selection with Horseshoe Crab Data"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(MASS)  # For glm.nb function
+library(bestglm)  # For automated model selection
+library(ResourceSelection)  # For hoslem.test function
+```
+
+# Data set from Agresti, 2007
+Study of nesting horseshoe crabs (J. Brockman, Ethology, 1996).
+Each female crab in the study had a male crab attached to her in her nest.
+The study investigated factors that affect whether the female crab had
+any other males, called satellites, residing nearby her.
+Explanatory variables thought possibly to affect this included the
+female crab's color, spine condition, weight, and carapace width.
+The response outcome for each female crab is her number of satellites.
+
+### Variable descriptions
+
+- color: 1 - light medium, 2 - medium, 3 - dark medium, 4 - dark
+- spine: 1 - both good, 2 - one worn or broken, 3 - both worn or broken
+- width: carapace width in cm
+- satell: number of satellites
+- weight: weight in kg
+
+# Data import
+First, read in the data set and convert color and spine to factors:
+```{r}
+crab <- read.table("http://www.math.montana.edu/shancock/data/horseshoe.txt",header=T)
+crab$colorF <- factor(crab$color, levels=c(1,2,3,4), labels=c("LM","M","DM","D"))
+crab$spineF <- factor(crab$spine, levels=c(1,2,3), labels=c("Good","Soso","Poor"))
+```
+
+# Research Goal
+Our goal is to determine, of the four predictors available,
+what best predicts the number of satellites.
+
+### Model Selection Plan
+
+1. Exploratory data analysis to examine relationships between
+   number of satellites and each predictor individually.
+2. Model selection via analysis of deviance (`anova`),
+   forward/backward selection (`drop1`,`add1`,`step`),
+   or best subsets (`bestglm`).
+3. Check assumptions, diagnostics, and goodness-of-fit.
+4. Write paragraph summarizing what the model tells us about
+   the relationships between predictors and response.
+
+# Part I: Model Selection with Poisson Response
+
+Recall: Overdispersion was a problem with these count data.
+We can use Negative Binomial regression to address this issue.
+```{r}
+mod1 <- glm.nb(satell ~ width, data = crab)
+summary(mod1)
+```
+
+Or quasi-Poisson:
+```{r}
+mod1.qpois <- glm(satell ~ width, family = quasipoisson, data = crab)
+summary(mod1.qpois)
+```
+
+Compare to Poisson regression:
+```{r}
+mod1.pois <- glm(satell ~ width, family = poisson, data = crab)
+summary(mod1.pois)
+```
+
+
+### Model Selection
+
+Prior to model fitting -> exploratory data analysis.
+
+One approach - start with all four in the model, and try taking
+one out:
+```{r}
+mod.full <- glm.nb(satell ~ colorF + spineF + width + weight, data = crab)
+summary(mod.full)
+```
+Why all large p-values?
+
+Model with width alone --> p-value for width = tiny  
+Do I need width compared to nothing? --> Yes!
+
+Model with everything --> p-value for width = 0.393  
+Do I need width in addition to color, spine, weight? --> No
+
+Try dropping each:
+```{r}
+drop1(mod.full)
+```
+
+Take out spineF:
+```{r}
+mod2 <- update(mod.full, . ~ . - spineF)
+drop1(mod2)
+```
+
+Take out colorF:
+```{r}
+mod3 <- update(mod2, . ~ . - colorF)
+drop1(mod3)
+```
+
+Step-wise regression:
+```{r}
+step(mod.full, direction = "backward")
+```
+
+Step-wise regression going forward:
+```{r}
+mod.null <- glm.nb(satell ~ 1, data = crab)
+step(mod.null, satell ~ colorF + spineF + width + weight, direction = "forward")
+```
+
+Step-wise regression in both directions:
+```{r}
+step(mod.full, direction = "both")
+```
+
+### Summary
+
+According to AIC, the "best" model includes just weight.
+"Best" model:
+```{r}
+mod.best <- glm.nb(satell ~ weight, data = crab)
+summary(mod.best)
+exp(confint(mod.best))
+```
+
+
+```{r}
+plot(satell ~ weight, data = crab,
+     xlab = "Weight (kg)", ylab = "Number of Satellites",
+     main = "Number of Satellites vs Weight")
+curve(exp(-0.6142 + 0.6637*x), col = "red", add=T)
+```
+
+Fitted model: ($x$ = weight)
+$$
+\log(\hat{\mu}) = -0.6142 + 0.6637x
+$$
+$$
+\hat{\mu} = \exp(-0.6142 + 0.6637x)
+$$
+We are 95% confident that an increase in one kg of weight is
+associated with an increase of between 41.7% and 169.6%
+in mean number of satellites in this population.
+
+### Diagnostics
+
+- functional form of mean - transform weight or width?
+- interactions?
+- outliers or influential observations - if are outliers, fit model with and without and see how much conclusions change
+- goodness of fit test (using deviance since Poisson with reasonably large counts)
+```{r}
+dev <- mod.best$deviance
+dev
+df <- mod.best$df.residual
+df
+# p-value
+pchisq(dev, df, lower.tail = FALSE)
+```
+
+
+
+# Part I: Model Selection with Binomial Response
+
+Let's convert our response variable to an indicator variable
+of whether the female crab had satellites or not.
+```{r}
+crab$satell_ind <- as.numeric(crab$satell > 0)
+```
+
+Note: Overdispersion is not a problem with binary data -- why?  
+We are restricted to the values {0,1}, whereas counts
+can go to infinity.
+
+### Model Selection
+
+The `bestglm` function will fit every combination of predictors
+(all subsets), and return the one with the minimum value
+of the information criteria you select.
+
+See the help file for the `bestglm` function -- it needs 
+the design matrix (the actual values of the variables
+that show up in the model equation - not categories),
+and the response
+variable in the last column of the data set.
+
+```{r}
+mod.full <- glm(satell_ind ~ colorF + spineF + width + weight, family = binomial, data = crab)
+X <- model.matrix(mod.full)
+head(X)
+# Remove column of 1's (not a variable):
+X <- X[,-1]
+Xy <- as.data.frame(cbind(X,y = crab$satell_ind))
+head(Xy)
+best.AIC <- bestglm(Xy, family = binomial, IC = "AIC")
+best.AIC
+best.BIC <- bestglm(Xy, family = binomial, IC = "BIC")
+best.BIC
+```
+
+WARNING: Best subsets does not follow the rule that if you
+include one indicator variable for a factor, you must include
+the rest. Thus, if using the models given by `best.AIC` or
+`best.BIC`, make sure you include all indicators for `colorF`!
+
+### Goodness of Fit for binary data: Hosmer-Lemeshow Test
+
+```{r}
+mod.wgt <- glm(satell_ind ~ weight, family = binomial, data = crab)
+obs <- crab$satell_ind
+expected <- fitted(mod.wgt)
+hoslem.test(obs, expected, g = 10)
+```
+

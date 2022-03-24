@@ -278,6 +278,7 @@ _Course Overview_
 ### **Thursday**
 
 - [Model selection slides](lectures/LectureSlides-Mar22-ModelSelection.pdf)
+- [Model selection with horseshoe crab data](R/Week9-Mar22-ModelSelection-Horseshoe.html) ([Rmd](R/Week9-Mar22-ModelSelection-Horseshoe.Rmd))
 
 ### **Homework/Quiz**
 
