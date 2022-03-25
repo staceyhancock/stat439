@@ -308,7 +308,7 @@ _Course Overview_
 
 ### **Homework/Quiz**
 
-- Homework 5 due Thur Mar 31 by 11pm --- GLMS for Poisson regression, model fitting, selection and diagnostics for GLMs
+- [Homework 5](homework/Stat439-S22-HW5.pdf) ([Rmd](homework/Stat439-S22-HW5.Rmd)) due Thur Mar 31 by 11pm --- GLMS for Poisson regression, model fitting, selection and diagnostics for GLMs
 
 ---
 
