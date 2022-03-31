@@ -343,6 +343,11 @@ Ordinal data:
 
 - Quiz 5 in class Thur Apr 7
 
+### **Project Deadline**
+
+- Data analysis proposal due by 11pm Friday Apr 8 in Gradescope.
+
+
 
 ---
 
@@ -390,6 +395,10 @@ Ordinal data:
 
 - Quiz 6 in class Thur Apr 21
 
+### **Project Deadline**
+
+- Draft report due by 11pm Friday Apr 22 in Gradescope.
+
 ---
 
 ## Week 14 (Apr 25--29)
@@ -414,6 +423,10 @@ Ordinal data:
 
 - Homework 7 due Thur Apr 28 by 11pm
 
+### **Project Deadline**
+
+- Peer assessments due by 11pm Friday Apr 29 in Gradescope.
+
 ---
 
 ## Week 15 (May 2--6)
@@ -427,12 +440,21 @@ Ordinal data:
 ### **Homework/Quiz**
 
 - Quiz 7 in class Thur May 5 (make-up quiz only)
-- Homework 8 due Thur May 5 by 11pm
+
+### **Project Deadline**
+
+- Final report due by 11pm Friday May 6 in Gradescope.
 
 ---
 
-## Final Exam 
+## Final Exam Week
 
 ---
+
+### Take-home final exam
+
+Released Friday, May 6. Due by 11pm Wednesday, May 11 in Gradescope.
+
+### Project presentations
 
 Thursday, May 12 8:00--9:50am
