@@ -1,6 +1,6 @@
 ### Multicategory logit models
 ### Multinomial Logistic Regression
-
+library(tidyverse)
 ### Data: Greene (1995)
 ## Travel Choices:
 # Measure travelers' decisions regarding travel mode
@@ -21,6 +21,9 @@
 ## Read in data and attach:
 travel <- read.table("https://math.montana.edu/shancock/data/TravelChoices.txt",
                      header=TRUE)
+travel$mode.fac <- factor(travel$mode, levels=c(0:3), 
+                          labels=c("air","train","bus","car"))
+
 attach(travel)
 head(travel)
 dim(travel)
@@ -35,13 +38,33 @@ cbind(table(mode), table(mode)/sum(table(mode)))
 # air (27.6%)
 # bus (14.2%)
 
+travel %>% ggplot(aes(x = mode)) +
+  geom_bar()
+
 # Travel mode vs. party size?
-table(mode, psize)
+table(mode.fac, psize)
 # As psize increases, probability of traveling by air decreases.
 # Note sparse data for large party sizes (only one observation with psize = 6)
 
+travel %>% ggplot(aes(x = mode.fac, y = hinc)) +
+  geom_boxplot() +
+  geom_jitter(alpha = 0.2, width = .15, height = 0)
+
+travel %>% ggplot(aes(x = mode.fac, y = psize)) +
+  geom_violin()
+
+travel %>% ggplot(aes(x = mode.fac, y = psize)) +
+  geom_pirate()
+
+library(yarrr)
+pirateplot(psize ~ mode.fac, data = travel)
+
+# mosaic(x = travel$psize, y = travel$mode.fac) - figure that out later
+
+travel %>% ggplot(aes(x = psize, fill = mode.fac)) + 
+  geom_bar(identity = "stat") # to do later
+
 # Travel mode vs. hinc?
-mode.fac <- factor(mode, levels=c(0:3), labels=c("air","train","bus","car"))
 boxplot(hinc ~ mode.fac, ylab="Household Income",)
 lapply( split(hinc,mode), FUN=summary)
 # Median household income among travelers choosing air or car appears
@@ -60,6 +83,11 @@ source("/Users/staceyhancock/Documents/Repos/staceyhancock/stat439/R/Stat439-RFu
 summ.mfit(mfit)
 # rrr = "relative risk ratio" = est. odds of level ___ to level ___
 # Interpretations of rrr for psize in each equation?
+
+# Practice: psize coefficient in car vs air (exponentiated) = 1.823
+# If the party size increases by one individual,
+# the [relative risk ratio]/[conditional odds ratio] of travel
+# by car compared to air increases by 82.4%
 
 # Plot fitted probabilities vs. hinc for given party size:
 co <- coef(mfit) # Note is a 3x3 matrix
