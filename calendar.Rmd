@@ -310,6 +310,7 @@ _Course Overview_
 - [STAT 439 R functions](R/Stat439-RFunctions.R)
 - [Baseline logit model example: Travel data, Part 1](R/Week10-Mar29-Travel.R)
 - [Baseline logit model example: Travel data, Part 2](R/Week10-Mar31-Travel-cont.R)
+- [In-class notes](notes/NotesMar31.pdf)
 
 ### **Homework/Quiz**
 
