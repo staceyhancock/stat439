@@ -293,7 +293,6 @@ _Course Overview_
 ### _Content_
 
 - Model fitting, selection and diagnostics for GLMs (cont)
-- Multicategory logit models
 
 ### **Assigned readings**
 
@@ -309,7 +308,6 @@ _Course Overview_
 
 - [STAT 439 R functions](R/Stat439-RFunctions.R)
 - [Baseline logit model example: Travel data, Part 1](R/Week10-Mar29-Travel.R)
-- [Baseline logit model example: Travel data, Part 2](R/Week10-Mar31-Travel-cont.R)
 - [In-class notes](notes/NotesMar31.pdf)
 
 ### **Homework/Quiz**
@@ -324,20 +322,18 @@ _Course Overview_
 
 ### _Content_
 
+- Multicategory logit models (cont)
 - Models for matched pairs
-- Modeling ordinal data
 
 ### **Assigned readings**
 
-Matched pairs:
 - Chapter 8 Sections 8.1, 8.3, 8.5
 
-Ordinal data:
-- Chapter 2 Section 2.5
-- Chapter 6 Section 6.2
-- Chapter 8 Section 8.4
-
 ### **Tuesday**
+
+- [Baseline logit model example: Travel data, Part 2](R/Week11-Apr5-Travel-cont.R)
+- [Cumulative logit model examples](R/Week11-Apr5-Cumulative_Logit.R)
+
 
 ### **Thursday**
 
