@@ -121,16 +121,69 @@ curve(exp(co[3,1]+co[3,2]*x+co[3,3]*ps)/
 				exp(co[2,1]+co[2,2]*x+co[2,3]*ps) +
 				exp(co[3,1]+co[3,2]*x+co[3,3]*ps)), add=T,
 				col="purple",lty=4, lwd=2)
-legend(50,.9,c("Air","Train","Bus","Car"),
+legend("topright",c("Air","Train","Bus","Car"),
 	col=c("red","blue","darkgreen","purple"),
 	lty=c(1,2,3,4))
 
 # Any interaction between psize and hinc on mode?
 mfit.int <- multinom( mode.fac ~ hinc * psize, data=travel)
+summary(mfit.int)
 summ.mfit(mfit.int)
+
+# Practice interpretation: Bus eqn - hinc coef: exp(-0.0742) ~= 0.93
+# When there are zero members in the party,
+# a $1000 increase in household income is associated with
+# an estimated 7% decrease in the conditional odds of travel
+# on bus compared to air.
+
+# Practice interpretation: Bus eqn - psize coef: exp(-1.3345) ~= 0.26
+# When the household income is $0,
+# an additional member of the party is associated with
+# an estimated 74% decrease in the conditional odds of travel
+# on bus compared to air.
+
+# Practice interpretation: Car eqn - hinc:psize coef: exp(0.0422) ~= 1.043
+# When the party size increases by one individual,
+# the **change** in estimated conditional odds of travel by car compared to air
+# for a $1000 increase in household income increases by 4.3%.
+
+
+co <- coef(mfit.int) # Note is a 3x3 matrix
+# For party size = 2
+ps <- 3
+# Probability of air:
+curve(1/(1+exp(co[1,1]+co[1,2]*x+co[1,3]*ps+co[1,4]*x*ps) +
+           exp(co[2,1]+co[2,2]*x+co[2,3]*ps+co[2,4]*x*ps) +
+           exp(co[3,1]+co[3,2]*x+co[3,3]*ps+co[3,4]*x*ps)), from=0, to=80,
+      xlab="Household Income ($k)", ylab="Fitted Probabilities",
+      main="Fitted Probabilities of Travel Type for Parties of Size 2",
+      col="red", lty=1, ylim=c(0,1), lwd=2)
+# Probability of train:
+curve(exp(co[1,1]+co[1,2]*x+co[1,3]*ps+co[1,4]*x*ps)/
+        (1+exp(co[1,1]+co[1,2]*x+co[1,3]*ps+co[1,4]*x*ps) +
+           exp(co[2,1]+co[2,2]*x+co[2,3]*ps+co[2,4]*x*ps) +
+           exp(co[3,1]+co[3,2]*x+co[3,3]*ps+co[3,4]*x*ps)), add=T,
+      col="blue",lty=2, lwd=2)
+# Probability of bus:
+curve(exp(co[2,1]+co[2,2]*x+co[2,3]*ps+co[2,4]*x*ps)/
+        (1+exp(co[1,1]+co[1,2]*x+co[1,3]*ps+co[1,4]*x*ps) +
+           exp(co[2,1]+co[2,2]*x+co[2,3]*ps+co[2,4]*x*ps) +
+           exp(co[3,1]+co[3,2]*x+co[3,3]*ps+co[3,4]*x*ps)), add=T,
+      col="darkgreen",lty=3, lwd=2)
+# Probability of car:
+curve(exp(co[3,1]+co[3,2]*x+co[3,3]*ps+co[3,4]*x*ps)/
+        (1+exp(co[1,1]+co[1,2]*x+co[1,3]*ps+co[1,4]*x*ps) +
+           exp(co[2,1]+co[2,2]*x+co[2,3]*ps+co[2,4]*x*ps) +
+           exp(co[3,1]+co[3,2]*x+co[3,3]*ps+co[3,4]*x*ps)), add=T,
+      col="purple",lty=4, lwd=2)
+legend("topright",c("Air","Train","Bus","Car"),
+       col=c("red","blue","darkgreen","purple"),
+       lty=c(1,2,3,4))
 
 anova(mfit, mfit.int)
 # Conclusion?
+# There is significant evidence (at a 5% level) that the effect of
+# household income on modes of travel changes with party size.
 
 ### Fitting separate logistic models to each (less efficient):
 # Compare to multinomial coefs.
