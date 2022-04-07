@@ -338,6 +338,7 @@ _Course Overview_
 ### **Thursday**
 
 - [Cumulative logit model examples](R/Week11-Apr5-Cumulative_Logit.R)
+- [In-class notes](notes/NotesApr7.pdf)
 
 ### **Homework/Quiz**
 

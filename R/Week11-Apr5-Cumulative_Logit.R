@@ -5,6 +5,11 @@ library(MASS)  # polr, housing
 # Mental Impairment Data - Example 6.3.4 p. 178
 
 dat <- read.table("http://www.stat.ufl.edu/~aa/cat/data/Mental.dat", header=T)
+# impair: 1 = well, 2 = mild, 3 = moderate, 4 = impaired (response)
+# ses: 1 = high; 0 = low
+# life: "life events index" - composite measure of the number and severity
+#       of important life events within the past three years
+
 dat$impair <- as.ordered(dat$impair)
 levels(dat$impair) <- c("well", "mild", "mod", "imp")
 dat$ses <- as.factor(dat$ses)
