@@ -5,7 +5,7 @@ library(tidyverse)
 ## at age 13, then follows up with these same children to see
 ## if they have asthma or not 7 years later (age 20).
 
-dat <- matrix(c(50,8,22,420),2,2)
+dat <- matrix(c(50, 8, 22, 420), 2, 2)
 dimnames(dat) <- list(Age13 = c("Yes","No"), Age20 = c("Yes","No"))
 dat
 
@@ -49,6 +49,7 @@ dat.indep
 
 # Wrong analysis!!! Treat as independent samples:
 chisq.test(dat.indep, correct=FALSE) # Uses two-sided alternative -->
+# or prop.test
 # One-sided p-value:
 0.188/2
 # Fail to Reject H0. Opposite conclusion!

@@ -372,6 +372,7 @@ _Course Overview_
 
 - [Correlated data slides](lectures/LectureSlides-Apr12-Correlated.pdf)
 - R Example: [Matched pairs](R/Week12-Apr12-McNemar.R)
+- [In-class notes](notes/NotesApr12.pdf)
 
 ### **Thursday**
 
