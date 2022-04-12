@@ -323,7 +323,6 @@ _Course Overview_
 ### _Content_
 
 - Multicategory logit models (cont)
-- Models for matched pairs
 
 ### **Assigned readings**
 
@@ -358,20 +357,29 @@ _Course Overview_
 
 ### _Content_
 
-- Marginal models (GEEs)
+- Modeling correlated data
+    * Models for matched pairs
+    * Marginal models (GEEs)
+    * Generalized linear mixed models (GLMMs)
 
 ### **Assigned readings**
 
-- Chapter 8 Section 8.2
-- Chapter 9 Sections 9.1--9.2
+- Chapter 8 Sections 8.1--8.2 (skip 8.3--8.6)
+- Chapter 9 Sections 9.1--9.2 (skip 9.3--9.5)
+- Chapter 10 Sections 10.1--10.2 (skip 10.3--10.5)
 
 ### **Tuesday**
 
+- [Correlated data slides](lectures/LectureSlides-Apr12-Correlated.pdf)
+- R Example: [Matched pairs](R/Week12-Apr12-McNemar.R)
+
 ### **Thursday**
+
+- R Example: [Epilepsy data](R/Week12-Apr14-Epilepsy.R)
 
 ### **Homework/Quiz**
 
-- Homework 6 due Thur Apr 14 by 11pm
+- Homework 6 due Mon Apr 18 by 11pm
 
 ---
 
@@ -381,12 +389,11 @@ _Course Overview_
 
 ### _Content_
 
-- Generalized linear mixed models (GLMMs)
+- Continued
 
 ### **Assigned readings**
 
-- Chapter 8 Section 8.2
-- Chapter 10 Sections 10.1--10.2
+- Continued
 
 ### **Tuesday**
 
@@ -436,7 +443,7 @@ _Course Overview_
 
 ### _Content_
 
-- Project presentations
+- Bonus content
 
 ### **Homework/Quiz**
 
