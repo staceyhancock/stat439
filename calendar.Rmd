@@ -379,7 +379,7 @@ _Course Overview_
 
 ### **Homework/Quiz**
 
-- Homework 6 due Mon Apr 18 by 11pm
+- [Homework 6](homework/Stat439-S22-HW6.pdf) ([Rmd](homework/Stat439-S22-HW6.Rmd)) due Mon Apr 18 by 11pm --- baseline and cumulative logit models for multinomial data
 
 ---
 

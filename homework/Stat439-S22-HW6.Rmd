@@ -1,0 +1,65 @@
+---
+title: 'Stat 439: Homework 6'
+author: 'Your name here'
+subtitle: 'Due Mon 3/18/22 by 11pm in Gradescope'
+urlcolor: 'blue'
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(carData)
+```
+
+# Instructions
+
+You are strongly encouraged to use R Markdown to complete your Homework assignments, starting with this file as a template and Knitting to pdf. Submit your homework to [Gradescope](https://www.gradescope.com/) as a single pdf file.
+
+# Part I
+
+Complete Agresti Exercises 6.6 and 6.7.
+
+In Exercise 6.6, your "report" should include:
+
+* the fitted model equations, defining any symbols used,
+* an answer to the research question, "Is marital happiness associated with family income?", using appropriate statistical inference output,
+* a description of *how* marital happiness is associated with family income, based off of interpretations of relevant estimated coefficients.
+
+The report only needs to be a couple paragraphs.
+
+
+# Part II
+
+This part will use the housing data built into the `MASS` library in R. Load the data set into R in a data frame format with one row per case using the following command:
+
+```{r}
+library(MASS)
+data(housing)
+```
+
+For a description of the variables,type `?housing` in the console.
+
+Note that the data set is in grouped form. When fitting models, the data set should be in ungrouped form --- one row per observational unit. Use the following commands to create the ungrouped data set.
+```{r}
+housing_ungrouped <- housing[rep(1:72, housing$Freq), 1:4]
+rownames(housing_ungrouped) <- as.character(1:length(housing_ungrouped$Sat))
+```
+
+
+1. Fit a baseline logit model where `Sat` is the response with `Infl`, `Cont`, and the interaction between `Infl` and `Cont` as predictors, using "Low" as the baseline level. Then answer the following questions.
+
+    a. State the prediction equation for $\log(\hat{\pi}_H/\hat{\pi}_L)$, where $\pi_H$ is the probability of High satisfaction, and $\pi_L$ is the probability of Low satisfaction. Define any predictor variables used in the equation. 
+    b. Write a sentence interpreting the estimated `ContLow` coefficient.
+    c. Provide a 95\% confidence interval for the ratio of odds of High to Low satisfaction for householders with a Low perceived degree of influence on the management compared to householders with a High perceived degree of influence on the managament, conditional on High contact with other residents.
+    d. What is the predicted probability of Medium satisfaction for a householder with Medium perceived degree of influence on the management and Low contact with other residents?
+    e. Is there significant evidence that the effect of perceived degree of influence householders have on the management of the property on householder satisfaction differs across levels of contact with other residents? Justify your answer with an appropriate model comparison likelihood ratio test.
+    
+2. *Extra Credit*:  Treating `Sat` as an ordinal variable, fit the cumulative logit model with scores 1, 2, 3 for the satisfaction categories, and `Infl` and `Cont` as predictors (no interaction). Use the model to create a well-labeled plot that displays the fitted probabilities of Low, Medium and High satisfaction for each covariate pattern (e.g., combination of `Infl` and `Cont` categories).
+
+# Part III: Cite Sources
+
+Write the sources you used to complete this assignment at the end of your homework submission, adhering to the "Guidance on Citing Sources" bullet points in the [collaboration policy section on our course syllabus](https://staceyhancock.github.io/stat439/index.html#Policy_on_collaboration_and_academic_misconduct).
+
+
