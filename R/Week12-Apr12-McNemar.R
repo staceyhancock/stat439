@@ -112,7 +112,8 @@ for(i in 1:100){
   tmpfit <- glmer(y ~ age + (1|id), family = binomial(link = "logit"), data = asthma_long, nAGQ = i)
   tmp[i] <- summary(tmpfit)$coef[2,1]
 }
-plot(x = 1:100, y = tmp, type = "l")
+plot(x = 1:100, y = tmp, type = "l",
+     xlab = "Number of GHQ points", ylab = "Estimated slope")
 
 # Alternate package
 library(nlme)
