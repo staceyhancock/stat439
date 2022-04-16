@@ -261,7 +261,7 @@ robust.se.glm<-function(glm.obj){
 ##
 summ.mfit <- function( model ){
 	s <- summary( model )
-	for( i in 1:length(model$coef) ){
+	for( i in 1:(length(model$lev)-1) ){
 		cat( "\nLevel ", model$lev[i+1],  "vs. Level ", model$lev[1], "\n" )
 		coef <- s$coefficients[i,]
 		rrr <- exp( coef )
