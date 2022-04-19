@@ -370,13 +370,12 @@ _Course Overview_
 
 ### **Tuesday**
 
-- [Correlated data slides](lectures/LectureSlides-Apr12-Correlated.pdf)
+- [Correlated data slides](lectures/LectureSlides-Apr12-Correlated.pdf) (updated Apr 19)
 - R Example: [Matched pairs](R/Week12-Apr12-McNemar.R)
 - [In-class notes](notes/NotesApr12.pdf)
 
 ### **Thursday**
 
-- R Example: [Epilepsy data](R/Week12-Apr14-Epilepsy.R)
 - [In-class notes](notes/NotesApr14.pdf)
 
 ### **Homework/Quiz**
@@ -398,6 +397,8 @@ _Course Overview_
 - Continued
 
 ### **Tuesday**
+
+- [Epilepsy data R Example](R/Week12_Apr14_Epilepsy.pdf) ([Rmd](R/Week12_Apr14_Epilepsy.Rmd))
 
 ### **Thursday**
 
