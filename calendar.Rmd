@@ -377,6 +377,7 @@ _Course Overview_
 ### **Thursday**
 
 - R Example: [Epilepsy data](R/Week12-Apr14-Epilepsy.R)
+- [In-class notes](notes/NotesApr14.pdf)
 
 ### **Homework/Quiz**
 
