@@ -13,7 +13,7 @@
 
 <title>Course Calendar and Materials</title>
 
-<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.13/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
@@ -62,6 +62,7 @@ if (window.hljs) {
 
 
 
+
 <link rel="stylesheet" href="styles.css" type="text/css" />
 
 
@@ -86,6 +87,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -311,7 +315,7 @@ div.tocify {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -918,13 +922,13 @@ baseline and cumulative logit models for multinomial data</li>
 <div id="content-11" class="section level3">
 <h3><em>Content</em></h3>
 <ul>
-<li>Continued</li>
+<li>Modeling correlated data (continued)</li>
 </ul>
 </div>
 <div id="assigned-readings-11" class="section level3">
 <h3><strong>Assigned readings</strong></h3>
 <ul>
-<li>Continued</li>
+<li>(continued from last week)</li>
 </ul>
 </div>
 <div id="tuesday-11" class="section level3">
@@ -932,10 +936,14 @@ baseline and cumulative logit models for multinomial data</li>
 <ul>
 <li><a href="R/Week12_Apr14_Epilepsy.pdf">Epilepsy data R Example</a>
 (<a href="R/Week12_Apr14_Epilepsy.Rmd">Rmd</a>)</li>
+<li>See D2L Content for recording of Dr. Greenwood’s lecture</li>
 </ul>
 </div>
 <div id="thursday-11" class="section level3">
 <h3><strong>Thursday</strong></h3>
+<ul>
+<li>Correlated data slides and epilepsy example (continued)</li>
+</ul>
 </div>
 <div id="homeworkquiz-11" class="section level3">
 <h3><strong>Homework/Quiz</strong></h3>
@@ -957,14 +965,18 @@ baseline and cumulative logit models for multinomial data</li>
 <div id="content-12" class="section level3">
 <h3><em>Content</em></h3>
 <ul>
-<li>Classification and clustering</li>
+<li>Modeling correlated data (continued)</li>
+<li>GLM leftovers:
+<ul>
+<li>Residual diagnostics</li>
+<li>Dealing with missing data</li>
+</ul></li>
 </ul>
 </div>
 <div id="assigned-readings-12" class="section level3">
 <h3><strong>Assigned readings</strong></h3>
 <ul>
-<li>Review Chapter 4 Section 4.6</li>
-<li>Chapter 11 Sections 11.1–11.3</li>
+<li>Content not in textbook</li>
 </ul>
 </div>
 <div id="tuesday-12" class="section level3">
@@ -976,7 +988,9 @@ baseline and cumulative logit models for multinomial data</li>
 <div id="homeworkquiz-12" class="section level3">
 <h3><strong>Homework/Quiz</strong></h3>
 <ul>
-<li>Homework 7 due Thur Apr 28 by 11pm</li>
+<li>Homework 7 due Thur Apr 28 by 11pm — population-averaged models
+(i.e., marginal models, GEEs), subject-specific models (i.e.,
+generalized linear mixed effects models)</li>
 </ul>
 </div>
 <div id="project-deadline-2" class="section level3">
@@ -993,7 +1007,14 @@ baseline and cumulative logit models for multinomial data</li>
 <div id="content-13" class="section level3">
 <h3><em>Content</em></h3>
 <ul>
-<li>Bonus content</li>
+<li>Classification and clustering</li>
+</ul>
+</div>
+<div id="assigned-readings-13" class="section level3">
+<h3><strong>Assigned readings</strong></h3>
+<ul>
+<li>Review Chapter 4 Section 4.6</li>
+<li>Chapter 11 Sections 11.1–11.3</li>
 </ul>
 </div>
 <div id="homeworkquiz-13" class="section level3">

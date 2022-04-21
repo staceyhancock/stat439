@@ -390,17 +390,20 @@ _Course Overview_
 
 ### _Content_
 
-- Continued
+- Modeling correlated data (continued)
 
 ### **Assigned readings**
 
-- Continued
+- (continued from last week)
 
 ### **Tuesday**
 
 - [Epilepsy data R Example](R/Week12_Apr14_Epilepsy.pdf) ([Rmd](R/Week12_Apr14_Epilepsy.Rmd))
+- See D2L Content for recording of Dr. Greenwood's lecture
 
 ### **Thursday**
+
+- Correlated data slides and epilepsy example (continued)
 
 ### **Homework/Quiz**
 
@@ -418,13 +421,14 @@ _Course Overview_
 
 ### _Content_
 
-- Classification and clustering
-
+- Modeling correlated data (continued)
+- GLM leftovers:
+    * Residual diagnostics
+    * Dealing with missing data
 
 ### **Assigned readings**
 
-- Review Chapter 4 Section 4.6
-- Chapter 11 Sections 11.1--11.3
+- Content not in textbook
 
 ### **Tuesday**
 
@@ -432,7 +436,7 @@ _Course Overview_
 
 ### **Homework/Quiz**
 
-- Homework 7 due Thur Apr 28 by 11pm
+- Homework 7 due Thur Apr 28 by 11pm --- population-averaged models (i.e., marginal models, GEEs), subject-specific models (i.e., generalized linear mixed effects models)
 
 ### **Project Deadline**
 
@@ -446,7 +450,13 @@ _Course Overview_
 
 ### _Content_
 
-- Bonus content
+- Classification and clustering
+
+### **Assigned readings**
+
+- Review Chapter 4 Section 4.6
+- Chapter 11 Sections 11.1--11.3
+
 
 ### **Homework/Quiz**
 
