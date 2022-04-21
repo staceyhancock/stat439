@@ -1,0 +1,100 @@
+---
+title: 'Stat 439: Homework 7'
+author: 'Your name here'
+subtitle: 'Due Thur 4/28/22 by 11pm in Gradescope'
+urlcolor: 'blue'
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(lme4)
+library(gee)
+```
+
+# Instructions
+
+You are strongly encouraged to use R Markdown to complete your Homework assignments, starting with this file as a template and Knitting to pdf. Submit your homework to [Gradescope](https://www.gradescope.com/) as a single pdf file.
+
+# Part I
+
+The Skin Cancer Prevention Study was a randomized, double-blind, placebo-controlled clinical trial of beta carotene to prevent non-melanoma skin cancer in high-risk subjects^[This problem is taken from Exercise 14.2, p. 436, in _Applied Longitudinal Analysis_, 2nd edition, by Fitzmaurice, Laird, and Ware. The original study was published by Greenberg et al., 1989, 1990; see also Stukel, 1993.] A total of 1805 subjects were randomized to either placebo or 50 mg of beta carotene per day for five years. Subjects were examined once a year and biopsied if a cancer was suspected to determine the number of new skin cancers occurring since the last exam. The outcome variable is a count of the number of new skin cancers per year. The outcome was evaluated on 1683 subjects comprising a total of 7081 measurements. The main objective of the analyses is to compare the effects of beta carotene on skin cancer rates.
+
+Variable descriptions:  
+
+* `ID`: Unique identifier for each subject
+* `Center`: Medical center (1, 2, 3, or 4)
+* `Age`: Age (in years) of each subject at the time of randomization to treatments
+* `Skin`: Skin type (1 = burns; 0 = otherwise)
+* `Gender`: Sex (1 = male; 0 = female)
+* `Exposure`: Count of the number of previous skin cancers
+* `Y`: Count of the number of new skin cancers per year
+* `Treatment`: Treatment (1 = beta carotene; 0 = placebo)
+* `Year`: Year of follow-up
+
+The following code will read the data into R.
+```{r}
+skin <- read.table("http://www.hsph.harvard.edu/fitzmaur/ala2e/skin.dat", 
+     header=F)
+names(skin) <- c("ID", "Center", "Age", "Skin", "Gender",
+                 "Exposure","Y","Treatment","Year")
+skin$Treatment <- factor(skin$Treatment, levels=c(0,1),
+                         labels=c("Placebo", "BetaCarotene"))
+skin$Gender <- factor(skin$Gender, levels=c(0,1),
+                      labels=c("Female", "Male"))
+skin$Skin <- factor(skin$Skin, levels=c(0,1),
+                    labels=c("NoBurns", "Burns"))
+```
+
+## 1.
+Is the data set in "long" or "wide" format? Explain.
+
+
+## 2.
+Create a plot that summarizes the relationship between the outcome
+variable Y, the treatment, and year. Write a few sentences summarizing what
+you learn from the plot.
+
+## 3.
+Create another plot that you think shows something interesting about the
+relationship between at least two variables in the data set. Write a few sentences
+summarizing what you learn from the plot.
+
+## 4.
+Consider the following GLMM model:
+```{r}
+mod_glmm <- glmer(Y ~ Treatment*Year + (1 + Year | ID), family = poisson, 
+              data=skin)
+summary(mod_glmm)
+```
+a. Write out the model being fit to the data --- this should be the true model (using $\beta$'s and $b$'s), not the fitted model. Include all model assumptions.
+b. Explain why the researchers should be concerned if the `TreatmentBetaCarotene` coefficient differs significantly from zero. Hint: Think about what this coefficient represents and the study design.
+c. Write a sentence interpreting the `TreatmentBetaCarotene:Year` estimated coefficient.
+d. What is the estimated standard deviation of the random slopes? Explain what this value is measuring in context.
+e. Based on the GLMM output, does it seem like beta carotene has a significant effect on skin cancer rates? Justify your answer.
+f. What are the subject-specific coefficients for ID 419238? Interpret this individual's subject-specific `TreatmentBetaCarotene:Year` estimated coefficient.
+
+
+## 5.
+Consider the following GEE model:
+```{r}
+mod_gee <- gee(Y ~ Treatment*Year, id = ID, family = poisson,
+            corstr = "exchangeable", data=skin, )
+summary(mod_gee)
+```
+a. Write out the model being fit to the data --- this should be the true model (using $\beta$'s), not the fitted model. Include all model assumptions.
+b. Write a sentence interpreting the `TreatmentBetaCarotene:Year` estimated coefficient. How does your interpretation differ from your interpretation of the same coefficient in the GLMM?
+
+
+# 6.
+Fit a generalized linear mixed effects model with a random intercept (no random slope), with linear trends for the log rate over time and allow the slopes to depend on the treatment group, while also controlling for skin type, age, and the count of the number of previous skin cancers. What conclusions do you draw about the effect of beta carotene on the rate of skin cancers after adjusting for skin type, age, and the count of the number of previous skin cancers?
+ 
+
+# Part II: Cite Sources
+
+Write the sources you used to complete this assignment at the end of your homework submission, adhering to the "Guidance on Citing Sources" bullet points in the [collaboration policy section on our course syllabus](https://staceyhancock.github.io/stat439/index.html#Policy_on_collaboration_and_academic_misconduct).
+
+

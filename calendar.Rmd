@@ -442,7 +442,7 @@ _Course Overview_
 
 ### **Homework/Quiz**
 
-- Homework 7 due Thur Apr 28 by 11pm --- population-averaged models (i.e., marginal models, GEEs), subject-specific models (i.e., generalized linear mixed effects models)
+- [Homework 7](homework/Stat439-S22-HW7.pdf) ([Rmd](homework/Stat439-S22-HW7.Rmd)) due Thur Apr 28 by 11pm --- population-averaged models (i.e., marginal models, GEEs), subject-specific models (i.e., generalized linear mixed effects models)
 
 ### **Project Deadline**
 
