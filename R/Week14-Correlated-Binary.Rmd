@@ -1,0 +1,195 @@
+---
+title: "GLMMs and GEEs with Binary Data"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(lme4) # lmer
+library(gee) # gee
+library(vcd) # pairs
+```
+
+## Data on attitudes about abortion from Agresti (2013)
+
+Subjects were asked whether they supported legalizing abortion in each of three situations: 
+
+1. If the family has a very low income and cannot afford any more children.
+2. When the woman is not married and does not want to marry the man.
+3. When the woman wants it for any reason.
+
+Gender was also measured.
+
+Note: Since the model implies nonnegative association among responses,
+situations and scales should correspond accordingly.
+For example, with scale (yes, no), it would not make sense to ask
+"Should abortion be legal...?" and " Should abortion be illegal...?"
+as two different situations.
+
+## Read in data
+
+Variables:  
+    * gender = 1 if female; 0 if male
+    * response = 1 if support; 0 if do not support
+    * question = situation (1, 2, or 3)
+    * case = subject id
+
+```{r}
+attitudes <- read.table("https://math.montana.edu/shancock/data/abortion.txt", header=TRUE)
+# Code situation as factor:
+attitudes$question = factor(attitudes$question)
+# Make situation 3 the reference situation:
+attitudes$question = relevel(attitudes$question, ref="3")
+# Note that we can leave gender and response as numeric
+# since they are already coded as 0 or 1.
+```
+
+
+## Exploratory data analysis
+
+Plot of proportion of support in each covariate pattern:
+```{r}
+means <- tapply(attitudes$response, list(attitudes$question,attitudes$gender), mean)
+plot(c(3,1,2),means[1:3,1],type="p",col="red",pch=16,
+	xlab="Situation",ylab="Proportion Support",
+	main="Proportion Support by Situation and Gender",
+	cex=2,ylim=c(0.45,.52))
+points(c(3,1,2),means[1:3,2],col="darkblue",cex=2)	
+legend("bottomleft", c("Male","Female"), col=c("red","darkblue"), pch=c(16,1))
+```
+
+Barplot of same information:
+```{r base-R-barplot}
+barplot(t(means), beside=TRUE, col=c("Red","Blue"),
+	ylim=c(0,0.6), legend = c("Male","Female"),
+	xlab="Situation",ylab="Proportion Support",
+	main="Proportion Support by Situation and Gender")
+```
+```{r tidyverse-barplot}
+# Convert data to long form - currently first col is male, second is female
+means_long <- data.frame(Proportion = c(means[,1], means[,2]))
+# Add gender and situation variables
+means_long$Gender <- rep(c("Male", "Female"), each = 3)
+means_long$Situation <- rep(c("Any reason", "Income", "Unmarried"), 2)
+
+means_long %>% ggplot(aes(x = Situation, fill = Gender, y = Proportion)) +
+  geom_col(position = "dodge")
+
+barplot(t(means), beside=TRUE, col=c("Red","Blue"),
+	ylim=c(0,0.6), legend = c("Male","Female"),
+	xlab="Situation",ylab="Proportion Support",
+	main="Proportion Support by Situation and Gender")
+```
+
+Contingency table summary of data by situation:
+```{r}
+my.tab <- xtabs(~response+gender+question, data=attitudes)
+my.tab
+```
+
+Visualize three-way contingency table:
+```{r}
+pairs(my.tab, diag_panel = pairs_barplot,  labeling=TRUE)
+```
+
+Since we have binary data on three occasions, there are only 8 possible values
+for the response vector.
+
+```{r}
+# Convert data to wide form
+att_wide <- attitudes %>% pivot_wider(
+  id_cols = "case",
+  names_from = "question",
+  names_prefix = "Sit",
+  values_from = "response",
+  unused_fn = list("gender" = max)
+)
+n <- dim(att_wide)[1]
+```
+
+The number of rows in wide form tell us the number of subjects questioned:
+`r n`
+
+
+How many supported legalizing abortion in all three situations, i.e., responded (1,1,1)?
+```{r}
+# Create sequence or responses variable:
+# Hard way -
+att_wide <- att_wide %>%
+  mutate(response_seq = case_when(
+    Sit1 == 1 & Sit2 == 1 & Sit3 == 1 ~ "111",
+    Sit1 == 1 & Sit2 == 1 & Sit3 == 0 ~ "110",
+    Sit1 == 1 & Sit2 == 0 & Sit3 == 1 ~ "101",
+    Sit1 == 0 & Sit2 == 1 & Sit3 == 1 ~ "011",
+    Sit1 == 1 & Sit2 == 0 & Sit3 == 0 ~ "100",
+    Sit1 == 0 & Sit2 == 1 & Sit3 == 0 ~ "010",
+    Sit1 == 0 & Sit2 == 0 & Sit3 == 1 ~ "001",
+    Sit1 == 0 & Sit2 == 0 & Sit3 == 0 ~ "000",
+    )
+  )
+# Easy way -
+att_wide <- att_wide %>%
+  mutate(response_seq = paste0(Sit1, Sit2, Sit3))
+
+xtabs(~gender + response_seq, data = att_wide)
+# Note that the majority of the sample was either 000 or 111.
+# --> high association between repeated measurements.
+# Sample correlations among repeated measurements:
+cor(att_wide[,2:4])
+```
+
+
+## Modeling: GLMM
+
+```{r}
+### Fit GLMM by ML ###
+# No interaction between gender and question -->
+# gender effect assumed to be identical for each situation.
+mod1 <- glmer(response ~ gender+question+(1|case), 
+family=binomial,
+	data=attitudes, nAGQ = 25)
+# Larger value of "nAGQ" =  greater accuracy in approximation
+# --> longer computational time	
+# Default is 1 (Laplace approximation) - gives very different results!
+summary(mod1)
+summary(update(mod1, nAGQ = 1))
+```
+
+
+```{r}
+mod2 <- glmer(response ~ gender*question+(1|case), family=binomial,
+	data=attitudes, nAGQ = 25)
+# Test for interaction effect between gender and question:	
+anova(mod2)
+anova(mod1,mod2)
+```
+
+
+```{r}
+# EBLUPS same for all individuals with same response sequence
+# and same gender, e.g.,
+ranef(mod1)$case[att_wide$response_seq=="000", 1]
+att_wide$gender[att_wide$response_seq=="000"]
+```
+
+```{r}
+# Note different answers if we use a different R library:
+library(glmmML) # May need to install package
+# glmmML function only allows for a random intercept
+mod1b = glmmML(response ~ gender+question, cluster=case,
+	family=binomial, method="ghq", 
+	n.points=70, start.sigma=9, data=attitudes)
+summary(mod1b)	
+```
+
+
+## Modeling: GEE
+
+```{r}
+mod2 <- gee(response ~ gender+question, family=binomial,
+            corstr="exchangeable", id=case, data=attitudes)
+summary(mod2)	
+```
+
+Note since GEE is really an estimating procedure (similar to least squares) and there is no likelihood, we cannot carry out likelihood ratio tests to compare models.

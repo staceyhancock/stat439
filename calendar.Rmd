@@ -176,7 +176,7 @@ _Course Overview_
 
 ### **Assigned readings**
 
-- (continued from last week)
+- Continued from last week
 
 ### **Tuesday**
 
@@ -203,7 +203,7 @@ _Course Overview_
 
 ### **Assigned readings**
 
-- (continued from last week)
+- Continued from last week
 
 ### **Tuesday**
 
@@ -267,7 +267,7 @@ _Course Overview_
 
 ### **Assigned readings**
 
-- (continued from last week)
+- Continued from last week
 
 ### **Tuesday**
 
@@ -394,7 +394,7 @@ _Course Overview_
 
 ### **Assigned readings**
 
-- (continued from last week)
+- Continued from last week
 
 ### **Tuesday**
 
@@ -404,6 +404,7 @@ _Course Overview_
 ### **Thursday**
 
 - Correlated data slides and epilepsy example (continued)
+- [In-class notes](notes/NotesApr21.pdf)
 
 ### **Homework/Quiz**
 
@@ -428,9 +429,14 @@ _Course Overview_
 
 ### **Assigned readings**
 
-- Content not in textbook
+- Continued from last week
+- Some content not in textbook
 
 ### **Tuesday**
+
+- Finish epilepsy data example
+- [Correlated binary data R Example](R/Week14-Correlated-Binary.html) ([Rmd](R/Week14-Correlated-Binary.Rmd))
+
 
 ### **Thursday**
 
