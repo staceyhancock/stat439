@@ -440,6 +440,7 @@ _Course Overview_
 
 - Finish epilepsy data example
 - [Correlated binary data R Example](R/Week14-Correlated-Binary.html) ([Rmd](R/Week14-Correlated-Binary.Rmd))
+- [In-class notes](notes/NotesApr28.pdf)
 
 
 ### **Homework/Quiz**
