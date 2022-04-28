@@ -1,6 +1,6 @@
 ---
 title: "GEE and GLMM"
-output: word_document
+output: html_document
 date: '2022-04-18'
 ---
 

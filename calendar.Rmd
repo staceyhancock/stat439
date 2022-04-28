@@ -434,11 +434,13 @@ _Course Overview_
 
 ### **Tuesday**
 
+- Class cancelled
+
+### **Thursday**
+
 - Finish epilepsy data example
 - [Correlated binary data R Example](R/Week14-Correlated-Binary.html) ([Rmd](R/Week14-Correlated-Binary.Rmd))
 
-
-### **Thursday**
 
 ### **Homework/Quiz**
 
