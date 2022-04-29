@@ -386,9 +386,11 @@ different situations.</p>
 </div>
 <div id="read-in-data" class="section level2">
 <h2>Read in data</h2>
-<p>Variables:<br />
-* gender = 1 if female; 0 if male * response = 1 if support; 0 if do not
-support * question = situation (1, 2, or 3) * case = subject id</p>
+<p>Variables:</p>
+<pre><code>* gender = 1 if female; 0 if male
+* response = 1 if support; 0 if do not support
+* question = situation (1, 2, or 3)
+* case = subject id</code></pre>
 <pre class="r"><code>attitudes &lt;- read.table(&quot;https://math.montana.edu/shancock/data/abortion.txt&quot;, header=TRUE)
 # Code situation as factor:
 attitudes$question = factor(attitudes$question)

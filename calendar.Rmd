@@ -439,8 +439,16 @@ _Course Overview_
 ### **Thursday**
 
 - Finish epilepsy data example
-- [Correlated binary data R Example](R/Week14-Correlated-Binary.html) ([Rmd](R/Week14-Correlated-Binary.Rmd))
 - [In-class notes](notes/NotesApr28.pdf)
+
+Correlated binary data example:
+
+- [Correlated binary data R Example](R/Week14-Correlated-Binary.html) ([Rmd](R/Week14-Correlated-Binary.Rmd))
+- Videos:
+    * [Exploratory data analysis](https://montana.techsmithrelay.com/tpCz)
+    * [Generalized linear mixed model](https://montana.techsmithrelay.com/ANUY)
+    * [Marginal model](https://montana.techsmithrelay.com/4nW3)
+- [Video notes](notes/Binary-Correlated-Example.pdf)
 
 
 ### **Homework/Quiz**

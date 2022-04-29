@@ -30,6 +30,7 @@ as two different situations.
 ## Read in data
 
 Variables:  
+
     * gender = 1 if female; 0 if male
     * response = 1 if support; 0 if do not support
     * question = situation (1, 2, or 3)
