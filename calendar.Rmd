@@ -476,6 +476,7 @@ Correlated binary data example:
 
 ### **Tuesday**/**Thursday**
 
+- [Week 15 slides](lectures/week15-slides.html) ([Rmd](lectures/week15-slides.Rmd))
 - Choose your own adventure:
     * [Prediction](R/Week15/Prediction.html) ([Rmd](R/Week15/Prediction.Rmd))
     * [Classification](R/Week15/Classification.html) ([Rmd](R/Week15/Classification.Rmd))
