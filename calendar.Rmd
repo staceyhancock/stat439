@@ -474,6 +474,14 @@ Correlated binary data example:
 - Review Chapter 4 Section 4.6
 - Chapter 11 Sections 11.1--11.3
 
+### **Tuesday**/**Thursday**
+
+- Choose your own adventure:
+    * [Prediction](R/Week15/Prediction.html) ([Rmd](R/Week15/Prediction.Rmd))
+    * [Classification](R/Week15/Classification.html) ([Rmd](R/Week15/Classification.Rmd))
+    * [Clustering](R/Week15/Clustering.html) ([Rmd](R/Week15/Clustering.Rmd))
+    * [Linear discriminant analysis](R/Week15/LDA.html) ([Rmd](R/Week15/LDA.Rmd))
+
 
 ### **Homework/Quiz**
 
