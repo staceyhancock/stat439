@@ -482,7 +482,7 @@ Correlated binary data example:
     * [Classification](R/Week15/Classification.html) ([Rmd](R/Week15/Classification.Rmd))
     * [Clustering](R/Week15/Clustering.html) ([Rmd](R/Week15/Clustering.Rmd))
     * [Linear discriminant analysis](R/Week15/LDA.html) ([Rmd](R/Week15/LDA.Rmd))
-
+- [Tuesday in-class notes](notes/Notes-May3.pdf)
 
 ### **Homework/Quiz**
 
